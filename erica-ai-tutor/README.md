@@ -20,6 +20,7 @@ This project implements the Erica AI Tutor system. It builds a knowledge graph f
 Install Requirements
 
 You need:
+
 Docker Desktop  
 Ollama installed locally: https://ollama.com/download  
 Qwen model pulled:
