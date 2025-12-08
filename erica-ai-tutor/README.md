@@ -13,7 +13,7 @@ services:
 Erica AI Tutor
 
 This project implements the Erica AI Tutor system.  
-It builds a knowledge graph from extracted entities, constructs concept relationships, retrieves subgraphs for user questions, and generates final answers using a local LLM. Everything runs inside a lightweight Docker container.
+It builds a knowledge graph from extracted entities, constructs concept relationships, retrieves subgraphs for user questions, and generates final answers using a local LLM. Everything except the extracting entities and relations of the chunks through ollama was done in a Docker container.
 
 
 1. Setup Instructions
