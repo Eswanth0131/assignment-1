@@ -1,0 +1,254 @@
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+\ WIKIPEDIA
+‘oa ; The Free Encyclopedia
+1
+Es~timation theory
+Estimation theory is a branch of statistics that deals with estimating the values of parameters
+based on measured empirical data that has a random component. The parameters describe an
+underlying physical setting in such a way that their value affects the distribution of the measured
+data. An estimator attempts to approximate the unknown parameters using the measurements. In
+estimation theory, two approaches are generally considered:!!
+=» The probabilistic approach (described in this article) assumes that the measured data is
+random with a probability distribution dependent on the parameters of interest
+=» The set-membership approach assumes that the measured data vector belongs to a set which
+depends on the parameter vector.
+Examples
+For example, it is desired to estimate the proportion of a population of voters who will vote for a
+particular candidate. That proportion is the parameter sought; the estimate is based on a small
+random sample of voters. Alternatively, it is desired to estimate the probability of a voter voting for
+a particular candidate, based on some demographic features, such as age.
+Or, for example, in radar the aim is to find the range of objects (airplanes, boats, etc.) by analyzing
+the two-way transit timing of received echoes of transmitted pulses. Since the reflected pulses are
+unavoidably embedded in electrical noise, their measured values are randomly distributed, so that
+the transit time must be estimated.
+As another example, in electrical communication theory, the measurements which contain
+information regarding the parameters of interest are often associated with a noisy signal.
+Basics
+For a given model, several statistical "ingredients" are needed so the estimator can be
+implemented. The first is a statistical sample — a set of data points taken from a random vector
+(RV) of size N. Put into a vector,
+https://en.wikipedia.org/wiki/Estimation_theory Page 1 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+2[N — 1] |
+Secondly, there are M parameters
+| Om -
+whose values are to be estimated. Third, the continuous probability density function (pdf) or its
+discrete counterpart, the probability mass function (pmf), of the underlying distribution that
+generated the data must be stated conditional on the values of the parameters:
+p(x|8).
+It is also possible for the parameters themselves to have a probability distribution (e.g., Bayesian
+statistics). It is then necessary to define the Bayesian probability
+After the model is formed, the goal is to estimate the parameters, with the estimates commonly
+denoted @, where the "hat" indicates the estimate.
+One common estimator is the minimum mean squared error (MMSE) estimator, which utilizes the
+error between the estimated parameters and the actual value of the parameters
+aA
+e-—060-80
+as the basis for optimality. This error term is then squared and the expected value of this squared
+value is minimized for the MMSE estimator.
+Estimators
+Commonly used estimators (estimation methods) and topics related to them include:
+=» Maximum likelihood estimators
+=» Bayes estimators
+=» Method of moments estimators
+=» Cramér—Rao bound
+https://en.wikipedia.org/wiki/Estimation_theory Page 2 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+» Least squares
+=» Minimum mean squared error (MMSE), also known as Bayes least squared error (BLSE)
+=» Maximum a posteriori (MAP)
+=» Minimum variance unbiased estimator (MVUE)
+=» Nonlinear system identification
+= Best linear unbiased estimator (BLUE)
+» Unbiased estimators — see estimator bias.
+» Particle filter
+=» Markov chain Monte Carlo (MCMC)
+» Kalman filter, and its various derivatives
+= Wiener filter
+Examples
+Unknown constant in additive white Gaussian noise
+Consider a received discrete signal, z[n], of N independent samples that consists of an unknown
+constant A with additive white Gaussian noise (AWGN) w|n] with zero mean and known variance
+ao” (i.e., N (0, o”)). Since the variance is known then the only unknown parameter is A.
+The model for the signal is then
+z[n]} =A+w|n| n=0,1,...,N-1
+Two possible (of many) estimators for the parameter A are:
+a Ao = LWe,z|n| which is the sample mean
+. 1 A=
+Both of these estimators have a mean of A, which can be shown through taking the expected value
+of each estimator
+B|A,| = E[z(0]] = 4
+and
+= yn => Sten == (NA]=A
+E Ae | -E
+https://en.wikipedia.org/wiki/Estimation_theory Page 3 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+At this point, these two estimators would appear to perform the same. However, the difference
+between them becomes apparent when comparing the variances.
+var (A:) = var (x[0]) = o°
+and
+var (42 ) = var (s y z|n|) dependencew":a _ |vvar(x 2) = — [No | = —
+2
+It would seem that the sample mean is a better estimator since its variance is lower for every N > 1.
+Maximum likelihood
+Continuing the example using the maximum likelihood estimator, the probability density function
+(pdf) of the noise for one sample w[n] is
+pun) = exp (-wi4n} )
+and the probability of z[n] becomes (z[n] can be thought of a N(A, o”))
+(etn)A) = exp (37(e5ln] ~ 4)*)
+By independence, the probability of x becomes
+p(x; A) = T] pletn|;A) = — o0 (35 SY Celn| - a?)
+(o/im)"
+n=0 n=0
+Taking the natural logarithm of the pdf
+In p(x; A) = —NIn(oV2r) — = S(a{n] — A)’
+n=0
+and the maximum likelihood estimator is
+A = arg max In p(x; A)
+Taking the first derivative of the log-likelihood function
+aFaq) np; A)= = | NS-1ate =a, »[x2 z|n| — NA
+n=0
+https://en.wikipedia.org/wiki/Estimation_theory Page 4 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+and setting it to zero
+1 [v2 N—
+= | dalnl-
+n=0
+This results in the maximum likelihood estimator
+. 1 N-1
+x etn
+A=—
+=
+n=0
+which is simply the sample mean. From this example, it was found that the sample mean is the
+maximum likelihood estimator for N samples of a fixed, unknown parameter corrupted by AWGN.
+Cramér—Rao lower bound
+To find the Cramér—Rao lower bound (CRLB) of the sample mean estimator, it is first necessary to
+find the Fisher information number
+I(A) =E [55 In p(x; a) ) =—-E5 — In p(x; A)|
+and copying from above
+pines A) = 3 |S" an
+O
+— In p(x; A) = x\n
+Taking the second derivative
+6? 1 —N
+—jaz Innpplx(s x;AA) = G(-—NN)) == ——
+and finding the negative expected value is trivial since it is now a deterministic constant
+| jaa”z Pl )) = =N
+—E |— lInp(x; A —
+Finally, putting the Fisher information into
+var ( A~) 2> 5=1
+results in
+2
+var (A) > —
+https://en.wikipedia.org/wiki/Estimation_theory Page 50f 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+Comparing this to the variance of the sample mean (determined previously) shows that the sample
+mean is equal to the Cramér—Rao lower bound for all values of N and A. In other words, the
+sample mean is the (necessarily unique) efficient estimator, and thus also the minimum variance
+unbiased estimator (MVUE), in addition to being the maximum likelihood estimator.
+Maximum of a uniform distribution
+One of the simplest non-trivial examples of estimation is the estimation of the maximum of a
+uniform distribution. It is used as a hands-on classroom exercise and to illustrate basic principles
+of estimation theory. Further, in the case of estimation based on a single sample, it demonstrates
+philosophical issues and possible misunderstandings in the use of maximum likelihood estimators
+and likelihood functions.
+Given a discrete uniform distribution 1,2,...,.N with unknown maximum, the UMVU estimator
+for the maximum is given by
+tk+1m -1=m+ a1
+k
+where m is the sample maximum and k is the sample size, sampling without replacement.!2![3! This
+problem is commonly known as the German tank problem, due to application of maximum
+estimation to estimates of German tank production during World War II.
+The formula may be understood intuitively as;
+"The sample maximum plus the average gap between observations in the sample",
+the gap being added to compensate for the negative bias of the sample maximum as an estimator
+for the population maximum.!TM*% 1
+This has a variance of!2!
+1 ( N—k))( N+1 ) ~~ —N?— for small samples k < N
+k (k + 2) k?
+so a standard deviation of approximately N/k, the (population) average size of a gap between
+samples; compare — above. This can be seen as a very simple case of maximum spacin
+k
+estimation.
+The sample maximum is the maximum likelihood estimator for the population maximum, but, as
+discussed above, it is biased.
+https://en.wikipedia.org/wiki/Estimation_theory Page 6 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+Applications
+Numerous fields require the use of estimation theory. Some of these fields include:
+Interpretation of scientific experiments
+Signal processing
+Clinical trials
+Opinion polls
+Quality control
+Telecommunications
+Project management
+Software engineering
+Control theory (in particular Adaptive control)
+Network intrusion detection system
+Orbit determination
+Measured data are likely to be subject to noise or uncertainty and it is through statistical
+probability that optimal solutions are sought to extract as much information from the data as
+possible.
+See also
+Best linear unbiased estimator (BLUE)
+Completeness (statistics)
+Detection theory
+Efficiency (statistics)
+Expectation-maximization algorithm (EM algorithm)
+Fermi problem
+Grey box model
+Information theory
+Least-squares spectral analysis
+Matched filter
+Maximum entropy spectral estimation
+Nuisance parameter
+Parametric equation
+Pareto principle
+Rule of three (statistics)
+State estimator
+https://en.wikipedia.org/wiki/Estimation_theory Page 7 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+= Statistical signal processing
+= Sufficiency (statistics)
+Notes
+1. The sample maximum is never more than the population maximum, but can be less, hence it is
+a biased estimator: it will tend to underestimate the population maximum.
+References
+Citations
+1. Walter, E.; Pronzato, L. (1997). Identification of Parametric Models from Experimental Data.
+London, England: Springer-Verlag.
+2. Johnson, Roger (1994), "Estimating the Size of a Population", Teaching Statistics, 16 (2
+(Summer)): 50-52, doi:10.1111/).1467-9639.1994.tb00688.x (https://doi.org/10.1111%2Fj.1467-
+9639. 1994.tb00688.x)
+. Johnson, Roger (2006), "Estimating the Size of a Population" (https://web.archive.org/web/200
+81120085633/http://www.rsscse.org.uk/ts/gtb/contents.html), Getting the Best from Teaching
+Statistics (http://www.rsscse.org.uk/ts/gtb/contents.html), archived from the original on
+November 20, 2008
+Sources
+E.L. Lehmann & G. Casella (1998). Theory of Point Estimation. Springer. ISBN 0387985026.
+Dale Shermon (2009). Systems Cost Engineering. Gower Publishing. ISBN 978-0-566-08861-
+2.
+John Rice (1995). Mathematical Statistics and Data Analysis. Duxbury Press. ISBN 0-534-
+209343.
+Steven M. Kay (1993). Fundamentals of Statistical Signal Processing: Estimation Theory. PTR
+Prentice-Hall. ISBN 0-13-345711-7.
+H. Vincent Poor (1998). An Introduction to Signal Detection and Estimation. Springer. ISBN 0-
+387-941 73-8.
+Harry L. Van Trees (2001). Detection, Estimation, and Modulation Theory, Part 1 (https://web.ar
+chive.org/web/2005042823395 7/http://gunston.gmu.edu/demt/demtp1/). Wiley. ISBN 0-471-
+09517-6. Archived from the original (http://gunston.gmu.edu/demt/demtp1/) on 2005-04-28.
+Dan Simon (2006). Optimal State Estimation: Kalman, H-infinity, and Nonlinear Approaches (htt
+ps://web.archive.org/web/20101230101133/http://academic.csuohio.edu/simond/estimation/).
+Wiley. Archived from the original (http://academic.csuohio.edu/simond/estimation/) on 2010-12-
+30.
+https://en.wikipedia.org/wiki/Estimation_theory Page 8 of 9
+Estimation theory - Wikipedia 12/7/25, 3:34 AM
+a Ali H. Sayed (2003). Fundamentals of Adaptive Filtering. NJ: Wiley. ISBN 0-471-46126-1.
+=» Yaakov Bar-Shalom; X. Rong Li; Thiagalingam Kirubarajan (2004). Estimation with Applications
+to Tracking and Navigation: Theory Algorithms and Software. Wiley.
+External links
+= « Media related to Estimation theory at Wikimedia Commons
+Retrieved from "https://en. wikipedia.org/w/index.php ?title=Estimation_theory&oldid=1324437013"
+https://en.wikipedia.org/wiki/Estimation_theory Page 9 of 9

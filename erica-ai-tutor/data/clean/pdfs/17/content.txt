@@ -1,0 +1,268 @@
+Derivatives, Backpropagation, and Vectorization
+Justin Johnson
+September 6, 2017
+1 Derivatives
+1.1 Scalar Case
+You are probably familiar with the concept of a derivative in the scalar case:
+given a function f : R > R, the derivative of f at a point x © R is defined as:
+f(x) = tam LOM = FO)
+h—0 h
+Derivatives are a way to measure change. In the scalar case, the derivative
+of the function f at the point x tells us how much the function f changes as the
+input « changes by a small amount e¢:
+flute)» f(x) tef'(x)
+For ease of notation we will commonly assign a name to the output of f,
+say y = f(x), and write ou for the derivative of y with respect to x. This
+notation emphasizes that a is the rate of change between the variables 7 and
+y; concretely if x were to change by ¢ then y will change by approximately oot.
+We can write this relationship as
+xoatAr = yom y + O5 Aw
+x
+You should read this as saying “changing « to x + Az implies that y will
+change to approximately y + Ax Se”, This notation is nonstandard, but I like
+it since it emphasizes the relationship between changes in x and changes in y.
+The chain rule tells us how to compute the derivative of the compositon of
+functions. In the scalar case suppose that f,g:R— R and y = f(x), z = g(y);
+then we can also write z = (gof)(x), or draw the following computational graph:
+eh y > z
+The (scalar) chain rule tells us that
+dz _ dz dy
+dx «Oy Ox
+This equation makes intuitive sense. The derivatives 5S and ou give:
+xoatAr = yoy t+ OSo Ae
+x
+Oz
+yrytAy => zm e+ a Ay
+y
+Combining these two rules lets us compute the effect of x on z: if x changes
+by Az then y will change by SU Ag, so we have Ay = SY Ag, If y changes by
+Ay then z will change by ae Ay = 5s oY Ax which is exactly what the chain rule
+tells us.
+1.2 Gradient: Vector in, scalar out
+This same intuition carries over into the vector case. Now suppose that f :
+R —+ R takes a vector as input and produces a scalar. The derivative of f at
+the point x € R® is now called the gradient, and it is defined as:
+Sete) = tim EFM =F)
+h—->0 || |
+Now the gradient V,f(z) € R% is a vector, with the same intuition as the
+scalar case. If we set y = f(x) then we have the relationship
+xoatAr = yorytO.Ag
+Ox
+The formula changes a bit from the scalar case to account for the fact that
+x,Ax, and ou are now vectors in R‘ while y is a scalar. In particular when
+multiplying 5O7y by Ax we use the dot product, which combines two vectors to
+give a scalar.
+One nice outcome of this formula is that it gives meaning to the individual
+elements of the gradient oy Suppose that Az is the ith basis vector, so that
+the 7th coordinate of € is | and all other coordinates of ¢ are 0. Then the dot
+product oy - Ax is simply the ith coordinate of ae thus the 7th coordinate of
+x
+ou tells us the approximate amount by which y will change if we move x along
+the ith coordinate axis.
+This means that we can also view the gradient Sy as a vector of partial
+derivatives:
+Oy — ( Oy Oy Oy
+Ox \ Ox,’ OxoO’rn
+where x; is the zth coordinate of the vector x, which is a scalar, so each
+partial derivative oe is also a scalar.
+1.3. Jacobian: Vector in, Vector out
+Now suppose that f : RY + RTM takes a vector as input and produces a vector
+as output. Then the derivative of f at a point x, also called the Jacobian, is
+the M x N matrix of partial derivatives. If we again set y = f(a) then we can
+write:
+Oy, ON
+Oy Orr EN
+Ox ~~ : :
+Oym ... OYyM
+Or, OxN
+The Jacobian tells us the relationship between each element of « and each
+element of y: the (i, 7)-th element of ou is equal to su , so it tells us the amount
+by which y; will change if x; is changed by a small amount.
+Just as in the previous cases, the Jacobian tells us the relationship between
+changes in the input and changes in the output:
+xoatAr = yoy t Mara
+Here ou is a M x N matrix and Az is an N-dimensional vector, so the
+product SY Ax is a matrix-vector multiplication resulting in an A/-dimensional
+vector.
+The chain rule can be extended to the vector case using Jacobian matrices.
+Suppose that f : RY > R” andg:RTM” > R*. Let x € RX, y € RTM, and
+z €R* with y = f(x) and z = g(y), so we have the same computational graph
+as the scalar case:
+chy Sz
+The chain rule also has the same form as the scalar case:
+Oz Oz Oy
+Ox = Oy Ox
+However now each of these terms is a matrix: 5S isa K x M matrix, ou is
+a Mx N matrix, and ge isa K x N matrix; the multiplication of Ge and Oy :
+dx 8
+matrix multiplication.
+1.4 Generalized Jacobian: Tensor in, Tensor out
+Just as a vector is a one-dimensional list of numbers and a matrix is a two-
+dimensional grid of numbers, a tensor is a D-dimensional grid of numbers.
+Many operations in deep learning accept tensors as inputs and produce
+tensors as outputs. For example an image is usually represented as a three-
+dimensional grid of numbers, where the three dimensions correspond to the
+height, width, and color channels (red, green, blue) of the image. We must
+therefore develop a derivative that is compatible with functions operating on
+general tensors.
+Suppose now that f : RAI" *Noe —~ RTM1Xx<Mpy Then the input to f
+is a D,-dimensional tensor of shape Ni; x --- x Np,, and the output of f is a
+D,-dimensional tensor of shape M, x--- x Mp,. If y = f(a) then the derivative
+ou is a generalized Jacobian, which is an object with shape
+(My x +--+ x Mp,) x (N1 x+++ x Np,)
+Note that we have separated the dimensions of Sy into two groups: the
+first group matches the dimensions of y and the second group matches the
+dimensions of x. With this grouping, we can think of the generalized Jacobian
+as generalization of a matrix, where each “row” has the same shape as y and
+each “column” has the same shape as x.
+Now if we let ¢ € Z?» and j € Z?* be vectors of integer indices, then we
+can write
+Oy _ OY
+Or), ; Ox;
+In this equation note that y; and x; are scalars, so the derivative otY.i is
+also a scalar. Using this notation we see that like the standard Jacobian, ‘the
+generalized Jacobian tells us the relative rates of change between all elements
+of x and all elements of y.
+The generalized Jacobian gives the same relationship between inputs and
+outputs as before:
+xoatAr = yoy t+ OSo Ae
+x
+The difference is that now Az is a tensor of shape N; x --- x Np, and ou
+is a generalized matrix of shape (M, x --- x Mp,) x (Ni x +++ x Np,). The
+product oY Ax is therefore a generalized matrix-vector multiply, which results in
+a tensor of shape M; x --- x Mp,.
+The generalized matrix-vector multipy follows the same algebraic rules as a
+traditional matrix-vector multiply:
+lThe word tensor is used in different ways in different fields; you may have seen the term
+before in physics or abstract algebra. The machine learning definition of a tensor as a D-
+dimensional grid of numbers is closely related to the definitions of tensors in these other
+fields.
+Oy Oy Oy
+“7A — “7 Ar); ={—2) -A
+Jj i 4) jy
+The only difference is that the indicies i and 7 are not scalars; instead they
+are vectors of indicies. In the equation above the term (34) is the gth “row”
+dst
+of the generalized matrix oo which is a tensor with the same shape as x. We
+have also used the convention that the dot product between two tensors of the
+same shape is an elementwise product followed by a sum, identical to the dot
+product between vectors.
+The chain rule also looks the same in the case of tensor-valued functions.
+Suppose that y = f(x) and z = g(y), where x and y have the same shapes as
+above and z has shape Ky x --- x Kp,. Now the chain rule looks the same as
+before:
+Oz Oz Oy
+dx «Oy Ox
+The difference is that now Ge is a generalized matrix of shape (Ky x--- x Kp,) x
+(M, x---x Mp,), and ou is a generalized matrix of shape (M x --- x Mp,) x
+(Ni x +--+ x Np,); the product oe Fu is a generalized matrix-matrix multiply,
+resulting in an object of shape (Ay x --- x Kp,) x (Ni x --: x Np,). Like
+the generalized matrix-vector multiply defined above, the generalized matrix-
+matrix multiply follows the same algebraic rules as the traditional matrix-matrix
+multiply:
+Ox ij d Oy ik Ox hej Oy i: Ox 5
+In this equation the indices 7, 7,k are vectors of indices, and the terms (O3z)
+L.
+and (3). ; are the 7th “row” of 5s and the jth “column” of ou respectively.
+2 Backpropagation with Tensors
+In the context of neural networks, a layer f is typically a function of (tensor)
+inputs x and weights w; the (tensor) output of the layer is then y = f(z, w).
+The layer f is typically embedded in some large neural network with scalar loss
+L.
+During backpropagation, we assume that we are given ce and our goal is to
+compute gL and gh By the chain rule we know that
+OL _ OL Oy OL _ OL Oy
+dx Oy Ox dw Oy Ow
+Therefore one way to proceed would be to form the (generalized) Jacobians
+Sy and ou and use (generalized) matrix multiplication to compute gL and gh
+However, there’s a problem with this approach: the Jacobian matrices ou and
+a are typically far too large to fit in memory.
+As a concrete example, let’s suppose that f is a linear layer that takes as
+input a minibatch of N vectors, each of dimension D, and produces a minibatch
+of N vectors, each of dimension M. Then x is a matrix of shape N x D, w isa
+matrix of shape D x M, and y = f(x, w) = cw is a matrix of shape N x M.
+The Jacobian oy then has shape (N x M) x (N x D). In a typical neural
+network we might have N = 64 and M = D = 4096; then ou consists of
+64 - 4096 - 64 - 4096 scalar values; this is more than 68 billion numbers; using
+32-bit floating point, this Jacobian matrix will take 256 GB of memory to store.
+Therefore it is completely hopeless to try and explicitly store and manipulate
+the Jacobian matrix.
+However it turns out that for most common neural network layers, we can
+derive expressions that compute the produc ne Sh without explicitly forming
+the Jacobian a Even better, we can typically derive this expression without
+even computing an explicit expression for the Jacobian ot in many cases we
+can work out a small case on paper and then infer the general formula.
+Let’s see how this works out for the case of the linear layer f(z,w) = rw.
+Set N=1, D=2, M=3. Then we can explicitly write
+y= (yi Y1,2 y1,3) = rw (1)
+= (a14 1,2) W141 W1,2 W1,3 (2)
+W2,1 W2,2 W2,3
+X14 1W11 + ©1,2W24
+= | %11W1,2 + 21,222 (3)
+L11W1,3 + 1 2W2,3
+During backpropagation we assume that we have access to 5e which tech-
+nically has shape (1) x (N x M); however for notational convenience we will
+instead think of it as a matrix of shape N x M. Then we can write
+B O y L 7 (ty dyi,2 dyi,3)
+Our goal now is to derive an expression for gh in terms of 7, w, and oe
+without explicitly forming the entire Jacobian a We know that oh will have
+shape (1) x (N x D), but as is typical for representing gradients we instead view
+gL as a matrix of shape N x D. We know that each element of gL is a scalar
+giving the partial derivatives of L with respect to the elements of a:
+ot = (32 au)
+Ox —_ O£1,1 Ox1,2
+Thinking one element at a time, the chain rule tells us that
+OL OL oy
+(4)
+0X11 7 Oy A214
+OL OL oy
+(5)
+0x12 7 Oy O12
+Viewing these derivatives as generalized matrices, ce has shape (1)x (NxM)
+and =2" has shape (xN M)x (1); their product alt then has shape (1) x (1). If
+Ox£1,1
+1,1
+we instead view ce and Oy~ as matrices of shape N x M, then their generalized
+4 QL. _Oy
+matrix product is simply the dot produc Dy
+0x11 .
+Now we compute
+Oy _ (es OY1,2 se | _ (wy 1
+W142 w1,3) (6)
+0211 Ox1,1 Ox£1,1 Ox£1,1
+Oy (ses OY1,2 se |
+=(w21 We2 w23) (7)
+0X12 O£1,2 O£1,2 O£1,2
+where the final equality comes from taking the derivatives of Equation 3 with
+respect to 41,1.
+We can now combine these results and write
+aL aL Oy
+5 = dy 11,1 + dy12W1,2 + dy1 31,3
+Oxi, Oy
+£11
+aL aL Oy
+5 = dy1,1W2,1 + dy1,2w22 + dy13w23
+Or12 Oy
+L1,2
+This gives us our final expression for 5a7L:.
+aL _ OL OL )
+(10)
+Aa O0x1,1 0x1,2
+T
+dy11W1,1 + dy12W1,2 + dyi3W1,3
+(11)
+dy, 1W2,1 + dy1,2w2,2 + dyi1.3W2,3
+OL
+(12)
+Oy
+This final result 24 = 5OL, 2,.T is very interesting because it allows us to
+On
+y
+efficiently compute 4OL- without explicitly forming the Jacobian oyy We have
+only derived this formula for the specific case of N = 1, D = 2, M = 3 but it in
+fact holds in general.
+By a similar thought process we can derive a similar expression for L with-
+Ww
+out explicitly forming the Jacobian $7)%. You should try and work through this
+F)WwW
+as an exercise.

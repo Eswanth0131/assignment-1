@@ -1,0 +1,212 @@
+Recursive State Estimation
+Occupancy Grid Mapping
+
+
+
+
+Occupancy Grid Mapping
+
+
+
+
+
+
+
+
+
+
+
+
+Introduction
+
+
+
+
+
+
+Ray Casting to Compute 
+\(\hat z\)
+
+
+For occupancy grid with cell size 
+\(c\)
+:
+
+
+
+
+Transform beam direction: 
+\(\theta_k = \theta_t + \phi_k\)
+.
+
+
+Step along ray using DDA / Bresenham until:
+
+
+
+Occupied cell encountered (endpoint).
+
+
+Distance exceeds 
+\(z_{\max}\)
+.
+
+
+
+
+
+
+Return Euclidean distance from sensor origin.
+
+
+
+
+Pseudocode
+
+
+function ray_cast(grid, pose, angle, z_max):
+    x, y, θ = pose
+    θb = θ + angle
+    (cx, cy) = metric_to_cell(x, y)
+    init step increments (sx, sy) via DDA
+    while dist < z_max:
+        if grid[cx, cy] occupied: return dist_to_cell_boundary(...)
+        advance to next cell (cx += sx or cy += sy)
+    return z_max
+
+
+
+
+
+
+
+
+Inverse Sensor Model for Occupancy Grids
+
+
+We need 
+\(p(m_i \mid z_t, \mathbf x_t)\)
+ to update cell occupancy.
+
+
+Simplified inverse beam model:
+
+
+
+
+Cells before measured endpoint along beam: increase probability free.
+
+
+Cell at endpoint (if 
+\(z < z_{\max}\)
+): increase probability occupied.
+
+
+Beyond endpoint: no update.
+
+
+
+
+Log-odds representation: 
+\[
+L_t(i) = L_{t-1}(i) + \ell_i - L_0,
+\]
+ where 
+\[
+\ell_i = \log \frac{p(m_i=1 \mid z_t, \mathbf x_t)}{1 - p(m_i=1 \mid z_t, \mathbf x_t)}, \quad
+L_0 = \log \frac{p(m_i=1)}{1 - p(m_i=1)}.
+\]
+
+
+Recover probability: 
+\[
+p(m_i=1) = \frac{1}{1 + e^{-L_t(i)}}.
+\]
+
+
+
+
+
+
+From Forward to Inverse (Approximation)
+
+
+Exact inversion requires: 
+\[
+p(m_i \mid z_t, \mathbf x_t) \propto p(z_t \mid m_i, \mathbf x_t) p(m_i),
+\]
+
+
+but coupling among cells leads to intractability. Beam-based inverse model is a heuristic consistent with forward geometry. –>
+
+
+
+
+
+
+Occupancy Update with Multiple Beams
+
+
+For each beam:
+
+
+
+
+Ray trace list of traversed cells.
+
+
+Update free: 
+\(L \mathrel{+}= \ell_{\text{free}}\)
+.
+
+
+Endpoint (if hit): 
+\(L \mathrel{+}= \ell_{\text{occ}}\)
+.
+
+
+
+
+Clip log-odds to avoid saturation.
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Localization
+
+
+
+
+
+
+
+
+
+
+SLAM: Simultaneous Localization and Mapping
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

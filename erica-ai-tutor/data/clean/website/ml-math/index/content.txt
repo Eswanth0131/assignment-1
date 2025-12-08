@@ -1,0 +1,83 @@
+index – Engineering AI Agents
+Engineering AI Agents
+BOOK
+Foundations
+Training Deep Networks
+Perception
+Kinematics
+State Estimation
+Large Language Models
+Multimodal Reasoning
+Task Planning
+Global Planning
+Local Planning
+Markov Decision Processes
+Reinforcement Learning
+VLA Agents
+COURSES
+Introduction to AI
+AI for Robotics
+Deep Learning for Computer Vision
+DATA MINING - BEING PORTED
+MEDIA
+AI for Robotics
+ABOUT ME
+Math Background
+Math for ML Textbook
+Introduction
+Syllabus
+Rules, rule the world
+AI Agents
+Foundations
+Foundations
+Deep Neural Networks
+Training Deep Neural Networks
+Perception
+2D Perception
+Recursive State Estimation
+State Estimation
+Large Language Models
+Large Language Models
+Logical Reasoning
+Automated Reasoning
+World Models
+Logical Inference
+Logical Agents
+Planning
+Task Planning
+Acting - Markov Decision Processes
+Markov Decision Processes
+Acting - Reinforcement Learning
+Reinforcement Learning
+Math Background
+Math for ML Textbook
+Probability Basics
+Linear Algebra for Machine Learning
+Calculus
+Resources
+Submitting Your Assignment / Project
+Your Programming Environment
+Learn Python
+Assignments
+Assignment 1 (undergrad)
+Assignment 1 (grad)
+Assignment 2
+Assignment 3
+Assignment 4
+Project
+Introducing Erica - Your AI Tutor
+On this page
+Math for ML Textbook
+Edit this page
+View source
+Report an issue
+Math Background
+Math for ML Textbook
+Math for ML Textbook
+We will go through the key points during the lectures but overall you will benefit from reading the intersecting chapters of
+Mathematics for Machine Learning book
+. Start with Probability.
+Probability Basics
+Edit this page
+View source
+Report an issue

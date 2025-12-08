@@ -1,0 +1,11 @@
+beautifulsoup4
+requests
+pdfplumber
+ocrmypdf
+youtube-transcript-api
+tqdm
+networkx
+matplotlib
+openai
+tiktoken
+numpy

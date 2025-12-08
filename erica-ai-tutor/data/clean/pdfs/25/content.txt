@@ -1,0 +1,538 @@
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+9 WixirepiA
+‘4 ‘7 TheFree Encyclopedia
+Deafi inite matrix
+In mathematics, a symmetric matrix M with real entries is positive-definite if the real number
+x! Mx is positive for every nonzero real column vector x, where x! is the row vector transpose of
+x.4] More generally, a Hermitian matrix (that is, a complex matrix equal to its conjugate
+transpose) is positive-definite if the real number z* Mz is positive for every nonzero complex
+column vector Z, where z” denotes the conjugate transpose of z.
+Positive semi-definite matrices are defined similarly, except that the scalars x' Mx and z* Mz
+are required to be positive or zero (that is, nonnegative). Negative-definite and negative semi-
+definite matrices are defined analogously. A matrix that is not positive semi-definite and not
+negative semi-definite is sometimes called indefinite.
+Some authors use more general definitions of definiteness, permitting the matrices to be non-
+symmetric or non-Hermitian. The properties of these generalized definite matrices are explored in
+§ Extension for non-Hermitian square matrices, below, but are not the main focus of this article.
+Definitions
+In the following definitions, x! is the transpose of x, z* is the conjugate transpose of z, and 0
+denotes the n dimensional zero-vector.
+Definitions for real matrices
+An n X n symmetric real matrix M is said to be positive-definite if x! Mx > 0 for all non-zero
+x in R”. Formally,
+M positive-definite <> x'Mx> 0 forallx € R” \ {0}
+An n Xn symmetric real matrix M is said to be positive-semidefinite or non-negative-
+definite if x’ Mx > 0 for all x in R”. Formally,
+M positive semi-definite <=> x! Mx> 0 forallx € R”
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 1 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+An n X n symmetric real matrix M is said to be negative-definite if x' Mx < 0 for all non-zero
+x in R”. Formally,
+M negative-definite <> x'Mx <0 forallx € R” \ {0}
+An n Xn symmetric real matrix M is said to be negative-semidefinite or non-positive-
+definite if x' Mx < 0 for all x in R”. Formally,
+M negative semi-definite <> x!'Mx<0forallx € R”
+An n X n symmetric real matrix which is neither positive semidefinite nor negative semidefinite is
+called indefinite.
+Definitions for complex matrices
+The following definitions all involve the term z* Mz. Notice that this is always a real number for
+any Hermitian square matrix M.
+An n X n Hermitian complex matrix M is said to be positive-definite if z* Mz > 0 for all non-
+zero z in C”. Formally,
+M positive-definite <=> z*Mz> 0 forallzé€cC” \ {0}
+An n X n Hermitian complex matrix M is said to be positive semi-definite or non-negative-
+definite if z* Mz > 0 for all z in C”. Formally,
+M positive semi-definite <=> z*Mz> O0forallzeC”
+An n X n Hermitian complex matrix M is said to be negative-definite if z* Mz < 0 for all non-
+zero z in C”. Formally,
+M negative-definite <=> 2z*Mz< 0forallz<C” \ {0}
+An n X n Hermitian complex matrix M is said to be negative semi-definite or non-positive-
+definite if z* Mz < 0 forall z in C”. Formally,
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 2 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+M negative semi-definite <= z*Mz< O0forallz<eC"
+An nxXn Hermitian complex matrix which is neither positive semidefinite nor negative
+semidefinite is called indefinite.
+Consistency between real and complex definitions
+Since every real matrix is also a complex matrix, the definitions of "definiteness" for the two classes
+must agree.
+For complex matrices, the most common definition says that M is positive-definite if and only if
+z Mz is real and positive for every non-zero complex column vectors z. This condition implies
+that M is Hermitian (i.e. its transpose is equal to its conjugate), since z* Mz being real, it equals its
+conjugate transpose z* MTM*z for every z, which implies M = MTM*.
+By this definition, a positive-definite real matrix M is Hermitian, hence symmetric; and z' Mz is
+positive for all non-zero real column vectors z. However the last condition alone is not sufficient
+for M to be positive-definite. For example, if
+M — 1 1 |
+—1 1
+then for any’ real vector 2 with = entries a ée$=and O6- we have
+z' Mz = (a+b)a+(—a+b)b=a’? +8’, which is always positive if z is not zero. However, if z
+is the complex vector with entries | and 7, one gets
+2* Mz =(1 ~i)M| |] =[14i 1-a)| 242%.
+which is not real. Therefore, M is not positive-definite.
+On the other hand, for a symmetric real matrix M, the condition "7,' Mz > 0 for all nonzero real
+vectors z" does imply that M is positive-definite in the complex sense.
+Notation
+If a Hermitian matrix M is positive semi-definite, one sometimes writes M > 0 and if M is
+positive-definite one writes M > 0. To denote that M is negative semi-definite one writes M =< 0
+and to denote that M is negative-definite one writes M ~< 0.
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 3 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+The notion comes from functional analysis where positive semidefinite matrices define positive
+operators. If two matrices A and B satisfy B— A > 0, we can define a non-strict partial order
+B > A that is reflexive, antisymmetric, and transitive; It is not a total order, however, as B — A,
+in general, may be indefinite.
+A common alternative notation is M > 0, M>0, M <0, and M < 0 for positive semi-definite
+and positive-definite, negative semi-definite and negative-definite matrices, respectively. This may
+be confusing, as sometimes nonnegative matrices (respectively, nonpositive matrices) are also
+denoted in this way.
+Ramifications
+It follows from the above definitions that a Hermitian matrix is positive-definite if and only if it is
+the matrix of a positive-definite quadratic form or Hermitian form. In other words, a Hermitian
+matrix is positive-definite if and only if it defines an inner product.
+Positive-definite and positive-semidefinite matrices can be characterized in many ways, which may
+explain the importance of the concept in various parts of mathematics. A Hermitian matrix V/ is
+positive-definite if and only if it satisfies any of the following equivalent conditions.
+M is congruent with a diagonal matrix with positive real entries.
+M is Hermitian, and all its eigenvalues are real and positive.
+M is Hermitian, and all its leading principal minors are positive.
+There exists an invertible matrix B with conjugate transpose B* such that M = B*B.
+A matrix is positive semi-definite if it satisfies similar equivalent conditions where "positive" is
+replaced by "nonnegative"", ""invertible matrix" is replaced by "matrix", and the word "leading" is
+removed.
+Positive-definite and positive-semidefinite real matrices are at the basis of convex optimization,
+since, given a function of several real variables that is twice differentiable, then if its Hessian
+matrix (matrix of its second partial derivatives) is positive-definite at a point p, then the function is
+convex near Pp, and, conversely, if the function is convex near p, then the Hessian matrix is positive-
+semidefinite at p.
+The set of positive definite matrices is an open convex cone, while the set of positive semi-definite
+matrices is a closed convex cone.|2!
+Examples
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 4 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+» The identity matrix [ = |1 0I IS positive-definite (and as such also positive semi-definite). It
+is a real Symmetric matrix, and, for any non-zero column vector z with real entries a and b, one
+has
+ool1 Oallllas
+zTI iz=|a b =a 2 +0"2.
+Seen as a complex matrix, for any non-zero column vector z with complex entries a and b one
+has
+a —o ly1 0a llas _ 7 al? 2 + )
+zIiz=\q =aa-+ bb=|a\* + |bI".
+Either way, the result is positive since z is not the zero vector (that is, at least one of a and bis
+not zero).
+=» The real symmetric matrix
+r2 -1 0]
+M=;-1 2 -1
+| O -1 2.
+is positive-definite since for any non-zero column vector z with entries a, band c, we have
+a
+z'Mz=(z'M)z=[(2a—b) (-a+2b—c) (—b4+2c)]| 6
+= C |
+= (2— b)aa+ (—2ba —c)+b+ (—b+ 2c)c
+— 2a” — ba — ab + 2b? — ch — bc + 2c’
+= 2a? — 2ab+ 2b? — 2bc+ 2c?
+=@* +a? —2ab+0°4+0%* -2b7e° 4++¢
+=—a’*+(a—b)?+(b-—c)? +e
+This result is a sum of squares, and therefore non-negative; and is zero only ifa =b=c=0O,
+that is, when z is the zero vector.
+= For any real invertible matrix A, the product A' A is a positive definite matrix (if the means of
+the columns of A are 0, then this is also called the covariance matrix). A simple proof is that for
+any non-zero vector z, the condition z' A' Az = (Az)' (Az) = ||Az||? > 0, since the
+invertibility of matrix A means that Az 4 0.
+» The example M above shows that a matrix in which some elements are negative may still be
+positive definite. Conversely, a matrix whose entries are all positive is not necessarily positive
+definite, as for example
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 5 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+NE ; ‘|,
+2 1
+for which [-1 1]N[-1 1]' =-2<0.
+Eigenvalues
+Let M be an n X n Hermitian matrix (this includes real symmetric matrices). All eigenvalues of M
+are real, and their sign characterize its definiteness:
+M is positive definite if and only if all of its eigenvalues are positive.
+M is positive semi-definite if and only if all of its eigenvalues are non-negative.
+M is negative definite if and only if all of its eigenvalues are negative.
+s» M is negative semi-definite if and only if all of its eigenvalues are non-positive.
+a M is indefinite if and only if it has both positive and negative eigenvalues.
+Let PDP! be an eigendecomposition of M, where P is a unitary complex matrix whose columns
+comprise an orthonormal basis of eigenvectors of M, and D is a real diagonal matrix whose main
+diagonal contains the corresponding eigenvalues. The matrix IM may be regarded as a diagonal
+matrix D that has been re-expressed in coordinates of the (eigenvectors) basis P. Put differently,
+applying M to some vector z, giving Mz, is the same as changing the basis to the eigenvector
+coordinate system using P~', giving P~'z, applying the stretching transformation D to the result,
+giving DP! z, and then changing the basis back using P, giving PDP TM'z.
+With this in mind, the one-to-one change of variable y = Pz shows that z* Mz is real and positive
+for any complex vector z if and only if y* Dy is real and positive for any y; in other words, if D is
+positive definite. For a diagonal matrix, this is true only if each element of the main diagonal — that
+is, every eigenvalue of M - is positive. Since the spectral theorem guarantees all eigenvalues of a
+Hermitian matrix to be real, the positivity of eigenvalues can be checked using Descartes’ rule of
+alternating signs when the characteristic polynomial of a real, symmetric matrix M is available.
+Decomposition
+Let M be an nxn Hermitian matrix. M is positive semidefinite if and only if it can be
+decomposed as a product
+M= BB
+of a matrix B with its conjugate transpose.
+When M is real, B can be real as well and the decomposition can be written as
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 6 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+M=B'B.
+M is positive definite if and only if such a decomposition exists with B invertible. More generally,
+M is positive semidefinite with rank k if and only if a decomposition exists with a k x n matrix B
+of full row rank (ie. of rank k). Moreover, for any decomposition M = B*B,
+rank(M) = rank(B).!3!
+Proof
+If M=B*B, then z*Mz = (a2*B*)(Bz) = ||Bz|\* >0, so M is positive
+semidefinite. If moreover B is invertible then the inequality is strict for « 4 0, so M
+is positive definite. If Bis k x n of rank k, then rank(M) = rank(B*) = k.
+In the other direction, suppose M is positive semidefinite. Since M is Hermitian, it
+has an eigendecomposition M = Q-D!Q where Q is unitary and D is a diagonal
+matrix whose entries are the eigenvalues of M Since M is positive semidefinite, the
+1
+eigenvalues are non-negative real numbers, so one can define D2 as the diagonal
+matrix whose entries are non-negative square roots of eigenvalues. Then
+1 1 1 1 1
+M=Q'DQ = Q* DQ = Q*D?2 D2?Q=Q*D2*D2Q=B'B for B= D2Q.
+1
+If moreover M is positive definite, then the eigenvalues are (strictly) positive, so D2
+1
+is invertible, and hence B = D2 Q is invertible as well. If M has rank k, then it has
+1
+exactly k positive eigenvalues and the others are zero, hence in B = D2 Q all but k
+rows are all zeroed. Cutting the zero rows gives a k Xn matrix B’ such that
+B*B'=B*B=M.
+The columns b,,...,0, of B can be seen as vectors in the complex or real vector space R*,
+respectively. Then the entries of M are inner products (that is dot products, in the real case) of
+these vectors
+In other words, a Hermitian matrix M is positive semidefinite if and only if it is the Gram matrix of
+some vectors 6;,...,0,. It is positive definite if and only if it is the Gram matrix of some linearly
+independent vectors. In general, the rank of the Gram matrix of vectors b),...,06, equals the
+dimension of the space spanned by these vectors.|4
+Uniqueness up to unitary transformations
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 7 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+The decomposition is not unique: if M = B*B for some k x n matrix B and if Q is any unitary
+k x k matrix (meaning Q*Q = QQ* =I), then M= B*B= B*Q*QB= A’*A for A= QB.
+However, this is the only way in which two decompositions can differ: The decomposition is unique
+up to unitary transformations. More formally, if A is a k x n matrix and Bis a @ X n matrix such
+that A*A= B*B, then there is a €xk matrix Q with orthonormal columns (meaning
+Q*Q = Ikxz) such that B = QA.!5! When £ = k this means Q is unitary.
+This statement has an intuitive geometric interpretation in the real case: let the columns of A and
+B be the vectors aj,...,@,, and 6,,...,6, in R*. A real unitary matrix is an orthogonal matrix,
+which describes a rigid transformation (an isometry of Euclidean space R*) preserving the o point
+(i.e. rotations and reflections, without translations). Therefore, the dot products a; - a; and 0; - b;
+are equal if and only if some rigid transformation of R* transforms the vectors Qj,.-.,Qn to
+b,,...6,, (a0 nto d0).
+Square root
+A Hermitian matrix M is positive semidefinite if and only if there is a positive semidefinite matrix
+B (in particular B is Hermitian, so B* = B) satisfying M = BB. This matrix B is unique,!®! is
+1
+called the non-negative square root of M, and is denoted with B = M2. When M is positive
+1
+definite, so is M2 , hence it is also called the positive square root of M.
+The non-negative square root should not be confused with other decompositions M = B* B. Some
+1
+authors use the name square root and M2 for any such decomposition, or specifically for the
+Cholesky decomposition, or any decomposition of the form M = BB; others only use it for the
+non-negative square root.
+1 1
+IfM>N>OtheMn2 + N2 + 0.
+Cholesky decomposition
+A Hermitian positive semidefinite matrix M can be written as M = LL*, where L is lower
+triangular with non-negative diagonal (equivalently M = B*B where B=L”" is upper
+triangular); this is the Cholesky decomposition. If M is positive definite, then the diagonal of L is
+positive and the Cholesky decomposition is unique. Conversely if L is lower triangular with
+nonnegative diagonal then LL” is positive semidefinite. The Cholesky decomposition is especially
+useful for efficient numerical calculations. A closely related decomposition is the LDL
+decomposition, M = LDL*, where D is diagonal and L is lower unitriangular.
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 8 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+Williamson theorem
+Any 2n X 2n positive definite Hermitian real matrix M can be diagonalized via symplectic (real)
+matrices. More precisely, Williamson's theorem ensures the existence of symplectic
+S € Sp(2n, R) and diagonal real positive D € R"*” such that SMS? = DOD.
+Other characterizations
+Let M be an n X n real symmetric matrix, and let B,(M) = {x € R” : x' Mx < 1} be the "unit
+ball" defined by M. Then we have the following
+= B,(vv') isa solid slab sandwiched between +{w : (w, v) = 1}.
+s M > Oif and only if By (M) is an ellipsoid, or an ellipsoidal cylinder.
+s M > 0 if and only if B,(M) is bounded, that is, it is an ellipsoid.
+« IfN > 0, then M > N if and only if By(M) C By (N); M > N if and only if
+B,(M) C int (B,(N)).
+r
+= If N > 0, then M > wy Pralle # 0 if and only if Bi(M) C (\,ty,_, Bi(vv'). So,
+v' Nv
+since the polar dual of an ellipsoid is also an ellipsoid with the same principal axes, with inverse
+lengths, we have
+By(N')= () Bivy')= ff) {w:|(w,v< )1}|.
+T
+That is, if NV is positive-definite, then MZ > for all v ~ 0 if and only if M > N7}.
+v' Nv
+Let M be an n X n Hermitian matrix. The following properties are equivalent to M being positive
+definite:
+The associated sesquilinear form is an inner product
+The sesquilinear form defined by M is the function (-,-) from C” x C” to C” such that
+(x, y) = y’ Mx for allx andy in C”, where y” is the conjugate transpose of y. For any
+complex matrix M/, this form is linear in 2 and semilinear in y. Therefore, the form is an inner
+product on C” if and only if (z, z) is real and positive for all nonzero z; that is if and only if M
+is positive definite. (In fact, every inner product on C” arises in this fashion from a Hermitian
+positive definite matrix.)
+Its leading principal minors are all positive
+The Ath leading principal minor of a matrix M is the determinant of its upper-left k x k sub-
+matrix. It turns out that a matrix is positive definite if and only if all these determinants are
+positive. This condition is known as Sylvester's criterion, and provides an efficient test of
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 9 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+positive definiteness of a symmetric real matrix. Namely, the matrix is reduced to an upper
+triangular matrix by using elementary row operations, as in the first part of the Gaussian
+elimination method, taking care to preserve the sign of its determinant during pivoting
+process. Since the Ath leading principal minor of a triangular matrix is the product of its
+diagonal elements up to row k, Sylvester's criterion is equivalent to checking whether its
+diagonal elements are all positive. This condition can be checked each time a new row k of
+the triangular matrix is obtained.
+A positive semidefinite matrix is positive definite if and only if it is invertible.!Z! A matrix M is
+negative (semi)definite if and only if —M is positive (semi)definite.
+Quadratic forms
+The (purely) quadratic form associated with a real n x n matrix M is the function Q: R” — R
+such that Q(x) = x! Mx for all x. M can be assumed symmetric by replacing it with
+= (M + M ‘) , since any asymmetric part will be zeroed-out in the double-sided product.
+A symmetric matrix M is positive definite if and only if its quadratic form is a strictly convex
+function.
+More generally, any quadratic function from R” to R can be written as x' Mx+b'x-+c where
+M is asymmetric n X n matrix, b is a real 1 vector, and ca real constant. In the n = 1 case, this is
+a parabola, and just like in the n = 1 case, we have
+Theorem: This quadratic function is strictly convex, and hence has a unique finite global
+minimum, if and only if M is positive definite.
+Proof: If M is positive definite, then the function is strictly convex. Its gradient is zero at the
+unique point of M~'b, which must be the global minimum since the function is strictly convex. If
+M is not positive definite, then there exists some vector v such that v' Mv < 0, so the function
+f(t) = (tv)' M(tv) + 0! (tv) +c is a line or a downward parabola, thus not strictly convex and
+not having a global minimum.
+For this reason, positive definite matrices play an important role in optimization problems.
+Simultaneous diagonalization
+One symmetric matrix and another matrix that is both symmetric and positive definite can be
+simultaneously diagonalized. This is so although simultaneous diagonalization is not necessarily
+performed with a similarity transformation. This result does not extend to the case of three or more
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 10 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+matrices. In this section we write for the real case. Extension to the complex case is immediate.
+Let M be a symmetric and N a symmetric and positive definite matrix. Write the generalized
+eigenvalue equation as (M — XN) x = 0 where we impose that x be normalized, i.e. x' Nx = 1.
+Now we use Cholesky decomposition to write the inverse of N as Q'Q. Multiplying by Q and
+letting x = Q'y, we get Q(M—AN)Q'y =0, which can be rewritten as (QM Q') y=Ay
+where y'y = 1. Manipulation now yields MX = NXA where X is a matrix having as columns
+the generalized eigenvectors and A is a diagonal matrix of the generalized eigenvalues. Now
+premultiplication with X' gives the final result: X' MX = A and X' NX =I, but note that this
+is no longer an orthogonal diagonalization with respect to the inner product where yly =]. In
+fact, we diagonalized M with respect to the inner product induced by N.|8!
+Note that this result does not contradict what is said on simultaneous diagonalization in the article
+Diagonalizable matrix, which refers to simultaneous diagonalization by a similarity transformation.
+Our result here is more akin to a simultaneous diagonalization of two quadratic forms, and is
+useful for optimization of one form under conditions on the other.
+Properties
+Induced partial ordering
+For arbitrary square matrices M, N we write M > N if M — N > Oie., M — N is positive semi-
+definite. This defines a partial ordering on the set of all square matrices. One can similarly define a
+strict partial ordering M > N. The ordering is called the Loewner order.
+Inverse of positive definite matrix
+Every positive definite matrix is invertible and its inverse is also positive definite.!9! If M@ > N > 0
+then N-! > M+ > 0.0! Moreover, by the min-max theorem, the Ath largest eigenvalue of M is
+greater than or equal to the Ath largest eigenvalue of N.
+Scaling
+If M is positive definite and r > 0 is a real number, then rM is positive definite.|"1!
+Addition
+= If M and N are positive-definite, then the sum M + N is also positive-definite.
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 11 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+» If M and N are positive-semidefinite, then the sum M + NV is also positive-semidefinite.
+» If M is positive-definite and NV is positive-semidefinite, then the sum M + N is also positive-
+definite.
+Multiplication
+» If M and WN are positive definite, then the products MNM and NMN are also positive
+definite. If MN = NM, then MN is also positive definite.
+s If M is positive semidefinite, then A* A is positive semidefinite for any (possibly rectangular)
+matrix A. If M is positive definite and A has full column rank, then A* MA is positive definite.
+[12]
+Trace
+The diagonal entries TM,;; of a positive-semidefinite matrix are real and non-negative. As a
+consequence the trace, tr(M) > 0. Furthermore, 3! since every principal sub-matrix (in
+particular, 2-by-2) is positive semidefinite,
+Imij| << mam Vi,j
+and thus, when n > 1,
+max |m,;| < max mi
+tJ 4
+An n X n Hermitian matrix M is positive definite if it satisfies the following trace inequalities4:!
+(tr(M))°
+tr(M) >0 and tx( M2) >n-1.
+Another important result is that for any M and N positive-semidefinite matrices, tr(MN) > 0.
+1 1 1 1
+This follows by writing tr(MN) = tr(M2 NM? ). The matrix M2 NM2 is positive-semidefinite
+and thus has non-negative eigenvalues, whose sum, the trace, is therefore also non-negative.
+Hadamard product
+If M,N > 0, although MN is not necessary positive semidefinite, the Hadamard product is,
+MoWN >} O (this result is often called the Schur product theorem).!45!
+Regarding the Hadamard product of two positive semidefinite matrices M = (m,;) > 0, N > 0,
+there are two notable inequalities:
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 12 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+= Oppenheim's inequality: det(o MN) > det(N IL my. (9
+= det(M oN) > det(M) det(N). TM/
+Kronecker product
+If M,N > 0, although MN is not necessary positive semidefinite, the Kronecker product
+Me@N => 0.
+Frobenius product
+If M,N > 0, although MN is not necessary positive semidefinite, the Frobenius inner product
+M : N > 0 (Lancaster—Tismenetsky, The Theory of Matrices, p. 218).
+Convexity
+The set of positive semidefinite symmetric matrices is convex. That is, if IM and WN are positive
+semidefinite, then for any a between 0 and 1, aM + (1-—a)N is also positive semidefinite. For
+any vector x:
+T(aM+ (1-— a) N)x = oxMx! + (1—a)x'Nx > 0.
+This property guarantees that semidefinite programming problems converge to a globally optimal
+solution.
+Relation with cosine
+The positive-definiteness of a matrix A expresses that the angle 8 between any vector x and its
+image Ax is always —7/2<0<+7/2:
+xT_ Ax = (x4, A Ax) ,0 = O(x, Ax) = (x—, Ax) =
+cos@ =
+{||| Axl] ><] A2xl|
+the angle between x and Ax.
+Further properties
+1. If M is a symmetric Toeplitz matrix, i.e. the entries m,;; are given as a function of their absolute
+index differences: mi; = h(|i — j|), and the strict inequality }),19 |h(J)| < R(0) holds, then
+M is strictly positive definite.
+2. Let M >0 and N Hermitian. If MN+ NM > 0 (resp., MN+ NM > 0) then N > 0 (resp.,
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 13 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+N > 0),!18!
+3. If M > 0 is real, then there is ad > 0 such that M > oI, where I is the identity matrix.
+4. If Mj, denotes the leading k x k minor, det (Mj) / det (M,_1) is the Ath pivot during LU
+decomposition.
+5. Amatrix is negative definite if its Ath order leading principal minor is negative when k is odd,
+and positive when k is even.
+6. If M is areal positive definite matrix, then there exists a positive real number m such that for
+every vector v, v' Mv > mllv|[2.
+7. AHermitian matrix is positive semidefinite if and only if all of its principal minors are
+nonnegative. It is however not enough to consider the leading principal minors only, as is
+checked on the diagonal matrix with entries 0 and —1 .
+Block matrices and submatrices
+A positive 2n x 2n matrix may also be defined by blocks:
+=|A 5
+C D
+where each block is n x n, By applying the positivity condition, it immediately follows that A and
+D are hermitian, and C = B*.
+We have that z* Mz > 0 for all complex z, and in particular for z = [v, 0]'. Then
+lv" 0]| fe 5 )=w Aveo.
+A similar argument can be applied to D, and thus we conclude that both A and D must be positive
+definite. The argument can be extended to show that any principal submatrix of M is itself positive
+definite.
+Converse results can be proved with stronger conditions on the blocks, for instance, using the
+Schur complement.
+Local extrema
+A general quadratic form f(x) on 7n real variables z1,...,2,, can always be written as x! Mx
+where x is the column vector with those variables, and M is a symmetric real matrix. Therefore,
+the matrix being positive definite means that f has a unique minimum (zero) when x is zero, and is
+strictly positive for any other x.
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 14 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+More generally, a twice-differentiable real function f on mn real variables has local minimum at
+arguments £1,..., 2%, if its gradient is zero and its Hessian (the matrix of all second derivatives) is
+positive semi-definite at that point. Similar statements can be made for negative definite and semi-
+definite matrices.
+Covariance
+In statistics, the covariance matrix of a multivariate probability distribution is always positive
+semi-definite; and it is positive definite unless one variable is an exact linear function of the others.
+Conversely, every positive semi-definite matrix is the covariance matrix of some multivariate
+distribution.
+Extension for non-Hermitian square matrices
+The definition of positive definite can be generalized by designating any complex matrix M (e.g.
+real non-symmetric) as positive definite if R, {z* Mz} > 0 for all non-zero complex vectors z,
+where R,{c} denotes the real part of a complex number c.49! Only the Hermitian part
+= (M + M*) determines whether the matrix is positive definite, and is assessed in the narrower
+sense above. Similarly, if x and M are real, we have x' Mx > 0 for all real nonzero vectors x if
+and only if the symmetric part = (M +M ‘) is positive definite in the narrower sense. It is
+immediately clear that x! Mx = > 4 vi M,;z;is insensitive to transposition of M.
+A non-symmetric real matrix with only positive eigenvalues may have a symmetric part with
+negative eigenvalues, in which case it will not be positive (semi)definite. For example, the matrix
+M = [4 | has positive eigenvalues 1 and 7, yet x! Mx = —2 with the choice x = 3 ,
+In summary, the distinguishing feature between the real and complex case is that, a bounded
+positive operator on a complex Hilbert space is necessarily Hermitian, or self adjoint. The general
+claim can be argued using the polarization identity. That is no longer true in the real case.
+Applications
+Heat conductivity matrix
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 15 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+Fourier's law of heat conduction, giving heat flux q in terms of the temperature gradient g = V7’
+is written for anisotropic media as q = —Kg, in which K is the thermal conductivity matrix. The
+negative is inserted in Fourier's law to reflect the expectation that heat will always flow from hot to
+cold. In other words, since the temperature gradient g always points from cold to hot, the heat flux
+q is expected to have a negative inner product with g so that q'g < Q. Substituting Fourier's law
+then gives this expectation as g! Kg > 0, implying that the conductivity matrix should be positive
+definite. Ordinarily K should be symmetric, however it becomes nonsymmetric in the presence of
+a magnetic field as in a thermal Hall effect.
+More generally in thermodynamics, the flow of heat and particles is a fully coupled system as
+described by the Onsager reciprocal relations, and the coupling matrix is required to be positive
+semi-definite (possibly non-symmetric) in order that entropy production be nonnegative.
+See also
+Covariance matrix
+M-matrix
+Positive-definite function
+Positive-definite kernel
+Schur complement
+Sylvester's criterion
+Numerical range
+Williamson theorem
+References
+1.
+W
+AOD
+No
+van den Bos, Adriaan (March 2007). "Appendix C: Positive semidefinite and positive definite
+matrices" (https://www.doi.org/10.1002/97804701 73862.app3). Parameter Estimation for
+Scientists and Engineers (.pdf) (online ed.). John Wiley & Sons. pp. 259-263.
+doi:10.1002/97804701 73862 (https://doi.org/10.1002%2F9780470173862). ISBN 978-047-
+017386-2. Print ed. ISBN 9780470147818
+Boyd, Stephen; Vandenberghe, Lieven (8 March 2004). Convex Optimization. Cambridge
+University Press. doi:10.1017/cbo9780511804441 (https://doi.org/10.101 7%2Fcbo09780511 804
+441). ISBN 978-0-521 -83378-3.
+Horn & Johnson (2013), p. 440, Theorem 7.2.7
+Horn & Johnson (2013), p. 441, Theorem 7.2.10
+Horn & Johnson (2013), p. 452, Theorem 7.3.11
+Horn & Johnson (2013), p. 489, Theorem 7.2.6 with k = 2
+Horn & Johnson (2013), p. 431, Corollary 7.1.7
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 16 of 17
+Definite matrix - Wikipedia 12/7/25, 3:39 AM
+O. LIVITE O&O VULIIOULL (CUTU), VP. FOV, LIIGUIOCIIE £.U.!1
+9. Horn & Johnson (2013), p. 438, Theorem 7.2.1
+10. Horn & Johnson (2013), p. 495, Corollary 7.7.4(a)
+11. Horn & Johnson (2013), p. 430, Observation 7.1.3
+12. Horn & Johnson (2013), p. 431, Observation 7.1.8
+13. Horn & Johnson (2013), p. 430
+14. Wolkowicz, Henry; Styan, George P.H. (1980). "Bounds for Eigenvalues using Traces". Linear
+Algebra and Its Applications. 29 (29). Elsevier: 471-506. doi:10.1016/0024-3795(80)90258-X (
+https://doi.org/10.1016%2F0024-3795%2880%2990258-X).
+15. Horn & Johnson (2013), p. 479, Theorem 7.5.3
+16. Horn & Johnson (2013), p. 509, Theorem 7.8.16
+17. Styan, G.P. (1973). "Hadamard products and multivariate statistical analysis". Linear Algebra
+and Its Applications. 6: 217-240. doi:10.1016/0024-3795(73)90023-2 (https://doi.org/10.1016%
+2F0024-3795%2873%2990023-2)., Corollary 3.6, p. 227
+18. Bhatia, Rajendra (2007). Positive Definite Matrices. Princeton, New Jersey: Princeton
+University Press. p. 8. ISBN 978-0-691-12918-1.
+19. Weisstein, Eric W. "Positive definite matrix" (http://mathworld.wolfram.com/PositiveDefiniteMatri
+x.html). MathWorld. Wolfram Research. Retrieved 26 July 2012.
+Sources
+=» Horn, Roger A.; Johnson, Charles R. (2013). Matrix Analysis (2nd ed.). Cambridge University
+Press. ISBN 978-0-521-54823-6.
+» Bhatia, Rajendra (2007). Positive Definite Matrices. Princeton Series in Applied Mathematics.
+ISBN 978-0-691-12918-1.
+=» Bernstein, B.; Toupin, R.A. (1962). "Some properties of the Hessian matrix of a strictly convex
+function". Journal fur die reine und angewandte Mathematik. 210: 67-72.
+doi:10.1515/crll.1962.210.65 (https://doi.org/10.1515%2F cril.1962.210.65).
+External links
+= "Positive-definite form" (https:/Awww.encyclopediaofmath.org/index.php ?title=Positive-definite_f
+orm), Encyclopedia of Mathematics, EMS Press, 2001 [1994]
+= "Positive definite matrix" (http://mathworld.wolfram.com/Positive DefiniteMatrix.html). Wolfram
+MathWorld. Wolfram Research.
+Retrieved from "https://en. wikipedia.org/w/index.php ?title=Definite_matrix&oldid=1321973819"
+https://en.wikipedia.org/wiki/Definite_matrix#Negative-definite.2C_semidefinite_and_indefinite_matrices Page 17 of 17

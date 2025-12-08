@@ -1,0 +1,3174 @@
+Detectron2 Beginner’s Tutorial
+
+
+
+
+
+
+
+
+
+
+
+
+Welcome to detectron2! This is the official colab tutorial of detectron2. Here, we will go through some basics usage of detectron2, including the following: * Run inference on images or videos, with an existing detectron2 model * Train a detectron2 model on a new dataset
+
+
+You can make a copy of this tutorial by “File -> Open in playground mode” and make changes there. 
+DO NOT
+ request access to this tutorial.
+
+
+
+
+Install detectron2
+
+
+
+
+!
+pip install detectron2
+@
+git
++
+https:
+//
+github.com
+/
+facebookresearch
+/
+detectron2
+@
+7
+c2c8fb
+
+
+
+
+
+
+Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+
+Collecting detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb
+
+  Cloning https://github.com/facebookresearch/detectron2 (to revision 7c2c8fb) to /tmp/pip-install-pvcq_72b/detectron2_47da90cc98fe46b5af32f374caa6e530
+
+  Running command git clone -q https://github.com/facebookresearch/detectron2 /tmp/pip-install-pvcq_72b/detectron2_47da90cc98fe46b5af32f374caa6e530
+
+
+  WARNING: Did not find branch or tag '7c2c8fb', assuming revision or ref.
+
+
+  Running command git checkout -q 7c2c8fb
+
+Requirement already satisfied: Pillow>=7.1 in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (7.1.2)
+
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.2.2)
+
+Requirement already satisfied: pycocotools>=2.0.2 in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.0.5)
+
+Requirement already satisfied: termcolor>=1.1 in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.0.1)
+
+Collecting yacs>=0.1.8
+
+  Downloading yacs-0.1.8-py3-none-any.whl (14 kB)
+
+Requirement already satisfied: tabulate in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.8.10)
+
+Requirement already satisfied: cloudpickle in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.5.0)
+
+Requirement already satisfied: tqdm>4.29.0 in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (4.64.1)
+
+Requirement already satisfied: tensorboard in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.9.1)
+
+Collecting fvcore<0.1.6,>=0.1.5
+
+  Downloading fvcore-0.1.5.post20220512.tar.gz (50 kB)
+
+     |████████████████████████████████| 50 kB 2.4 MB/s 
+
+Collecting iopath<0.1.10,>=0.1.7
+
+  Downloading iopath-0.1.9-py3-none-any.whl (27 kB)
+
+Requirement already satisfied: future in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.16.0)
+
+Requirement already satisfied: pydot in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.3.0)
+
+Collecting omegaconf>=2.1
+
+  Downloading omegaconf-2.2.3-py3-none-any.whl (79 kB)
+
+     |████████████████████████████████| 79 kB 4.6 MB/s 
+
+Collecting hydra-core>=1.1
+
+  Downloading hydra_core-1.2.0-py3-none-any.whl (151 kB)
+
+     |████████████████████████████████| 151 kB 41.6 MB/s 
+
+Collecting black==22.3.0
+
+  Downloading black-22.3.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.4 MB)
+
+     |████████████████████████████████| 1.4 MB 84.1 MB/s 
+
+Collecting timm
+
+  Downloading timm-0.6.11-py3-none-any.whl (548 kB)
+
+     |████████████████████████████████| 548 kB 81.0 MB/s 
+
+Collecting fairscale
+
+  Downloading fairscale-0.4.6.tar.gz (248 kB)
+
+     |████████████████████████████████| 248 kB 55.3 MB/s 
+
+  Installing build dependencies ... done
+
+  Getting requirements to build wheel ... done
+
+  Installing backend dependencies ... done
+
+    Preparing wheel metadata ... done
+
+Requirement already satisfied: packaging in /usr/local/lib/python3.7/dist-packages (from detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (21.3)
+
+Collecting click>=8.0.0
+
+  Downloading click-8.1.3-py3-none-any.whl (96 kB)
+
+     |████████████████████████████████| 96 kB 6.5 MB/s 
+
+Collecting pathspec>=0.9.0
+
+  Downloading pathspec-0.10.1-py3-none-any.whl (27 kB)
+
+Collecting platformdirs>=2
+
+  Downloading platformdirs-2.5.3-py3-none-any.whl (14 kB)
+
+Collecting typed-ast>=1.4.2
+
+  Downloading typed_ast-1.5.4-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl (843 kB)
+
+     |████████████████████████████████| 843 kB 79.7 MB/s 
+
+Requirement already satisfied: typing-extensions>=3.10.0.0 in /usr/local/lib/python3.7/dist-packages (from black==22.3.0->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (4.1.1)
+
+Collecting mypy-extensions>=0.4.3
+
+  Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
+
+Requirement already satisfied: tomli>=1.1.0 in /usr/local/lib/python3.7/dist-packages (from black==22.3.0->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.0.1)
+
+Requirement already satisfied: importlib-metadata in /usr/local/lib/python3.7/dist-packages (from click>=8.0.0->black==22.3.0->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (4.13.0)
+
+Requirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages (from fvcore<0.1.6,>=0.1.5->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.21.6)
+
+Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.7/dist-packages (from fvcore<0.1.6,>=0.1.5->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (6.0)
+
+Requirement already satisfied: importlib-resources in /usr/local/lib/python3.7/dist-packages (from hydra-core>=1.1->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (5.10.0)
+
+Collecting antlr4-python3-runtime==4.9.*
+
+  Downloading antlr4-python3-runtime-4.9.3.tar.gz (117 kB)
+
+     |████████████████████████████████| 117 kB 93.8 MB/s 
+
+Collecting portalocker
+
+  Downloading portalocker-2.6.0-py2.py3-none-any.whl (15 kB)
+
+Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.7/dist-packages (from matplotlib->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.11.0)
+
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.0.9)
+
+Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.4.4)
+
+Requirement already satisfied: python-dateutil>=2.1 in /usr/local/lib/python3.7/dist-packages (from matplotlib->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.8.2)
+
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.7/dist-packages (from python-dateutil>=2.1->matplotlib->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.15.0)
+
+Requirement already satisfied: torch>=1.8.0 in /usr/local/lib/python3.7/dist-packages (from fairscale->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.12.1+cu113)
+
+Requirement already satisfied: zipp>=0.5 in /usr/local/lib/python3.7/dist-packages (from importlib-metadata->click>=8.0.0->black==22.3.0->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.10.0)
+
+Requirement already satisfied: grpcio>=1.24.3 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.50.0)
+
+Requirement already satisfied: setuptools>=41.0.0 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (57.4.0)
+
+Requirement already satisfied: absl-py>=0.4 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.3.0)
+
+Requirement already satisfied: google-auth<3,>=1.6.3 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.35.0)
+
+Requirement already satisfied: tensorboard-data-server<0.7.0,>=0.6.0 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.6.1)
+
+Requirement already satisfied: requests<3,>=2.21.0 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.23.0)
+
+Requirement already satisfied: werkzeug>=1.0.1 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.0.1)
+
+Requirement already satisfied: wheel>=0.26 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.37.1)
+
+Requirement already satisfied: protobuf<3.20,>=3.9.2 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.17.3)
+
+Requirement already satisfied: google-auth-oauthlib<0.5,>=0.4.1 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.4.6)
+
+Requirement already satisfied: markdown>=2.6.8 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.4.1)
+
+Requirement already satisfied: tensorboard-plugin-wit>=1.6.0 in /usr/local/lib/python3.7/dist-packages (from tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.8.1)
+
+Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.7/dist-packages (from google-auth<3,>=1.6.3->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (4.9)
+
+Requirement already satisfied: cachetools<5.0,>=2.0.0 in /usr/local/lib/python3.7/dist-packages (from google-auth<3,>=1.6.3->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (4.2.4)
+
+Requirement already satisfied: pyasn1-modules>=0.2.1 in /usr/local/lib/python3.7/dist-packages (from google-auth<3,>=1.6.3->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.2.8)
+
+Requirement already satisfied: requests-oauthlib>=0.7.0 in /usr/local/lib/python3.7/dist-packages (from google-auth-oauthlib<0.5,>=0.4.1->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.3.1)
+
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in /usr/local/lib/python3.7/dist-packages (from pyasn1-modules>=0.2.1->google-auth<3,>=1.6.3->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.4.8)
+
+Requirement already satisfied: chardet<4,>=3.0.2 in /usr/local/lib/python3.7/dist-packages (from requests<3,>=2.21.0->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.0.4)
+
+Requirement already satisfied: idna<3,>=2.5 in /usr/local/lib/python3.7/dist-packages (from requests<3,>=2.21.0->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2.10)
+
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.7/dist-packages (from requests<3,>=2.21.0->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (2022.9.24)
+
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in /usr/local/lib/python3.7/dist-packages (from requests<3,>=2.21.0->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (1.24.3)
+
+Requirement already satisfied: oauthlib>=3.0.0 in /usr/local/lib/python3.7/dist-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<0.5,>=0.4.1->tensorboard->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.2.2)
+
+Collecting huggingface-hub
+
+  Downloading huggingface_hub-0.10.1-py3-none-any.whl (163 kB)
+
+     |████████████████████████████████| 163 kB 93.3 MB/s 
+
+Requirement already satisfied: torchvision in /usr/local/lib/python3.7/dist-packages (from timm->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (0.13.1+cu113)
+
+Requirement already satisfied: filelock in /usr/local/lib/python3.7/dist-packages (from huggingface-hub->timm->detectron2@ git+https://github.com/facebookresearch/detectron2@7c2c8fb) (3.8.0)
+
+Building wheels for collected packages: detectron2, fvcore, antlr4-python3-runtime, fairscale
+
+  Building wheel for detectron2 (setup.py) ... done
+
+  Created wheel for detectron2: filename=detectron2-0.6-cp37-cp37m-linux_x86_64.whl size=5190584 sha256=70403c98f5863fb103f2e7994330f8af5deb1cffee7c676369d6e4f3c2d323df
+
+  Stored in directory: /tmp/pip-ephem-wheel-cache-min7dqb2/wheels/60/28/6a/0c738f8bc994d1adeb3032e6490b93af5b6c155b0edf0a4125
+
+  Building wheel for fvcore (setup.py) ... done
+
+  Created wheel for fvcore: filename=fvcore-0.1.5.post20220512-py3-none-any.whl size=61288 sha256=3c2c57b1052e0cdb7ae3f608aa7b28205865bc347b0fd43632c5eec8f75e5a70
+
+  Stored in directory: /root/.cache/pip/wheels/68/20/f9/a11a0dd63f4c13678b2a5ec488e48078756505c7777b75b29e
+
+  Building wheel for antlr4-python3-runtime (setup.py) ... done
+
+  Created wheel for antlr4-python3-runtime: filename=antlr4_python3_runtime-4.9.3-py3-none-any.whl size=144575 sha256=181903ce74d3ae957590698c4d3497b7d949765ce4f54c44e2ff6015eae7b8b7
+
+  Stored in directory: /root/.cache/pip/wheels/8b/8d/53/2af8772d9aec614e3fc65e53d4a993ad73c61daa8bbd85a873
+
+  Building wheel for fairscale (PEP 517) ... done
+
+  Created wheel for fairscale: filename=fairscale-0.4.6-py3-none-any.whl size=307252 sha256=95e3aeb45e3805ab8b1b3b9fea0d201d4561018a9e92583f0a28102e3ad826d7
+
+  Stored in directory: /root/.cache/pip/wheels/4e/4f/0b/94c29ea06dfad93260cb0377855f87b7b863312317a7f69fe7
+
+Successfully built detectron2 fvcore antlr4-python3-runtime fairscale
+
+Installing collected packages: portalocker, antlr4-python3-runtime, yacs, typed-ast, platformdirs, pathspec, omegaconf, mypy-extensions, iopath, huggingface-hub, click, timm, hydra-core, fvcore, fairscale, black, detectron2
+
+  Attempting uninstall: click
+
+    Found existing installation: click 7.1.2
+
+    Uninstalling click-7.1.2:
+
+      Successfully uninstalled click-7.1.2
+
+
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+
+flask 1.1.4 requires click<8.0,>=5.1, but you have click 8.1.3 which is incompatible.
+
+
+Successfully installed antlr4-python3-runtime-4.9.3 black-22.3.0 click-8.1.3 detectron2-0.6 fairscale-0.4.6 fvcore-0.1.5.post20220512 huggingface-hub-0.10.1 hydra-core-1.2.0 iopath-0.1.9 mypy-extensions-0.4.3 omegaconf-2.2.3 pathspec-0.10.1 platformdirs-2.5.3 portalocker-2.6.0 timm-0.6.11 typed-ast-1.5.4 yacs-0.1.8
+
+
+
+
+
+
+
+
+
+Unable to display output for mime type(s): application/vnd.colab-display-data+json
+
+
+
+
+
+
+
+
+import
+ torch, torchvision, detectron2
+
+
+!
+nvcc 
+--
+version
+
+
+TORCH_VERSION 
+=
+ 
+"."
+.join(torch.__version__.split(
+"."
+)[:
+2
+])
+
+
+TORCHVISION_VERSION 
+=
+ 
+"."
+.join(torchvision.__version__.split(
+"."
+)[:
+2
+])
+
+
+CUDA_VERSION 
+=
+ torch.__version__.split(
+"+"
+)[
+-
+1
+]
+
+
+print
+(
+"torch: "
+, TORCH_VERSION, 
+"; cuda: "
+, CUDA_VERSION)
+
+
+print
+(
+"detectron2:"
+, detectron2.__version__)
+
+
+print
+(
+"torchvision: "
+, TORCHVISION_VERSION)
+
+
+
+
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2021 NVIDIA Corporation
+Built on Sun_Feb_14_21:12:58_PST_2021
+Cuda compilation tools, release 11.2, V11.2.152
+Build cuda_11.2.r11.2/compiler.29618528_0
+torch:  1.12 ; cuda:  cu113
+detectron2: 0.6
+torchvision:  0.13
+
+
+
+
+
+
+
+
+!
+nvidia
+-
+smi 
+-
+L
+
+
+
+
+GPU 0: A100-SXM4-40GB (UUID: GPU-da6de55e-ad78-924d-8cf3-4be0595eef77)
+
+
+
+
+
+
+
+
+# Some basic setup:
+
+
+# Setup detectron2 logger
+
+
+import
+ detectron2
+
+
+from
+ detectron2.utils.logger 
+import
+ setup_logger
+
+
+setup_logger()
+
+
+
+
+# import some common libraries
+
+
+import
+ numpy 
+as
+ np
+
+
+import
+ os, json, cv2, random
+
+
+from
+ google.colab.patches 
+import
+ cv2_imshow
+
+
+
+
+# import some common detectron2 utilities
+
+
+from
+ detectron2 
+import
+ model_zoo
+
+
+from
+ detectron2.engine 
+import
+ DefaultPredictor
+
+
+from
+ detectron2.config 
+import
+ get_cfg
+
+
+from
+ detectron2.utils.visualizer 
+import
+ Visualizer
+
+
+from
+ detectron2.data 
+import
+ MetadataCatalog, DatasetCatalog
+
+
+
+
+
+
+
+
+Run a pre-trained detectron2 model
+
+
+We first download an image from the COCO dataset:
+
+
+
+
+!
+wget http:
+//
+images.cocodataset.org
+/
+val2017
+/
+000000439715.j
+pg
+ 
+-
+q 
+-
+O 
+input
+.jpg
+
+
+im 
+=
+ cv2.imread(
+"./input.jpg"
+)
+
+
+cv2_imshow(im)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Then, we create a detectron2 config and a detectron2 
+DefaultPredictor
+ to run inference on this image.
+
+
+
+
+cfg 
+=
+ get_cfg()
+
+
+# add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
+
+
+cfg.merge_from_file(model_zoo.get_config_file(
+"COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+))
+
+
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST 
+=
+ 
+0.5
+  
+# set threshold for this model
+
+
+# Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
+
+
+cfg.MODEL.WEIGHTS 
+=
+ model_zoo.get_checkpoint_url(
+"COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+)
+
+
+predictor 
+=
+ DefaultPredictor(cfg)
+
+
+outputs 
+=
+ predictor(im)
+
+
+
+
+/usr/local/lib/python3.7/dist-packages/torch/functional.py:478: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2894.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+
+
+
+
+
+
+
+
+# look at the outputs. See https://detectron2.readthedocs.io/tutorials/models.html#model-output-format for specification
+
+
+print
+(outputs[
+"instances"
+].pred_classes)
+
+
+print
+(outputs[
+"instances"
+].pred_boxes)
+
+
+
+
+tensor([17,  0,  0,  0,  0,  0,  0,  0, 25,  0, 25, 25,  0,  0, 24],
+       device='cuda:0')
+Boxes(tensor([[126.5927, 244.9072, 459.8221, 480.0000],
+        [251.1046, 157.8087, 338.9760, 413.6155],
+        [114.8537, 268.6926, 148.2408, 398.8159],
+        [  0.8249, 281.0315,  78.6042, 478.4268],
+        [ 49.3939, 274.1228,  80.1528, 342.9875],
+        [561.2266, 271.5830, 596.2780, 385.2542],
+        [385.9034, 270.3119, 413.7115, 304.0397],
+        [515.9216, 278.3663, 562.2773, 389.3731],
+        [335.2385, 251.9169, 414.7485, 275.9340],
+        [350.9470, 269.2095, 386.0932, 297.9067],
+        [331.6270, 230.9990, 393.2777, 257.2000],
+        [510.7307, 263.2674, 570.9891, 295.9456],
+        [409.0903, 271.8640, 460.5584, 356.8694],
+        [506.8879, 283.3292, 529.9476, 324.0202],
+        [594.5665, 283.4850, 609.0558, 311.4114]], device='cuda:0'))
+
+
+
+
+
+
+
+
+# We can use `Visualizer` to draw the predictions on the image.
+
+
+v 
+=
+ Visualizer(im[:, :, ::
+-
+1
+], MetadataCatalog.get(cfg.DATASETS.TRAIN[
+0
+]), scale
+=
+1.2
+)
+
+
+out 
+=
+ v.draw_instance_predictions(outputs[
+"instances"
+].to(
+"cpu"
+))
+
+
+cv2_imshow(out.get_image()[:, :, ::
+-
+1
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train on a custom dataset
+
+
+In this section, we show how to train an existing detectron2 model on a custom dataset in a new format.
+
+
+We use 
+the balloon segmentation dataset
+ which only has one class: balloon. We’ll train a balloon segmentation model from an existing model pre-trained on COCO dataset, available in detectron2’s model zoo.
+
+
+Note that COCO dataset does not have the “balloon” category. We’ll be able to recognize this new class in a few minutes.
+
+
+
+
+Prepare the dataset
+
+
+
+
+# download, decompress the data
+
+
+!
+wget https:
+//
+github.com
+/
+matterport
+/
+Mask_RCNN
+/
+releases
+/
+download
+/
+v2
+.1
+/
+balloon_dataset.
+zip
+
+
+!
+unzip balloon_dataset.
+zip
+ 
+>
+ 
+/
+dev
+/
+null
+
+
+
+
+--2022-11-08 16:51:31--  https://github.com/matterport/Mask_RCNN/releases/download/v2.1/balloon_dataset.zip
+Resolving github.com (github.com)... 140.82.112.3
+Connecting to github.com (github.com)|140.82.112.3|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://objects.githubusercontent.com/github-production-release-asset-2e65be/107595270/737339e2-2b83-11e8-856a-188034eb3468?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221108T165131Z&X-Amz-Expires=300&X-Amz-Signature=60585e39a8b012a2fe6ed7fad590d4f8d44ef03a45a29d01d915f93e608734bf&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=107595270&response-content-disposition=attachment%3B%20filename%3Dballoon_dataset.zip&response-content-type=application%2Foctet-stream [following]
+--2022-11-08 16:51:31--  https://objects.githubusercontent.com/github-production-release-asset-2e65be/107595270/737339e2-2b83-11e8-856a-188034eb3468?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20221108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221108T165131Z&X-Amz-Expires=300&X-Amz-Signature=60585e39a8b012a2fe6ed7fad590d4f8d44ef03a45a29d01d915f93e608734bf&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=107595270&response-content-disposition=attachment%3B%20filename%3Dballoon_dataset.zip&response-content-type=application%2Foctet-stream
+Resolving objects.githubusercontent.com (objects.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to objects.githubusercontent.com (objects.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 38741381 (37M) [application/octet-stream]
+Saving to: ‘balloon_dataset.zip.1’
+
+balloon_dataset.zip 100%[===================>]  36.95M   196MB/s    in 0.2s    
+
+2022-11-08 16:51:31 (196 MB/s) - ‘balloon_dataset.zip.1’ saved [38741381/38741381]
+
+replace balloon/train/via_region_data.json? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
+replace __MACOSX/balloon/train/._via_region_data.json? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
+replace balloon/train/53500107_d24b11b3c2_b.jpg? [y]es, [n]o, [A]ll, [N]one, [r]ename: a
+error:  invalid response [a]
+replace balloon/train/53500107_d24b11b3c2_b.jpg? [y]es, [n]o, [A]ll, [N]one, [r]ename: A
+
+
+
+
+
+
+Register the balloon dataset to detectron2, following the 
+detectron2 custom dataset tutorial
+. Here, the dataset is in its custom format, therefore we write a function to parse it and prepare it into detectron2’s standard format. User should write such a function when using a dataset in custom format. See the tutorial for more details.
+
+
+
+
+# if your dataset is in COCO format, this cell can be replaced by the following three lines:
+
+
+# from detectron2.data.datasets import register_coco_instances
+
+
+# register_coco_instances("my_dataset_train", {}, "json_annotation_train.json", "path/to/image/dir")
+
+
+# register_coco_instances("my_dataset_val", {}, "json_annotation_val.json", "path/to/image/dir")
+
+
+
+
+from
+ detectron2.structures 
+import
+ BoxMode
+
+
+
+
+def
+ get_balloon_dicts(img_dir):
+
+
+    json_file 
+=
+ os.path.join(img_dir, 
+"via_region_data.json"
+)
+
+
+    
+with
+ 
+open
+(json_file) 
+as
+ f:
+
+
+        imgs_anns 
+=
+ json.load(f)
+
+
+
+
+    dataset_dicts 
+=
+ []
+
+
+    
+for
+ idx, v 
+in
+ 
+enumerate
+(imgs_anns.values()):
+
+
+        record 
+=
+ {}
+
+
+        
+
+
+        filename 
+=
+ os.path.join(img_dir, v[
+"filename"
+])
+
+
+        height, width 
+=
+ cv2.imread(filename).shape[:
+2
+]
+
+
+        
+
+
+        record[
+"file_name"
+] 
+=
+ filename
+
+
+        record[
+"image_id"
+] 
+=
+ idx
+
+
+        record[
+"height"
+] 
+=
+ height
+
+
+        record[
+"width"
+] 
+=
+ width
+
+
+      
+
+
+        annos 
+=
+ v[
+"regions"
+]
+
+
+        objs 
+=
+ []
+
+
+        
+for
+ _, anno 
+in
+ annos.items():
+
+
+            
+assert
+ 
+not
+ anno[
+"region_attributes"
+]
+
+
+            anno 
+=
+ anno[
+"shape_attributes"
+]
+
+
+            px 
+=
+ anno[
+"all_points_x"
+]
+
+
+            py 
+=
+ anno[
+"all_points_y"
+]
+
+
+            poly 
+=
+ [(x 
++
+ 
+0.5
+, y 
++
+ 
+0.5
+) 
+for
+ x, y 
+in
+ 
+zip
+(px, py)]
+
+
+            poly 
+=
+ [p 
+for
+ x 
+in
+ poly 
+for
+ p 
+in
+ x]
+
+
+
+
+            obj 
+=
+ {
+
+
+                
+"bbox"
+: [np.
+min
+(px), np.
+min
+(py), np.
+max
+(px), np.
+max
+(py)],
+
+
+                
+"bbox_mode"
+: BoxMode.XYXY_ABS,
+
+
+                
+"segmentation"
+: [poly],
+
+
+                
+"category_id"
+: 
+0
+,
+
+
+            }
+
+
+            objs.append(obj)
+
+
+        record[
+"annotations"
+] 
+=
+ objs
+
+
+        dataset_dicts.append(record)
+
+
+    
+return
+ dataset_dicts
+
+
+
+
+for
+ d 
+in
+ [
+"train"
+, 
+"val"
+]:
+
+
+    DatasetCatalog.register(
+"balloon_"
+ 
++
+ d, 
+lambda
+ d
+=
+d: get_balloon_dicts(
+"balloon/"
+ 
++
+ d))
+
+
+    MetadataCatalog.get(
+"balloon_"
+ 
++
+ d).
+set
+(thing_classes
+=
+[
+"balloon"
+])
+
+
+balloon_metadata 
+=
+ MetadataCatalog.get(
+"balloon_train"
+)
+
+
+
+
+To verify the dataset is in correct format, let’s visualize the annotations of randomly selected samples in the training set:
+
+
+
+
+dataset_dicts 
+=
+ get_balloon_dicts(
+"balloon/train"
+)
+
+
+for
+ d 
+in
+ random.sample(dataset_dicts, 
+3
+):
+
+
+    img 
+=
+ cv2.imread(d[
+"file_name"
+])
+
+
+    visualizer 
+=
+ Visualizer(img[:, :, ::
+-
+1
+], metadata
+=
+balloon_metadata, scale
+=
+0.5
+)
+
+
+    out 
+=
+ visualizer.draw_dataset_dict(d)
+
+
+    cv2_imshow(out.get_image()[:, :, ::
+-
+1
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train!
+
+
+Now, let’s fine-tune a COCO-pretrained R50-FPN Mask R-CNN model on the balloon dataset. It takes ~2 minutes to train 300 iterations on a P100 GPU.
+
+
+
+
+from
+ detectron2.engine 
+import
+ DefaultTrainer
+
+
+
+
+cfg 
+=
+ get_cfg()
+
+
+cfg.merge_from_file(model_zoo.get_config_file(
+"COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+))
+
+
+cfg.DATASETS.TRAIN 
+=
+ (
+"balloon_train"
+,)
+
+
+cfg.DATASETS.TEST 
+=
+ ()
+
+
+cfg.DATALOADER.NUM_WORKERS 
+=
+ 
+2
+
+
+cfg.MODEL.WEIGHTS 
+=
+ model_zoo.get_checkpoint_url(
+"COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+)  
+# Let training initialize from model zoo
+
+
+cfg.SOLVER.IMS_PER_BATCH 
+=
+ 
+2
+  
+# This is the real "batch size" commonly known to deep learning people
+
+
+cfg.SOLVER.BASE_LR 
+=
+ 
+0.00025
+  
+# pick a good LR
+
+
+cfg.SOLVER.MAX_ITER 
+=
+ 
+300
+    
+# 300 iterations seems good enough for this toy dataset; you will need to train longer for a practical dataset
+
+
+cfg.SOLVER.STEPS 
+=
+ []        
+# do not decay learning rate
+
+
+cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE 
+=
+ 
+128
+   
+# The "RoIHead batch size". 128 is faster, and good enough for this toy dataset (default: 512)
+
+
+cfg.MODEL.ROI_HEADS.NUM_CLASSES 
+=
+ 
+1
+  
+# only has one class (ballon). (see https://detectron2.readthedocs.io/tutorials/datasets.html#update-the-config-for-new-datasets)
+
+
+# 
+NOTE
+: this config means the number of classes, but a few popular unofficial tutorials incorrect uses num_classes+1 here.
+
+
+
+
+os.makedirs(cfg.OUTPUT_DIR, exist_ok
+=
+True
+)
+
+
+trainer 
+=
+ DefaultTrainer(cfg) 
+
+
+trainer.resume_or_load(resume
+=
+False
+)
+
+
+trainer.train()
+
+
+
+
+
+
+[11/08 16:58:08 d2.engine.defaults]: 
+Model:
+
+GeneralizedRCNN(
+
+  (backbone): FPN(
+
+    (fpn_lateral2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+
+    (fpn_output2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+
+    (fpn_lateral3): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+
+    (fpn_output3): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+
+    (fpn_lateral4): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1))
+
+    (fpn_output4): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+
+    (fpn_lateral5): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+
+    (fpn_output5): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+
+    (top_block): LastLevelMaxPool()
+
+    (bottom_up): ResNet(
+
+      (stem): BasicStem(
+
+        (conv1): Conv2d(
+
+          3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+
+          (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+        )
+
+      )
+
+      (res2): Sequential(
+
+        (0): BottleneckBlock(
+
+          (shortcut): Conv2d(
+
+            64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv1): Conv2d(
+
+            64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+        )
+
+        (1): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+        )
+
+        (2): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+        )
+
+      )
+
+      (res3): Sequential(
+
+        (0): BottleneckBlock(
+
+          (shortcut): Conv2d(
+
+            256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv1): Conv2d(
+
+            256, 128, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+        )
+
+        (1): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+        )
+
+        (2): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+        )
+
+        (3): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+        )
+
+      )
+
+      (res4): Sequential(
+
+        (0): BottleneckBlock(
+
+          (shortcut): Conv2d(
+
+            512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+          (conv1): Conv2d(
+
+            512, 256, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+        (1): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+        (2): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+        (3): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+        (4): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+        (5): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+
+          )
+
+        )
+
+      )
+
+      (res5): Sequential(
+
+        (0): BottleneckBlock(
+
+          (shortcut): Conv2d(
+
+            1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+
+          )
+
+          (conv1): Conv2d(
+
+            1024, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+
+          )
+
+        )
+
+        (1): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+
+          )
+
+        )
+
+        (2): BottleneckBlock(
+
+          (conv1): Conv2d(
+
+            2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv2): Conv2d(
+
+            512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+
+          )
+
+          (conv3): Conv2d(
+
+            512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+
+            (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+
+          )
+
+        )
+
+      )
+
+    )
+
+  )
+
+  (proposal_generator): RPN(
+
+    (rpn_head): StandardRPNHead(
+
+      (conv): Conv2d(
+
+        256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+
+        (activation): ReLU()
+
+      )
+
+      (objectness_logits): Conv2d(256, 3, kernel_size=(1, 1), stride=(1, 1))
+
+      (anchor_deltas): Conv2d(256, 12, kernel_size=(1, 1), stride=(1, 1))
+
+    )
+
+    (anchor_generator): DefaultAnchorGenerator(
+
+      (cell_anchors): BufferList()
+
+    )
+
+  )
+
+  (roi_heads): StandardROIHeads(
+
+    (box_pooler): ROIPooler(
+
+      (level_poolers): ModuleList(
+
+        (0): ROIAlign(output_size=(7, 7), spatial_scale=0.25, sampling_ratio=0, aligned=True)
+
+        (1): ROIAlign(output_size=(7, 7), spatial_scale=0.125, sampling_ratio=0, aligned=True)
+
+        (2): ROIAlign(output_size=(7, 7), spatial_scale=0.0625, sampling_ratio=0, aligned=True)
+
+        (3): ROIAlign(output_size=(7, 7), spatial_scale=0.03125, sampling_ratio=0, aligned=True)
+
+      )
+
+    )
+
+    (box_head): FastRCNNConvFCHead(
+
+      (flatten): Flatten(start_dim=1, end_dim=-1)
+
+      (fc1): Linear(in_features=12544, out_features=1024, bias=True)
+
+      (fc_relu1): ReLU()
+
+      (fc2): Linear(in_features=1024, out_features=1024, bias=True)
+
+      (fc_relu2): ReLU()
+
+    )
+
+    (box_predictor): FastRCNNOutputLayers(
+
+      (cls_score): Linear(in_features=1024, out_features=2, bias=True)
+
+      (bbox_pred): Linear(in_features=1024, out_features=4, bias=True)
+
+    )
+
+    (mask_pooler): ROIPooler(
+
+      (level_poolers): ModuleList(
+
+        (0): ROIAlign(output_size=(14, 14), spatial_scale=0.25, sampling_ratio=0, aligned=True)
+
+        (1): ROIAlign(output_size=(14, 14), spatial_scale=0.125, sampling_ratio=0, aligned=True)
+
+        (2): ROIAlign(output_size=(14, 14), spatial_scale=0.0625, sampling_ratio=0, aligned=True)
+
+        (3): ROIAlign(output_size=(14, 14), spatial_scale=0.03125, sampling_ratio=0, aligned=True)
+
+      )
+
+    )
+
+    (mask_head): MaskRCNNConvUpsampleHead(
+
+      (mask_fcn1): Conv2d(
+
+        256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+
+        (activation): ReLU()
+
+      )
+
+      (mask_fcn2): Conv2d(
+
+        256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+
+        (activation): ReLU()
+
+      )
+
+      (mask_fcn3): Conv2d(
+
+        256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+
+        (activation): ReLU()
+
+      )
+
+      (mask_fcn4): Conv2d(
+
+        256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+
+        (activation): ReLU()
+
+      )
+
+      (deconv): ConvTranspose2d(256, 256, kernel_size=(2, 2), stride=(2, 2))
+
+      (deconv_relu): ReLU()
+
+      (predictor): Conv2d(256, 1, kernel_size=(1, 1), stride=(1, 1))
+
+    )
+
+  )
+
+)
+
+
+[11/08 16:58:10 d2.data.build]: 
+Removed 0 images with no usable annotations. 61 images left.
+
+
+[11/08 16:58:10 d2.data.build]: 
+Distribution of instances among all 1 categories:
+
+
+|  category  | #instances   |
+
+|:----------:|:-------------|
+
+|  balloon   | 255          |
+
+|            |              |
+
+
+
+[11/08 16:58:10 d2.data.dataset_mapper]: 
+[DatasetMapper] Augmentations used in training: [ResizeShortestEdge(short_edge_length=(640, 672, 704, 736, 768, 800), max_size=1333, sample_style='choice'), RandomFlip()]
+
+
+[11/08 16:58:10 d2.data.build]: 
+Using training sampler TrainingSampler
+
+
+[11/08 16:58:10 d2.data.common]: 
+Serializing 61 elements to byte tensors and concatenating them all ...
+
+
+[11/08 16:58:10 d2.data.common]: 
+Serialized dataset takes 0.17 MiB
+
+
+
+
+
+
+
+
+
+
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.box_predictor.cls_score.weight' to the model due to incompatible shapes: (81, 1024) in the checkpoint but (2, 1024) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.box_predictor.cls_score.bias' to the model due to incompatible shapes: (81,) in the checkpoint but (2,) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.box_predictor.bbox_pred.weight' to the model due to incompatible shapes: (320, 1024) in the checkpoint but (4, 1024) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.box_predictor.bbox_pred.bias' to the model due to incompatible shapes: (320,) in the checkpoint but (4,) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.mask_head.predictor.weight' to the model due to incompatible shapes: (80, 256, 1, 1) in the checkpoint but (1, 256, 1, 1) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Skip loading parameter 'roi_heads.mask_head.predictor.bias' to the model due to incompatible shapes: (80,) in the checkpoint but (1,) in the model! You might want to double check if this is expected.
+
+WARNING:fvcore.common.checkpoint:Some model parameters or buffers are not found in the checkpoint:
+
+
+roi_heads.box_predictor.bbox_pred.{bias, weight}
+
+
+
+roi_heads.box_predictor.cls_score.{bias, weight}
+
+
+
+roi_heads.mask_head.predictor.{bias, weight}
+
+
+
+
+
+
+
+
+
+
+
+
+[11/08 16:58:13 d2.engine.train_loop]: 
+Starting training from iteration 0
+
+
+[11/08 16:58:16 d2.utils.events]: 
+ eta: 0:00:31  iter: 19  total_loss: 2.122  loss_cls: 0.7862  loss_box_reg: 0.5421  loss_mask: 0.6833  loss_rpn_cls: 0.04036  loss_rpn_loc: 0.009012  time: 0.1142  data_time: 0.0248  lr: 1.6068e-05  max_mem: 2463M
+
+
+[11/08 16:58:19 d2.utils.events]: 
+ eta: 0:00:29  iter: 39  total_loss: 1.93  loss_cls: 0.6266  loss_box_reg: 0.6646  loss_mask: 0.6063  loss_rpn_cls: 0.009647  loss_rpn_loc: 0.003854  time: 0.1209  data_time: 0.0250  lr: 3.2718e-05  max_mem: 2463M
+
+
+[11/08 16:58:21 d2.utils.events]: 
+ eta: 0:00:27  iter: 59  total_loss: 1.641  loss_cls: 0.4662  loss_box_reg: 0.6081  loss_mask: 0.467  loss_rpn_cls: 0.02909  loss_rpn_loc: 0.008287  time: 0.1215  data_time: 0.0197  lr: 4.9367e-05  max_mem: 2464M
+
+
+[11/08 16:58:24 d2.utils.events]: 
+ eta: 0:00:25  iter: 79  total_loss: 1.413  loss_cls: 0.3521  loss_box_reg: 0.6161  loss_mask: 0.3716  loss_rpn_cls: 0.01093  loss_rpn_loc: 0.005753  time: 0.1219  data_time: 0.0144  lr: 6.6017e-05  max_mem: 2464M
+
+
+[11/08 16:58:26 d2.utils.events]: 
+ eta: 0:00:22  iter: 99  total_loss: 1.207  loss_cls: 0.274  loss_box_reg: 0.5975  loss_mask: 0.2741  loss_rpn_cls: 0.0261  loss_rpn_loc: 0.005606  time: 0.1205  data_time: 0.0138  lr: 8.2668e-05  max_mem: 2464M
+
+
+[11/08 16:58:28 d2.utils.events]: 
+ eta: 0:00:20  iter: 119  total_loss: 1.153  loss_cls: 0.249  loss_box_reg: 0.6203  loss_mask: 0.2291  loss_rpn_cls: 0.02097  loss_rpn_loc: 0.007521  time: 0.1204  data_time: 0.0188  lr: 9.9318e-05  max_mem: 2464M
+
+
+[11/08 16:58:31 d2.utils.events]: 
+ eta: 0:00:18  iter: 139  total_loss: 1.058  loss_cls: 0.1989  loss_box_reg: 0.5989  loss_mask: 0.182  loss_rpn_cls: 0.01926  loss_rpn_loc: 0.005404  time: 0.1203  data_time: 0.0187  lr: 0.00011597  max_mem: 2464M
+
+
+[11/08 16:58:33 d2.utils.events]: 
+ eta: 0:00:15  iter: 159  total_loss: 0.8765  loss_cls: 0.1574  loss_box_reg: 0.537  loss_mask: 0.1413  loss_rpn_cls: 0.01227  loss_rpn_loc: 0.008047  time: 0.1199  data_time: 0.0171  lr: 0.00013262  max_mem: 2464M
+
+
+[11/08 16:58:36 d2.utils.events]: 
+ eta: 0:00:13  iter: 179  total_loss: 0.7283  loss_cls: 0.1218  loss_box_reg: 0.4949  loss_mask: 0.1338  loss_rpn_cls: 0.007911  loss_rpn_loc: 0.005497  time: 0.1199  data_time: 0.0173  lr: 0.00014927  max_mem: 2464M
+
+
+[11/08 16:58:38 d2.utils.events]: 
+ eta: 0:00:11  iter: 199  total_loss: 0.5337  loss_cls: 0.0953  loss_box_reg: 0.2877  loss_mask: 0.08737  loss_rpn_cls: 0.01884  loss_rpn_loc: 0.006295  time: 0.1198  data_time: 0.0165  lr: 0.00016592  max_mem: 2464M
+
+
+[11/08 16:58:40 d2.utils.events]: 
+ eta: 0:00:09  iter: 219  total_loss: 0.4239  loss_cls: 0.08623  loss_box_reg: 0.2256  loss_mask: 0.09813  loss_rpn_cls: 0.01091  loss_rpn_loc: 0.00771  time: 0.1196  data_time: 0.0164  lr: 0.00018257  max_mem: 2464M
+
+
+[11/08 16:58:43 d2.utils.events]: 
+ eta: 0:00:06  iter: 239  total_loss: 0.4469  loss_cls: 0.09798  loss_box_reg: 0.2105  loss_mask: 0.09434  loss_rpn_cls: 0.0101  loss_rpn_loc: 0.01134  time: 0.1206  data_time: 0.0256  lr: 0.00019922  max_mem: 2568M
+
+
+[11/08 16:58:45 d2.utils.events]: 
+ eta: 0:00:04  iter: 259  total_loss: 0.3987  loss_cls: 0.08198  loss_box_reg: 0.1955  loss_mask: 0.08506  loss_rpn_cls: 0.01196  loss_rpn_loc: 0.0075  time: 0.1202  data_time: 0.0151  lr: 0.00021587  max_mem: 2646M
+
+
+[11/08 16:58:48 d2.utils.events]: 
+ eta: 0:00:02  iter: 279  total_loss: 0.3066  loss_cls: 0.06071  loss_box_reg: 0.142  loss_mask: 0.06932  loss_rpn_cls: 0.01405  loss_rpn_loc: 0.005831  time: 0.1198  data_time: 0.0126  lr: 0.00023252  max_mem: 2646M
+
+
+[11/08 16:58:51 d2.utils.events]: 
+ eta: 0:00:00  iter: 299  total_loss: 0.3388  loss_cls: 0.07344  loss_box_reg: 0.1622  loss_mask: 0.08821  loss_rpn_cls: 0.004042  loss_rpn_loc: 0.005012  time: 0.1201  data_time: 0.0249  lr: 0.00024917  max_mem: 2646M
+
+
+[11/08 16:58:52 d2.engine.hooks]: 
+Overall training speed: 298 iterations in 0:00:35 (0.1201 s / it)
+
+
+[11/08 16:58:52 d2.engine.hooks]: 
+Total training time: 0:00:37 (0:00:02 on hooks)
+
+
+
+
+
+
+
+
+
+
+
+# Look at training curves in tensorboard:
+
+
+%
+load_ext tensorboard
+
+
+%
+tensorboard 
+--
+logdir output
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Inference & evaluation using the trained model
+
+
+Now, let’s run inference with the trained model on the balloon validation dataset. First, let’s create a predictor using the model we just trained:
+
+
+
+
+# Inference should use the config with parameters that are used in training
+
+
+# cfg now already contains everything we've set previously. We changed it a little bit for inference:
+
+
+cfg.MODEL.WEIGHTS 
+=
+ os.path.join(cfg.OUTPUT_DIR, 
+"model_final.pth"
+)  
+# path to the model we just trained
+
+
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST 
+=
+ 
+0.7
+   
+# set a custom testing threshold
+
+
+predictor 
+=
+ DefaultPredictor(cfg)
+
+
+
+
+
+
+[11/08 16:58:57 d2.checkpoint.c2_model_loading]: 
+Following weights matched with model:
+
+| Names in Model                                  | Names in Checkpoint                                                                                  | Shapes                                          |
+
+|:------------------------------------------------|:-----------------------------------------------------------------------------------------------------|:------------------------------------------------|
+
+| backbone.bottom_up.res2.0.conv1.*               | backbone.bottom_up.res2.0.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,64,1,1)             |
+
+| backbone.bottom_up.res2.0.conv2.*               | backbone.bottom_up.res2.0.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,64,3,3)             |
+
+| backbone.bottom_up.res2.0.conv3.*               | backbone.bottom_up.res2.0.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,64,1,1)        |
+
+| backbone.bottom_up.res2.0.shortcut.*            | backbone.bottom_up.res2.0.shortcut.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight} | (256,) (256,) (256,) (256,) (256,64,1,1)        |
+
+| backbone.bottom_up.res2.1.conv1.*               | backbone.bottom_up.res2.1.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,256,1,1)            |
+
+| backbone.bottom_up.res2.1.conv2.*               | backbone.bottom_up.res2.1.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,64,3,3)             |
+
+| backbone.bottom_up.res2.1.conv3.*               | backbone.bottom_up.res2.1.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,64,1,1)        |
+
+| backbone.bottom_up.res2.2.conv1.*               | backbone.bottom_up.res2.2.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,256,1,1)            |
+
+| backbone.bottom_up.res2.2.conv2.*               | backbone.bottom_up.res2.2.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (64,) (64,) (64,) (64,) (64,64,3,3)             |
+
+| backbone.bottom_up.res2.2.conv3.*               | backbone.bottom_up.res2.2.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,64,1,1)        |
+
+| backbone.bottom_up.res3.0.conv1.*               | backbone.bottom_up.res3.0.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,256,1,1)       |
+
+| backbone.bottom_up.res3.0.conv2.*               | backbone.bottom_up.res3.0.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,128,3,3)       |
+
+| backbone.bottom_up.res3.0.conv3.*               | backbone.bottom_up.res3.0.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,128,1,1)       |
+
+| backbone.bottom_up.res3.0.shortcut.*            | backbone.bottom_up.res3.0.shortcut.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight} | (512,) (512,) (512,) (512,) (512,256,1,1)       |
+
+| backbone.bottom_up.res3.1.conv1.*               | backbone.bottom_up.res3.1.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,512,1,1)       |
+
+| backbone.bottom_up.res3.1.conv2.*               | backbone.bottom_up.res3.1.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,128,3,3)       |
+
+| backbone.bottom_up.res3.1.conv3.*               | backbone.bottom_up.res3.1.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,128,1,1)       |
+
+| backbone.bottom_up.res3.2.conv1.*               | backbone.bottom_up.res3.2.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,512,1,1)       |
+
+| backbone.bottom_up.res3.2.conv2.*               | backbone.bottom_up.res3.2.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,128,3,3)       |
+
+| backbone.bottom_up.res3.2.conv3.*               | backbone.bottom_up.res3.2.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,128,1,1)       |
+
+| backbone.bottom_up.res3.3.conv1.*               | backbone.bottom_up.res3.3.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,512,1,1)       |
+
+| backbone.bottom_up.res3.3.conv2.*               | backbone.bottom_up.res3.3.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (128,) (128,) (128,) (128,) (128,128,3,3)       |
+
+| backbone.bottom_up.res3.3.conv3.*               | backbone.bottom_up.res3.3.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,128,1,1)       |
+
+| backbone.bottom_up.res4.0.conv1.*               | backbone.bottom_up.res4.0.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,512,1,1)       |
+
+| backbone.bottom_up.res4.0.conv2.*               | backbone.bottom_up.res4.0.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.0.conv3.*               | backbone.bottom_up.res4.0.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res4.0.shortcut.*            | backbone.bottom_up.res4.0.shortcut.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight} | (1024,) (1024,) (1024,) (1024,) (1024,512,1,1)  |
+
+| backbone.bottom_up.res4.1.conv1.*               | backbone.bottom_up.res4.1.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,1024,1,1)      |
+
+| backbone.bottom_up.res4.1.conv2.*               | backbone.bottom_up.res4.1.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.1.conv3.*               | backbone.bottom_up.res4.1.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res4.2.conv1.*               | backbone.bottom_up.res4.2.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,1024,1,1)      |
+
+| backbone.bottom_up.res4.2.conv2.*               | backbone.bottom_up.res4.2.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.2.conv3.*               | backbone.bottom_up.res4.2.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res4.3.conv1.*               | backbone.bottom_up.res4.3.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,1024,1,1)      |
+
+| backbone.bottom_up.res4.3.conv2.*               | backbone.bottom_up.res4.3.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.3.conv3.*               | backbone.bottom_up.res4.3.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res4.4.conv1.*               | backbone.bottom_up.res4.4.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,1024,1,1)      |
+
+| backbone.bottom_up.res4.4.conv2.*               | backbone.bottom_up.res4.4.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.4.conv3.*               | backbone.bottom_up.res4.4.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res4.5.conv1.*               | backbone.bottom_up.res4.5.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,1024,1,1)      |
+
+| backbone.bottom_up.res4.5.conv2.*               | backbone.bottom_up.res4.5.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (256,) (256,) (256,) (256,) (256,256,3,3)       |
+
+| backbone.bottom_up.res4.5.conv3.*               | backbone.bottom_up.res4.5.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (1024,) (1024,) (1024,) (1024,) (1024,256,1,1)  |
+
+| backbone.bottom_up.res5.0.conv1.*               | backbone.bottom_up.res5.0.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,1024,1,1)      |
+
+| backbone.bottom_up.res5.0.conv2.*               | backbone.bottom_up.res5.0.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,512,3,3)       |
+
+| backbone.bottom_up.res5.0.conv3.*               | backbone.bottom_up.res5.0.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (2048,) (2048,) (2048,) (2048,) (2048,512,1,1)  |
+
+| backbone.bottom_up.res5.0.shortcut.*            | backbone.bottom_up.res5.0.shortcut.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight} | (2048,) (2048,) (2048,) (2048,) (2048,1024,1,1) |
+
+| backbone.bottom_up.res5.1.conv1.*               | backbone.bottom_up.res5.1.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,2048,1,1)      |
+
+| backbone.bottom_up.res5.1.conv2.*               | backbone.bottom_up.res5.1.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,512,3,3)       |
+
+| backbone.bottom_up.res5.1.conv3.*               | backbone.bottom_up.res5.1.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (2048,) (2048,) (2048,) (2048,) (2048,512,1,1)  |
+
+| backbone.bottom_up.res5.2.conv1.*               | backbone.bottom_up.res5.2.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,2048,1,1)      |
+
+| backbone.bottom_up.res5.2.conv2.*               | backbone.bottom_up.res5.2.conv2.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (512,) (512,) (512,) (512,) (512,512,3,3)       |
+
+| backbone.bottom_up.res5.2.conv3.*               | backbone.bottom_up.res5.2.conv3.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}    | (2048,) (2048,) (2048,) (2048,) (2048,512,1,1)  |
+
+| backbone.bottom_up.stem.conv1.*                 | backbone.bottom_up.stem.conv1.{norm.bias,norm.running_mean,norm.running_var,norm.weight,weight}      | (64,) (64,) (64,) (64,) (64,3,7,7)              |
+
+| backbone.fpn_lateral2.*                         | backbone.fpn_lateral2.{bias,weight}                                                                  | (256,) (256,256,1,1)                            |
+
+| backbone.fpn_lateral3.*                         | backbone.fpn_lateral3.{bias,weight}                                                                  | (256,) (256,512,1,1)                            |
+
+| backbone.fpn_lateral4.*                         | backbone.fpn_lateral4.{bias,weight}                                                                  | (256,) (256,1024,1,1)                           |
+
+| backbone.fpn_lateral5.*                         | backbone.fpn_lateral5.{bias,weight}                                                                  | (256,) (256,2048,1,1)                           |
+
+| backbone.fpn_output2.*                          | backbone.fpn_output2.{bias,weight}                                                                   | (256,) (256,256,3,3)                            |
+
+| backbone.fpn_output3.*                          | backbone.fpn_output3.{bias,weight}                                                                   | (256,) (256,256,3,3)                            |
+
+| backbone.fpn_output4.*                          | backbone.fpn_output4.{bias,weight}                                                                   | (256,) (256,256,3,3)                            |
+
+| backbone.fpn_output5.*                          | backbone.fpn_output5.{bias,weight}                                                                   | (256,) (256,256,3,3)                            |
+
+| proposal_generator.rpn_head.anchor_deltas.*     | proposal_generator.rpn_head.anchor_deltas.{bias,weight}                                              | (12,) (12,256,1,1)                              |
+
+| proposal_generator.rpn_head.conv.*              | proposal_generator.rpn_head.conv.{bias,weight}                                                       | (256,) (256,256,3,3)                            |
+
+| proposal_generator.rpn_head.objectness_logits.* | proposal_generator.rpn_head.objectness_logits.{bias,weight}                                          | (3,) (3,256,1,1)                                |
+
+| roi_heads.box_head.fc1.*                        | roi_heads.box_head.fc1.{bias,weight}                                                                 | (1024,) (1024,12544)                            |
+
+| roi_heads.box_head.fc2.*                        | roi_heads.box_head.fc2.{bias,weight}                                                                 | (1024,) (1024,1024)                             |
+
+| roi_heads.box_predictor.bbox_pred.*             | roi_heads.box_predictor.bbox_pred.{bias,weight}                                                      | (4,) (4,1024)                                   |
+
+| roi_heads.box_predictor.cls_score.*             | roi_heads.box_predictor.cls_score.{bias,weight}                                                      | (2,) (2,1024)                                   |
+
+| roi_heads.mask_head.deconv.*                    | roi_heads.mask_head.deconv.{bias,weight}                                                             | (256,) (256,256,2,2)                            |
+
+| roi_heads.mask_head.mask_fcn1.*                 | roi_heads.mask_head.mask_fcn1.{bias,weight}                                                          | (256,) (256,256,3,3)                            |
+
+| roi_heads.mask_head.mask_fcn2.*                 | roi_heads.mask_head.mask_fcn2.{bias,weight}                                                          | (256,) (256,256,3,3)                            |
+
+| roi_heads.mask_head.mask_fcn3.*                 | roi_heads.mask_head.mask_fcn3.{bias,weight}                                                          | (256,) (256,256,3,3)                            |
+
+| roi_heads.mask_head.mask_fcn4.*                 | roi_heads.mask_head.mask_fcn4.{bias,weight}                                                          | (256,) (256,256,3,3)                            |
+
+| roi_heads.mask_head.predictor.*                 | roi_heads.mask_head.predictor.{bias,weight}                                                          | (1,) (1,256,1,1)                                |
+
+
+
+
+
+
+
+
+
+Then, we randomly select several samples to visualize the prediction results.
+
+
+
+
+from
+ detectron2.utils.visualizer 
+import
+ ColorMode
+
+
+dataset_dicts 
+=
+ get_balloon_dicts(
+"balloon/val"
+)
+
+
+for
+ d 
+in
+ random.sample(dataset_dicts, 
+3
+):    
+
+
+    im 
+=
+ cv2.imread(d[
+"file_name"
+])
+
+
+    outputs 
+=
+ predictor(im)  
+# format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format
+
+
+    v 
+=
+ Visualizer(im[:, :, ::
+-
+1
+],
+
+
+                   metadata
+=
+balloon_metadata, 
+
+
+                   scale
+=
+0.5
+, 
+
+
+                   instance_mode
+=
+ColorMode.IMAGE_BW   
+# remove the colors of unsegmented pixels. This option is only available for segmentation models
+
+
+    )
+
+
+    out 
+=
+ v.draw_instance_predictions(outputs[
+"instances"
+].to(
+"cpu"
+))
+
+
+    cv2_imshow(out.get_image()[:, :, ::
+-
+1
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+We can also evaluate its performance using AP metric implemented in COCO API. This gives an AP of ~70. Not bad!
+
+
+
+
+from
+ detectron2.evaluation 
+import
+ COCOEvaluator, inference_on_dataset
+
+
+from
+ detectron2.data 
+import
+ build_detection_test_loader
+
+
+evaluator 
+=
+ COCOEvaluator(
+"balloon_val"
+, output_dir
+=
+"./output"
+)
+
+
+val_loader 
+=
+ build_detection_test_loader(cfg, 
+"balloon_val"
+)
+
+
+print
+(inference_on_dataset(predictor.model, val_loader, evaluator))
+
+
+# another equivalent way to evaluate the model is to use `trainer.test`
+
+
+
+
+
+
+[11/08 16:58:59 d2.evaluation.coco_evaluation]: 
+Trying to convert 'balloon_val' to COCO format ...
+
+
+WARNING
+ 
+[11/08 16:58:59 d2.data.datasets.coco]: 
+Using previously cached COCO format annotations at './output/balloon_val_coco_format.json'. You need to clear the cache file if your dataset has been modified.
+
+
+[11/08 16:58:59 d2.data.build]: 
+Distribution of instances among all 1 categories:
+
+
+|  category  | #instances   |
+
+|:----------:|:-------------|
+
+|  balloon   | 50           |
+
+|            |              |
+
+
+
+[11/08 16:58:59 d2.data.dataset_mapper]: 
+[DatasetMapper] Augmentations used in inference: [ResizeShortestEdge(short_edge_length=(800, 800), max_size=1333, sample_style='choice')]
+
+
+[11/08 16:58:59 d2.data.common]: 
+Serializing 13 elements to byte tensors and concatenating them all ...
+
+
+[11/08 16:58:59 d2.data.common]: 
+Serialized dataset takes 0.04 MiB
+
+
+[11/08 16:58:59 d2.evaluation.evaluator]: 
+Start inference on 13 batches
+
+
+[11/08 16:59:00 d2.evaluation.evaluator]: 
+Inference done 11/13. Dataloading: 0.0010 s/iter. Inference: 0.0352 s/iter. Eval: 0.0091 s/iter. Total: 0.0454 s/iter. ETA=0:00:00
+
+
+[11/08 16:59:00 d2.evaluation.evaluator]: 
+Total inference time: 0:00:00.436444 (0.054556 s / iter per device, on 1 devices)
+
+
+[11/08 16:59:00 d2.evaluation.evaluator]: 
+Total inference pure compute time: 0:00:00 (0.034567 s / iter per device, on 1 devices)
+
+
+[11/08 16:59:00 d2.evaluation.coco_evaluation]: 
+Preparing results for COCO format ...
+
+
+[11/08 16:59:00 d2.evaluation.coco_evaluation]: 
+Saving results to ./output/coco_instances_results.json
+
+
+[11/08 16:59:00 d2.evaluation.coco_evaluation]: 
+Evaluating predictions with unofficial COCO API...
+
+Loading and preparing results...
+
+DONE (t=0.00s)
+
+creating index...
+
+index created!
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+Evaluate annotation type *bbox*
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+COCOeval_opt.evaluate() finished in 0.00 seconds.
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+Accumulating evaluation results...
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+COCOeval_opt.accumulate() finished in 0.00 seconds.
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.735
+
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.838
+
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.801
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.531
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.917
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.248
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.754
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.754
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.559
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.940
+
+
+[11/08 16:59:00 d2.evaluation.coco_evaluation]: 
+Evaluation results for bbox: 
+
+|   AP   |  AP50  |  AP75  |  APs  |  APm   |  APl   |
+
+|:------:|:------:|:------:|:-----:|:------:|:------:|
+
+| 73.543 | 83.773 | 80.054 | 0.000 | 53.092 | 91.719 |
+
+Loading and preparing results...
+
+DONE (t=0.00s)
+
+creating index...
+
+index created!
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+Evaluate annotation type *segm*
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+COCOeval_opt.evaluate() finished in 0.01 seconds.
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+Accumulating evaluation results...
+
+
+[11/08 16:59:00 d2.evaluation.fast_eval_api]: 
+COCOeval_opt.accumulate() finished in 0.00 seconds.
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.755
+
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.810
+
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.810
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.520
+
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.965
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.254
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.770
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.770
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.541
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.977
+
+
+[11/08 16:59:00 d2.evaluation.coco_evaluation]: 
+Evaluation results for segm: 
+
+|   AP   |  AP50  |  AP75  |  APs  |  APm   |  APl   |
+
+|:------:|:------:|:------:|:-----:|:------:|:------:|
+
+| 75.484 | 81.000 | 81.000 | 0.000 | 51.973 | 96.516 |
+
+OrderedDict([('bbox', {'AP': 73.54345467878944, 'AP50': 83.77273773889017, 'AP75': 80.05421970768505, 'APs': 0.0, 'APm': 53.092234498175095, 'APl': 91.71886987843824}), ('segm', {'AP': 75.48403884002163, 'AP50': 81.00046051116738, 'AP75': 81.00046051116738, 'APs': 0.0, 'APm': 51.97258187357197, 'APl': 96.51637047762746})])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Other types of builtin models
+
+
+We showcase simple demos of other types of models below:
+
+
+
+
+# Inference with a keypoint detection model
+
+
+cfg 
+=
+ get_cfg()   
+# get a fresh new config
+
+
+cfg.merge_from_file(model_zoo.get_config_file(
+"COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml"
+))
+
+
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST 
+=
+ 
+0.7
+  
+# set threshold for this model
+
+
+cfg.MODEL.WEIGHTS 
+=
+ model_zoo.get_checkpoint_url(
+"COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml"
+)
+
+
+predictor 
+=
+ DefaultPredictor(cfg)
+
+
+outputs 
+=
+ predictor(im)
+
+
+v 
+=
+ Visualizer(im[:,:,::
+-
+1
+], MetadataCatalog.get(cfg.DATASETS.TRAIN[
+0
+]), scale
+=
+1.2
+)
+
+
+out 
+=
+ v.draw_instance_predictions(outputs[
+"instances"
+].to(
+"cpu"
+))
+
+
+cv2_imshow(out.get_image()[:, :, ::
+-
+1
+])
+
+
+
+
+/usr/local/lib/python3.7/dist-packages/detectron2/structures/keypoints.py:224: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the 'trunc' function NOT 'floor'). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode='trunc'), or for actual floor division, use torch.div(a, b, rounding_mode='floor').
+  y_int = (pos - x_int) // w
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Inference with a panoptic segmentation model
+
+
+cfg 
+=
+ get_cfg()
+
+
+cfg.merge_from_file(model_zoo.get_config_file(
+"COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml"
+))
+
+
+cfg.MODEL.WEIGHTS 
+=
+ model_zoo.get_checkpoint_url(
+"COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml"
+)
+
+
+predictor 
+=
+ DefaultPredictor(cfg)
+
+
+panoptic_seg, segments_info 
+=
+ predictor(im)[
+"panoptic_seg"
+]
+
+
+v 
+=
+ Visualizer(im[:, :, ::
+-
+1
+], MetadataCatalog.get(cfg.DATASETS.TRAIN[
+0
+]), scale
+=
+1.2
+)
+
+
+out 
+=
+ v.draw_panoptic_seg_predictions(panoptic_seg.to(
+"cpu"
+), segments_info)
+
+
+cv2_imshow(out.get_image()[:, :, ::
+-
+1
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Run panoptic segmentation on a video
+
+
+
+
+# This is the video we're going to process
+
+
+from
+ IPython.display 
+import
+ YouTubeVideo, display
+
+
+video 
+=
+ YouTubeVideo(
+"ll8TgCZ0plk"
+, width
+=
+500
+)
+
+
+display(video)
+
+
+
+
+
+
+
+
+
+
+
+
+# Install dependencies, download the video, and crop 5 seconds for processing
+
+
+!
+pip install youtube
+-
+dl
+
+
+!
+youtube
+-
+dl https:
+//
+www.youtube.com
+/
+watch?v
+=
+ll8TgCZ0plk 
+-
+f 
+22
+ 
+-
+o video.mp4
+
+
+!
+ffmpeg 
+-
+i video.mp4 
+-
+t 
+00
+:
+00
+:
+0
+6
+ 
+-
+c:v copy video
+-
+clip.mp4
+
+
+
+
+Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+Requirement already satisfied: youtube-dl in /usr/local/lib/python3.7/dist-packages (2021.12.17)
+[youtube] ll8TgCZ0plk: Downloading webpage
+[download] video.mp4 has already been downloaded
+[download] 100% of 404.40MiB
+ffmpeg version 3.4.11-0ubuntu0.1 Copyright (c) 2000-2022 the FFmpeg developers
+  built with gcc 7 (Ubuntu 7.5.0-3ubuntu1~18.04)
+  configuration: --prefix=/usr --extra-version=0ubuntu0.1 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --enable-gpl --disable-stripping --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libpulse --enable-librubberband --enable-librsvg --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzmq --enable-libzvbi --enable-omx --enable-openal --enable-opengl --enable-sdl2 --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-libopencv --enable-libx264 --enable-shared
+  libavutil      55. 78.100 / 55. 78.100
+  libavcodec     57.107.100 / 57.107.100
+  libavformat    57. 83.100 / 57. 83.100
+  libavdevice    57. 10.100 / 57. 10.100
+  libavfilter     6.107.100 /  6.107.100
+  libavresample   3.  7.  0 /  3.  7.  0
+  libswscale      4.  8.100 /  4.  8.100
+  libswresample   2.  9.100 /  2.  9.100
+  libpostproc    54.  7.100 / 54.  7.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'video.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: isommp42
+    creation_time   : 2019-02-02T17:19:09.000000Z
+  Duration: 00:22:33.07, start: 0.000000, bitrate: 2507 kb/s
+    Stream #0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, bt709), 1280x720 [SAR 1:1 DAR 16:9], 2375 kb/s, 29.97 fps, 29.97 tbr, 30k tbn, 59.94 tbc (default)
+    Metadata:
+      creation_time   : 2019-02-02T17:19:09.000000Z
+      handler_name    : ISO Media file produced by Google Inc. Created on: 02/02/2019.
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+    Metadata:
+      creation_time   : 2019-02-02T17:19:09.000000Z
+      handler_name    : ISO Media file produced by Google Inc. Created on: 02/02/2019.
+File 'video-clip.mp4' already exists. Overwrite ? [y/N] 
+
+
+
+
+
+
+
+
+# Run frame-by-frame inference demo on this video (takes 3-4 minutes) with the "demo.py" tool we provided in the repo.
+
+
+!
+git clone https:
+//
+github.com
+/
+facebookresearch
+/
+detectron2
+
+
+# Note: this is currently BROKEN due to missing codec. See https://github.com/facebookresearch/detectron2/issues/2901 for workaround.
+
+
+%
+run detectron2
+/
+demo
+/
+demo.py 
+--
+config
+-
+file
+ detectron2
+/
+configs
+/
+COCO
+-
+PanopticSegmentation
+/
+panoptic_fpn_R_101_3x.yaml 
+--
+video
+-
+input
+ video
+-
+clip.mp4 
+--
+confidence
+-
+threshold 
+0.6
+ 
+--
+output video
+-
+output.mkv 
+\
+
+
+  
+--
+opts MODEL.WEIGHTS detectron2:
+//
+COCO
+-
+PanopticSegmentation
+/
+panoptic_fpn_R_101_3x
+/
+139514519
+/
+model_final_cafdb1.pkl
+
+
+
+
+
+
+# Download the results
+
+
+from
+ google.colab 
+import
+ files
+
+
+files.download(
+'video-output.mkv'
+)
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+MaskRCNN Inference
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

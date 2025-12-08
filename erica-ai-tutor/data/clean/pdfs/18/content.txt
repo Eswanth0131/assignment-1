@@ -1,0 +1,95 @@
+Calculus/Tables of Derivatives - Wikibooks, open books for an open world 12/7/25, 3:37 AM
+WIKIBOOKS
+Open books for an open world
+Calculus/Tables of Derivatives
+Wikipedia has related
+General Rules
+gt" information at
+\° \) Differentiation rules (h
+fv+9= +4 ~~" ttps://en.wikipedia.org/w
+iki/Differentiation_rules).
+Secpeet
+7 Fg) Bg. =
+$lto(a)= )] 2-2 = Fale)-d @)
+de
+sa fle)ala) => (") £9 (a9 (e)
+==
+d —_—
+"a7
++ So" =n2"
+d 1
+a oR
+di 1
+“dec
+d
+a —(ene” + Cy_12"! + cp_ge? + +++ + ega® +12 +¢9) = nega”! + (n —1)en_12"? + (n — 2)en_g2"3 +--+ 224+ C1
+dz
+Trigonometric Functions
+qd.
+as sin(z) = cos(z)
+https://en.wikibooks.org/wiki/Calculus/Tables_of_Derivatives Page 1 of 3
+Calculus/Tables of Derivatives - Wikibooks, open books for an open world 12/7/25, 3:37 AM
+d .
+as cos(z) = — sin(z)
+~ tan(x) = sec” (x)
+as cot(#) = — csc? (2)
+d
+a sec(z) = sec(z) tan(x)
+ic csc(z) = — csc(2) cot(z)
+Exponential and Logarithmic Functions
+d
+. ae =e
+ae = a” In(a) ifa > 0
+dc
+d 1
+» —dInz( z) n(z) = —x
+7 — log, (2) = ifa>0,aAl
+~ gIn(a)
+2) = 5 (em)=e(r2+gmy), f>0
+. =d ©) — adn (cfm) = cf In(c) - f’
+Inverse Trigonometric Functions
+1
+— arcsin(x) = ————
+VJ1—2?
+d 1
+— arccos(x) = -—————
+dz J/12—?
+d 1
+ais arctan(z) = Pal
+d 1
+d 1
+a arcsec(z) =
+|a|/x2 — 1
+1
+— arccsc(x) = —
+dz |x| 4/2—?1
+Hyperbolic and Inverse Hyperbolic Functions
+https://en.wikibooks.org/wiki/Calculus/Tables_of_Derivatives Page 2 of 3
+Calculus/Tables of Derivatives - Wikibooks, open books for an open world 12/7/25, 3:37 AM
+d .
+— sinh(x) = cosh(zx)
+dz
+d cosh(z) = sinh(z)
+dx 7
+d tanh(«) = sech?(z)
+dx 7
+d
+qe echt) = — tanh(z)sech(z)
+&
+a coth(x) = —csch?(z)
+dz
+~—csch() = — coth(zx)csch(z)
+L
+ds, 1
+—arsinh(z) = ——_——
+—darcosh(xz) = oe ,@>1
+dz e2 —1
+~<artanh(s) =Tog1 F? lz] <1
+d arsech(z) = — 0<a2<l
+dz 7
+<arcoth(2) =Tog1 F? |jz| >1
+4 aresch(z) =
+dz ——_—_, & 7 0
+lc) /1+2?
+Retrieved from "https://en.wikibooks.org/w/index.php ?title=Calculus/Tables_of_Derivatives&oldid=4381362"
+https://en.wikibooks.org/wiki/Calculus/Tables_of_Derivatives Page 3 of 3

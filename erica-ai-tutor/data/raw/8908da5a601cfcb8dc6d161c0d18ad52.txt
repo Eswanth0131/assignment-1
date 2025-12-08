@@ -1,0 +1,2396 @@
+Using ConvNets with Small Datasets
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Open In Colab
+
+
+
+
+
+
+This notebook is authored by F. Chollet.
+
+
+
+
+# import os
+
+
+# os.environ['LD_LIBRARY_PATH'] = '/workspaces/artificial_intelligence/.venv/lib/python3.11/site-packages/tensorrt_libs'
+
+
+
+
+import
+ sklearn
+
+
+from
+ sklearn.metrics 
+import
+ confusion_matrix
+
+
+import
+ seaborn 
+as
+ sns
+
+
+import
+ numpy 
+as
+ np
+
+
+
+
+import
+ tensorflow 
+as
+ tf
+
+
+import
+ keras
+
+
+gpus 
+=
+ tf.config.list_physical_devices(
+'GPU'
+)
+
+
+for
+ gpu 
+in
+ gpus:
+
+
+    
+print
+(
+"Name:"
+, gpu.name, 
+"  Type:"
+, gpu.device_type)
+
+
+
+
+2023-10-15 22:40:50.849693: I tensorflow/core/platform/cpu_feature_guard.cc:194] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-10-15 22:40:51.027310: I tensorflow/core/util/port.cc:104] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+
+
+
+
+
+Name: /physical_device:GPU:0   Type: GPU
+
+
+
+
+
+
+2023-10-15 22:40:52.448077: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:52.537043: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:52.537371: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+
+
+
+
+
+
+
+
+Using convnets with small datasets
+
+
+This notebook contains the code sample found in Chapter 5, Section 2 of 
+Deep Learning with Python
+. Note that the original text features far more content, in particular further explanations and figures: in this notebook, you will only find source code and related comments.
+
+
+
+
+Training a convnet from scratch on a small dataset
+
+
+Having to train an image classification model using only very little data is a common situation, which you likely encounter yourself in practice if you ever do computer vision in a professional context.
+
+
+Having “few” samples can mean anywhere from a few hundreds to a few tens of thousands of images. As a practical example, we will focus on classifying images as “dogs” or “cats”, in a dataset containing 4000 pictures of cats and dogs (2000 cats, 2000 dogs). We will use 2000 pictures for training, 1000 for validation, and finally 1000 for testing.
+
+
+In this section, we will review one basic strategy to tackle this problem: training a new model from scratch on what little data we have. We will start by naively training a small convnet on our 2000 training samples, without any regularization, to set a baseline for what can be achieved. This will get us to a classification accuracy of 71%. At that point, our main issue will be overfitting. Then we will introduce 
+data augmentation
+, a powerful technique for mitigating overfitting in computer vision. By leveraging data augmentation, we will improve our network to reach an accuracy of 82%.
+
+
+In the next section, we will review two more essential techniques for applying deep learning to small datasets: 
+doing feature extraction with a pre-trained network
+ (this will get us to an accuracy of 90% to 93%), and 
+fine-tuning a pre-trained network
+ (this will get us to our final accuracy of 95%). Together, these three strategies – training a small model from scratch, doing feature extracting using a pre-trained model, and fine-tuning a pre-trained model – will constitute your future toolbox for tackling the problem of doing computer vision with small datasets.
+
+
+
+
+
+
+The relevance of deep learning for small-data problems
+
+
+You will sometimes hear that deep learning only works when lots of data is available. This is in part a valid point: one fundamental characteristic of deep learning is that it is able to find interesting features in the training data on its own, without any need for manual feature engineering, and this can only be achieved when lots of training examples are available. This is especially true for problems where the input samples are very high-dimensional, like images.
+
+
+However, what constitutes “lots” of samples is relative – relative to the size and depth of the network you are trying to train, for starters. It isn’t possible to train a convnet to solve a complex problem with just a few tens of samples, but a few hundreds can potentially suffice if the model is small and well-regularized and if the task is simple. Because convnets learn local, translation-invariant features, they are very data-efficient on perceptual problems. Training a convnet from scratch on a very small image dataset will still yield reasonable results despite a relative lack of data, without the need for any custom feature engineering. You will see this in action in this section.
+
+
+But what’s more, deep learning models are by nature highly repurposable: you can take, say, an image classification or speech-to-text model trained on a large-scale dataset then reuse it on a significantly different problem with only minor changes. Specifically, in the case of computer vision, many pre-trained models (usually trained on the ImageNet dataset) are now publicly available for download and can be used to bootstrap powerful vision models out of very little data. That’s what we will do in the next section.
+
+
+For now, let’s get started by getting our hands on the data.
+
+
+
+
+
+
+Downloading the data
+
+
+The cats vs. dogs dataset that we will use isn’t packaged with Keras. It was made available by Kaggle.com as part of a computer vision competition in late 2013, back when convnets weren’t quite mainstream. The data in the form of a zip file is stored in 
+Hugging Face
+.
+
+
+
+
+The pictures are medium-resolution color JPEGs. They look like this:
+
+
+
+
+
+
+
+
+cats_vs_dogs_samples
+
+
+
+
+
+
+Unsurprisingly, the cats vs. dogs Kaggle competition in 2013 was won by entrants who used convnets. The best entries could achieve up to 95% accuracy. In our own example, we will get fairly close to this accuracy (in the next section), even though we will be training our models on less than 10% of the data that was available to the competitors. This original dataset contains 25,000 images of dogs and cats (12,500 from each class) and is 543MB large (compressed). After downloading and uncompressing it, we will create a new dataset containing three subsets: a training set with 1000 samples of each class, a validation set with 500 samples of each class, and finally a test set with 500 samples of each class.
+
+
+Here are a few lines of code to do this:
+
+
+
+
+import
+ os, shutil
+
+
+
+
+
+
+# Unzip file
+
+
+!
+mkdir 
+-
+p dogscats
+/
+subset
+
+
+!
+unzip 
+-
+o 
+-
+q dogs
+-
+vs
+-
+cats
+-
+subset.
+zip
+ 
+-
+d dogscats 
+
+
+
+
+
+
+base_dir 
+=
+ 
+'dogscats/subset'
+
+
+train_dir 
+=
+ os.path.join(base_dir, 
+'train'
+)
+
+
+train_cats_dir 
+=
+ os.path.join(base_dir, 
+'train'
+, 
+'cats'
+)
+
+
+train_dogs_dir 
+=
+ os.path.join(base_dir, 
+'train'
+, 
+'dogs'
+)
+
+
+validation_dir 
+=
+ os.path.join(base_dir, 
+'validation'
+)
+
+
+test_dir 
+=
+ os.path.join(base_dir, 
+'test'
+)
+
+
+
+
+
+
+So we have indeed 2000 training images, and then 1000 validation images and 1000 test images. In each split, there is the same number of samples from each class: this is a balanced binary classification problem, which means that classification accuracy will be an appropriate measure of success.
+
+
+
+
+
+
+Building our network
+
+
+We’ve already built a small convnet for MNIST in the previous example, so you should be familiar with them. We will reuse the same general structure: our convnet will be a stack of alternated 
+Conv2D
+ (with 
+relu
+ activation) and 
+MaxPooling2D
+ layers.
+
+
+However, since we are dealing with bigger images and a more complex problem, we will make our network accordingly larger: it will have one more 
+Conv2D
+ + 
+MaxPooling2D
+ stage. This serves both to augment the capacity of the network, and to further reduce the size of the feature maps, so that they aren’t overly large when we reach the 
+Flatten
+ layer. Here, since we start from inputs of size 150x150 (a somewhat arbitrary choice), we end up with feature maps of size 7x7 right before the 
+Flatten
+ layer.
+
+
+Note that the depth of the feature maps is progressively increasing in the network (from 32 to 128), while the size of the feature maps is decreasing (from 148x148 to 7x7). This is a pattern that you will see in almost all convnets.
+
+
+Since we are attacking a binary classification problem, we are ending the network with a single unit (a 
+Dense
+ layer of size 1) and a 
+sigmoid
+ activation. This unit will encode the probability that the network is looking at one class or the other.
+
+
+
+
+from
+ keras 
+import
+ layers
+
+
+from
+ keras 
+import
+ models
+
+
+
+
+model 
+=
+ models.Sequential()
+
+
+model.add(layers.Conv2D(
+32
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+,
+
+
+                        input_shape
+=
+(
+150
+, 
+150
+, 
+3
+)))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+64
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+128
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+128
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Flatten())
+
+
+model.add(layers.Dense(
+512
+, activation
+=
+'relu'
+))
+
+
+model.add(layers.Dense(
+1
+, activation
+=
+'sigmoid'
+))
+
+
+
+
+2023-10-15 22:40:53.736504: I tensorflow/core/platform/cpu_feature_guard.cc:194] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-10-15 22:40:53.738074: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.738413: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.738565: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.823799: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.824159: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.824303: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-10-15 22:40:53.824420: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1621] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11961 MB memory:  -> device: 0, name: NVIDIA RTX A4500 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+
+
+
+
+
+
+Let’s take a look at how the dimensions of the feature maps change with every successive layer:
+
+
+
+
+model.summary()
+
+
+
+
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d (Conv2D)             (None, 148, 148, 32)      896       
+                                                                 
+ max_pooling2d (MaxPooling2D  (None, 74, 74, 32)       0         
+ )                                                               
+                                                                 
+ conv2d_1 (Conv2D)           (None, 72, 72, 64)        18496     
+                                                                 
+ max_pooling2d_1 (MaxPooling  (None, 36, 36, 64)       0         
+ 2D)                                                             
+                                                                 
+ conv2d_2 (Conv2D)           (None, 34, 34, 128)       73856     
+                                                                 
+ max_pooling2d_2 (MaxPooling  (None, 17, 17, 128)      0         
+ 2D)                                                             
+                                                                 
+ conv2d_3 (Conv2D)           (None, 15, 15, 128)       147584    
+                                                                 
+ max_pooling2d_3 (MaxPooling  (None, 7, 7, 128)        0         
+ 2D)                                                             
+                                                                 
+ flatten (Flatten)           (None, 6272)              0         
+                                                                 
+ dense (Dense)               (None, 512)               3211776   
+                                                                 
+ dense_1 (Dense)             (None, 1)                 513       
+                                                                 
+=================================================================
+Total params: 3,453,121
+Trainable params: 3,453,121
+Non-trainable params: 0
+_________________________________________________________________
+
+
+
+
+
+
+For our compilation step, we’ll go with the 
+RMSprop
+ optimizer as usual. Since we ended our network with a single sigmoid unit, we will use binary crossentropy as our loss (as a reminder, check out the table in Chapter 4, section 5 for a cheatsheet on what loss function to use in various situations).
+
+
+
+
+from
+ keras 
+import
+ optimizers
+
+
+
+
+model.
+compile
+(loss
+=
+'binary_crossentropy'
+,
+
+
+              optimizer
+=
+optimizers.RMSprop(lr
+=
+1e-4
+),
+
+
+              metrics
+=
+[
+'acc'
+])
+
+
+
+
+/usr/local/lib/python3.8/dist-packages/keras/optimizers/optimizer_v2/rmsprop.py:143: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  super().__init__(name, **kwargs)
+
+
+
+
+
+
+
+
+
+
+Data preprocessing
+
+
+As you already know by now, data should be formatted into appropriately pre-processed floating point tensors before being fed into our network. Currently, our data sits on a drive as JPEG files, so the steps for getting it into our network are roughly:
+
+
+
+
+Read the picture files.
+
+
+Decode the JPEG content to RBG grids of pixels.
+
+
+Convert these into floating point tensors.
+
+
+Rescale the pixel values (between 0 and 255) to the [0, 1] interval (as you know, neural networks prefer to deal with small input values).
+
+
+
+
+It may seem a bit daunting, but thankfully Keras has utilities to take care of these steps automatically. Keras has a module with image processing helper tools, located at 
+keras.preprocessing.image
+. In particular, it contains the class 
+ImageDataGenerator
+ which allows to quickly set up Python generators that can automatically turn image files on disk into batches of pre-processed tensors. This is what we will use here.
+
+
+
+
+from
+ keras.preprocessing.image 
+import
+ ImageDataGenerator
+
+
+
+
+# All images will be rescaled by 1./255
+
+
+train_datagen 
+=
+ ImageDataGenerator(rescale
+=
+1.
+/
+255
+)
+
+
+test_datagen 
+=
+ ImageDataGenerator(rescale
+=
+1.
+/
+255
+)
+
+
+
+
+train_generator 
+=
+ train_datagen.flow_from_directory(
+
+
+        
+# This is the target directory
+
+
+        train_dir,
+
+
+        
+# All images will be resized to 150x150
+
+
+        target_size
+=
+(
+150
+, 
+150
+),
+
+
+        batch_size
+=
+20
+,
+
+
+        
+# Since we use binary_crossentropy loss, we need binary labels
+
+
+        class_mode
+=
+'binary'
+)
+
+
+
+
+validation_generator 
+=
+ test_datagen.flow_from_directory(
+
+
+        validation_dir,
+
+
+        target_size
+=
+(
+150
+, 
+150
+),
+
+
+        batch_size
+=
+20
+,
+
+
+        class_mode
+=
+'binary'
+)
+
+
+
+
+Found 2000 images belonging to 2 classes.
+Found 1000 images belonging to 2 classes.
+
+
+
+
+
+
+Let’s take a look at the output of one of these generators: it yields batches of 150x150 RGB images (shape 
+(20, 150, 150, 3)
+) and binary labels (shape 
+(20,)
+). 20 is the number of samples in each batch (the batch size). Note that the generator yields these batches indefinitely: it just loops endlessly over the images present in the target folder. For this reason, we need to 
+break
+ the iteration loop at some point.
+
+
+
+
+for
+ data_batch, labels_batch 
+in
+ train_generator:
+
+
+    
+print
+(
+'data batch shape:'
+, data_batch.shape)
+
+
+    
+print
+(
+'labels batch shape:'
+, labels_batch.shape)
+
+
+    
+break
+
+
+
+
+data batch shape: (20, 150, 150, 3)
+labels batch shape: (20,)
+
+
+
+
+
+
+Let’s fit our model to the data using the generator. We do it using the 
+fit_generator
+ method, the equivalent of 
+fit
+ for data generators like ours. It expects as first argument a Python generator that will yield batches of inputs and targets indefinitely, like ours does. Because the data is being generated endlessly, the generator needs to know example how many samples to draw from the generator before declaring an epoch over. This is the role of the 
+steps_per_epoch
+ argument: after having drawn 
+steps_per_epoch
+ batches from the generator, i.e. after having run for 
+steps_per_epoch
+ gradient descent steps, the fitting process will go to the next epoch. In our case, batches are 20-sample large, so it will take 100 batches until we see our target of 2000 samples.
+
+
+When using 
+fit_generator
+, one may pass a 
+validation_data
+ argument, much like with the 
+fit
+ method. Importantly, this argument is allowed to be a data generator itself, but it could be a tuple of Numpy arrays as well. If you pass a generator as 
+validation_data
+, then this generator is expected to yield batches of validation data endlessly, and thus you should also specify the 
+validation_steps
+ argument, which tells the process how many batches to draw from the validation generator for evaluation.
+
+
+
+
+history 
+=
+ model.fit_generator(
+
+
+      train_generator,
+
+
+      steps_per_epoch
+=
+100
+,
+
+
+      epochs
+=
+30
+,
+
+
+      validation_data
+=
+validation_generator,
+
+
+      validation_steps
+=
+50
+)
+
+
+
+
+Epoch 1/30
+
+
+
+
+
+
+/tmp/ipykernel_300284/3259228942.py:1: UserWarning: `Model.fit_generator` is deprecated and will be removed in a future version. Please use `Model.fit`, which supports generators.
+  history = model.fit_generator(
+2023-10-15 22:40:54.827503: I tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:428] Loaded cuDNN version 8700
+2023-10-15 22:40:55.060845: I tensorflow/compiler/xla/stream_executor/cuda/cuda_blas.cc:648] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+
+
+
+
+
+
+100/100 [==============================] - 4s 26ms/step - loss: 0.6920 - acc: 0.5270 - val_loss: 0.6749 - val_acc: 0.6090
+Epoch 2/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.6586 - acc: 0.6085 - val_loss: 0.6676 - val_acc: 0.5810
+Epoch 3/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.6115 - acc: 0.6615 - val_loss: 0.6311 - val_acc: 0.6260
+Epoch 4/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.5685 - acc: 0.7040 - val_loss: 0.6067 - val_acc: 0.6670
+Epoch 5/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.5388 - acc: 0.7145 - val_loss: 0.6596 - val_acc: 0.6530
+Epoch 6/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.5117 - acc: 0.7420 - val_loss: 0.5881 - val_acc: 0.6700
+Epoch 7/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.4864 - acc: 0.7575 - val_loss: 0.5753 - val_acc: 0.6970
+Epoch 8/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.4594 - acc: 0.7730 - val_loss: 0.5599 - val_acc: 0.6990
+Epoch 9/30
+100/100 [==============================] - 2s 24ms/step - loss: 0.4390 - acc: 0.7990 - val_loss: 0.5532 - val_acc: 0.7120
+Epoch 10/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.4181 - acc: 0.8105 - val_loss: 0.5894 - val_acc: 0.7140
+Epoch 11/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.3959 - acc: 0.8245 - val_loss: 0.5517 - val_acc: 0.7260
+Epoch 12/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.3686 - acc: 0.8390 - val_loss: 0.5657 - val_acc: 0.7320
+Epoch 13/30
+100/100 [==============================] - 2s 24ms/step - loss: 0.3541 - acc: 0.8510 - val_loss: 0.5598 - val_acc: 0.7370
+Epoch 14/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.3355 - acc: 0.8520 - val_loss: 0.5659 - val_acc: 0.7360
+Epoch 15/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.3021 - acc: 0.8695 - val_loss: 0.5725 - val_acc: 0.7380
+Epoch 16/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.2829 - acc: 0.8940 - val_loss: 0.6035 - val_acc: 0.7300
+Epoch 17/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.2582 - acc: 0.8945 - val_loss: 0.6258 - val_acc: 0.7240
+Epoch 18/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.2456 - acc: 0.8950 - val_loss: 0.6077 - val_acc: 0.7370
+Epoch 19/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.2177 - acc: 0.9070 - val_loss: 0.6110 - val_acc: 0.7520
+Epoch 20/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.2030 - acc: 0.9250 - val_loss: 0.6483 - val_acc: 0.7400
+Epoch 21/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.1796 - acc: 0.9310 - val_loss: 0.6314 - val_acc: 0.7510
+Epoch 22/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.1628 - acc: 0.9435 - val_loss: 0.8146 - val_acc: 0.7290
+Epoch 23/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.1497 - acc: 0.9485 - val_loss: 0.7911 - val_acc: 0.7290
+Epoch 24/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.1337 - acc: 0.9575 - val_loss: 0.7611 - val_acc: 0.7310
+Epoch 25/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.1193 - acc: 0.9625 - val_loss: 0.8411 - val_acc: 0.7200
+Epoch 26/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.0973 - acc: 0.9665 - val_loss: 0.7866 - val_acc: 0.7440
+Epoch 27/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.0830 - acc: 0.9790 - val_loss: 0.8869 - val_acc: 0.7300
+Epoch 28/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.0689 - acc: 0.9800 - val_loss: 0.9081 - val_acc: 0.7420
+Epoch 29/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.0701 - acc: 0.9800 - val_loss: 0.8710 - val_acc: 0.7500
+Epoch 30/30
+100/100 [==============================] - 2s 23ms/step - loss: 0.0497 - acc: 0.9880 - val_loss: 0.9439 - val_acc: 0.7450
+
+
+
+
+
+
+It is good practice to always save your models after training:
+
+
+
+
+model.save(
+'cats_and_dogs_small_1.h5'
+)
+
+
+
+
+Let’s plot the loss and accuracy of the model over the training and validation data during training:
+
+
+
+
+import
+ matplotlib.pyplot 
+as
+ plt
+
+
+
+
+acc 
+=
+ history.history[
+'acc'
+]
+
+
+val_acc 
+=
+ history.history[
+'val_acc'
+]
+
+
+loss 
+=
+ history.history[
+'loss'
+]
+
+
+val_loss 
+=
+ history.history[
+'val_loss'
+]
+
+
+
+
+epochs 
+=
+ 
+range
+(
+len
+(acc))
+
+
+
+
+plt.plot(epochs, acc, 
+'bo'
+, label
+=
+'Training acc'
+)
+
+
+plt.plot(epochs, val_acc, 
+'b'
+, label
+=
+'Validation acc'
+)
+
+
+plt.title(
+'Training and validation accuracy'
+)
+
+
+plt.legend()
+
+
+
+
+plt.figure()
+
+
+
+
+plt.plot(epochs, loss, 
+'bo'
+, label
+=
+'Training loss'
+)
+
+
+plt.plot(epochs, val_loss, 
+'b'
+, label
+=
+'Validation loss'
+)
+
+
+plt.title(
+'Training and validation loss'
+)
+
+
+plt.legend()
+
+
+
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+These plots are characteristic of overfitting. Our training accuracy increases linearly over time, until it reaches nearly 100%, while our validation accuracy stalls at 70-72%. Our validation loss reaches its minimum after only five epochs then stalls, while the training loss keeps decreasing linearly until it reaches nearly 0.
+
+
+Because we only have relatively few training samples (2000), overfitting is going to be our number one concern. You already know about a number of techniques that can help mitigate overfitting, such as dropout and weight decay (L2 regularization). We are now going to introduce a new one, specific to computer vision, and used almost universally when processing images with deep learning models: 
+data augmentation
+.
+
+
+
+
+
+
+Using data augmentation
+
+
+Overfitting is caused by having too few samples to learn from, rendering us unable to train a model able to generalize to new data. Given infinite data, our model would be exposed to every possible aspect of the data distribution at hand: we would never overfit. Data augmentation takes the approach of generating more training data from existing training samples, by “augmenting” the samples via a number of random transformations that yield believable-looking images. The goal is that at training time, our model would never see the exact same picture twice. This helps the model get exposed to more aspects of the data and generalize better.
+
+
+In Keras, this can be done by configuring a number of random transformations to be performed on the images read by our 
+ImageDataGenerator
+ instance. Let’s get started with an example:
+
+
+
+
+datagen 
+=
+ ImageDataGenerator(
+
+
+      rotation_range
+=
+40
+,
+
+
+      width_shift_range
+=
+0.2
+,
+
+
+      height_shift_range
+=
+0.2
+,
+
+
+      shear_range
+=
+0.2
+,
+
+
+      zoom_range
+=
+0.2
+,
+
+
+      horizontal_flip
+=
+True
+,
+
+
+      fill_mode
+=
+'nearest'
+)
+
+
+
+
+These are just a few of the options available (for more, see the Keras documentation). Let’s quickly go over what we just wrote:
+
+
+
+
+rotation_range
+ is a value in degrees (0-180), a range within which to randomly rotate pictures.
+
+
+width_shift
+ and 
+height_shift
+ are ranges (as a fraction of total width or height) within which to randomly translate pictures vertically or horizontally.
+
+
+shear_range
+ is for randomly applying shearing transformations.
+
+
+zoom_range
+ is for randomly zooming inside pictures.
+
+
+horizontal_flip
+ is for randomly flipping half of the images horizontally – relevant when there are no assumptions of horizontal asymmetry (e.g. real-world pictures).
+
+
+fill_mode
+ is the strategy used for filling in newly created pixels, which can appear after a rotation or a width/height shift.
+
+
+
+
+Let’s take a look at our augmented images:
+
+
+
+
+# This is module with image preprocessing utilities
+
+
+import
+ keras.utils 
+as
+ image
+
+
+
+
+fnames 
+=
+ [os.path.join(train_cats_dir, fname) 
+for
+ fname 
+in
+ os.listdir(train_cats_dir)]
+
+
+
+
+# We pick one image to "augment"
+
+
+img_path 
+=
+ fnames[
+3
+]
+
+
+
+
+# Read the image and resize it
+
+
+img 
+=
+ image.load_img(img_path, target_size
+=
+(
+150
+, 
+150
+))
+
+
+
+
+# Convert it to a Numpy array with shape (150, 150, 3)
+
+
+x 
+=
+ image.img_to_array(img)
+
+
+
+
+# Reshape it to (1, 150, 150, 3)
+
+
+x 
+=
+ x.reshape((
+1
+,) 
++
+ x.shape)
+
+
+
+
+# The .flow() command below generates batches of randomly transformed images.
+
+
+# It will loop indefinitely, so we need to `break` the loop at some point!
+
+
+i 
+=
+ 
+0
+
+
+for
+ batch 
+in
+ datagen.flow(x, batch_size
+=
+1
+):
+
+
+    plt.figure(i)
+
+
+    imgplot 
+=
+ plt.imshow(image.array_to_img(batch[
+0
+]))
+
+
+    i 
++=
+ 
+1
+
+
+    
+if
+ i 
+%
+ 
+4
+ 
+==
+ 
+0
+:
+
+
+        
+break
+
+
+
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+If we train a new network using this data augmentation configuration, our network will never see twice the same input. However, the inputs that it sees are still heavily intercorrelated, since they come from a small number of original images – we cannot produce new information, we can only remix existing information. As such, this might not be quite enough to completely get rid of overfitting. To further fight overfitting, we will also add a Dropout layer to our model, right before the densely-connected classifier:
+
+
+
+
+model 
+=
+ models.Sequential()
+
+
+model.add(layers.Conv2D(
+32
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+,
+
+
+                        input_shape
+=
+(
+150
+, 
+150
+, 
+3
+)))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+64
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+128
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Conv2D(
+128
+, (
+3
+, 
+3
+), activation
+=
+'relu'
+))
+
+
+model.add(layers.MaxPooling2D((
+2
+, 
+2
+)))
+
+
+model.add(layers.Flatten())
+
+
+model.add(layers.Dropout(
+0.5
+))
+
+
+model.add(layers.Dense(
+512
+, activation
+=
+'relu'
+))
+
+
+model.add(layers.Dense(
+1
+, activation
+=
+'sigmoid'
+))
+
+
+
+
+model.
+compile
+(loss
+=
+'binary_crossentropy'
+,
+
+
+              optimizer
+=
+optimizers.RMSprop(lr
+=
+1e-4
+),
+
+
+              metrics
+=
+[
+'acc'
+])
+
+
+
+
+Let’s train our network using data augmentation and dropout:
+
+
+
+
+train_datagen 
+=
+ ImageDataGenerator(
+
+
+    rescale
+=
+1.
+/
+255
+,
+
+
+    rotation_range
+=
+40
+,
+
+
+    width_shift_range
+=
+0.2
+,
+
+
+    height_shift_range
+=
+0.2
+,
+
+
+    shear_range
+=
+0.2
+,
+
+
+    zoom_range
+=
+0.2
+,
+
+
+    horizontal_flip
+=
+True
+,)
+
+
+
+
+# Note that the validation data should not be augmented!
+
+
+validation_datagen 
+=
+ ImageDataGenerator(rescale
+=
+1.
+/
+255
+)
+
+
+
+
+train_generator 
+=
+ train_datagen.flow_from_directory(
+
+
+        
+# This is the target directory
+
+
+        train_dir,
+
+
+        
+# All images will be resized to 150x150
+
+
+        target_size
+=
+(
+150
+, 
+150
+),
+
+
+        batch_size
+=
+32
+,
+
+
+        
+# Since we use binary_crossentropy loss, we need binary labels
+
+
+        class_mode
+=
+'binary'
+)
+
+
+
+
+validation_generator 
+=
+ validation_datagen.flow_from_directory(
+
+
+        validation_dir,
+
+
+        target_size
+=
+(
+150
+, 
+150
+),
+
+
+        batch_size
+=
+32
+,
+
+
+        class_mode
+=
+'binary'
+)
+
+
+
+
+
+
+Found 2000 images belonging to 2 classes.
+Found 1000 images belonging to 2 classes.
+
+
+
+
+
+
+
+
+history 
+=
+ model.fit(
+
+
+      train_generator,
+
+
+      steps_per_epoch
+=
+2000
+//
+train_generator.batch_size,
+
+
+      epochs
+=
+100
+,
+
+
+      validation_data
+=
+validation_generator,
+
+
+      validation_steps
+=
+1000
+//
+validation_generator.batch_size)
+
+
+
+
+Let’s save our model – we will be using it in the section on convnet visualization.
+
+
+
+
+model.save(
+'cats_and_dogs_small_2.h5'
+)
+
+
+
+
+Let’s plot our results again:
+
+
+
+
+acc 
+=
+ history.history[
+'acc'
+]
+
+
+val_acc 
+=
+ history.history[
+'val_acc'
+]
+
+
+loss 
+=
+ history.history[
+'loss'
+]
+
+
+val_loss 
+=
+ history.history[
+'val_loss'
+]
+
+
+
+
+epochs 
+=
+ 
+range
+(
+len
+(acc))
+
+
+
+
+plt.plot(epochs, acc, 
+'bo'
+, label
+=
+'Training acc'
+)
+
+
+plt.plot(epochs, val_acc, 
+'b'
+, label
+=
+'Validation acc'
+)
+
+
+plt.title(
+'Training and validation accuracy'
+)
+
+
+plt.legend()
+
+
+
+
+plt.figure()
+
+
+
+
+plt.plot(epochs, loss, 
+'bo'
+, label
+=
+'Training loss'
+)
+
+
+plt.plot(epochs, val_loss, 
+'b'
+, label
+=
+'Validation loss'
+)
+
+
+plt.title(
+'Training and validation loss'
+)
+
+
+plt.legend()
+
+
+
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thanks to data augmentation and dropout, we are no longer overfitting: the training curves are rather closely tracking the validation curves. We are now able to reach an accuracy of 82%, a 15% relative improvement over the non-regularized model.
+
+
+By leveraging regularization techniques even further and by tuning the network’s parameters (such as the number of filters per convolution layer, or the number of layers in the network), we may be able to get an even better accuracy, likely up to 86-87%. However, it would prove very difficult to go any higher just by training our own convnet from scratch, simply because we have so little data to work with. As a next step to improve our accuracy on this problem, we will have to leverage a pre-trained model, which will be the focus of the next two sections.
+
+
+
+
+def
+ plot_cm(labels, predictions, threshold
+=
+0.5
+):
+
+
+  cm 
+=
+ confusion_matrix(labels, predictions 
+>
+ threshold)
+
+
+  plt.figure(figsize
+=
+(
+5
+,
+5
+))
+
+
+  sns.heatmap(cm, annot
+=
+True
+, fmt
+=
+"d"
+)
+
+
+  plt.title(
+'Confusion matrix @
+{:.2f}
+'
+.
+format
+(threshold))
+
+
+  plt.ylabel(
+'Actual label'
+)
+
+
+  plt.xlabel(
+'Predicted label'
+)
+
+
+
+
+  
+print
+(
+'True Negatives: '
+, cm[
+0
+][
+0
+])
+
+
+  
+print
+(
+'False Positives: '
+, cm[
+0
+][
+1
+])
+
+
+  
+print
+(
+'False Negatives: '
+, cm[
+1
+][
+0
+])
+
+
+  
+print
+(
+'True Positives: '
+, cm[
+1
+][
+1
+])
+
+
+  
+print
+(
+'Total Detections '
+, np.
+sum
+(cm[
+1
+]))
+
+
+
+
+
+
+def
+ plot_roc(name, labels, predictions, 
+**
+kwargs):
+
+
+  fp, tp, _ 
+=
+ sklearn.metrics.roc_curve(labels, predictions)
+
+
+
+
+  plt.plot(
+100
+*
+fp, 
+100
+*
+tp, label
+=
+name, linewidth
+=
+2
+, 
+**
+kwargs)
+
+
+  plt.xlabel(
+'False positives [%]'
+)
+
+
+  plt.ylabel(
+'True positives [%]'
+)
+
+
+  plt.xlim([
+-
+0.5
+,
+100
+])
+
+
+  plt.ylim([
+0
+,
+100.5
+])
+
+
+  plt.grid(
+True
+)
+
+
+  ax 
+=
+ plt.gca()
+
+
+  ax.set_aspect(
+'equal'
+)
+
+
+
+
+
+
+# Get the number of samples in the training dataset
+
+
+num_samples 
+=
+ 
+len
+(train_generator)
+
+
+
+
+# Initialize empty arrays to store training data and labels
+
+
+all_data 
+=
+ []
+
+
+all_labels 
+=
+ []
+
+
+
+
+# Iterate through the generator to collect data and labels
+
+
+for
+ i 
+in
+ 
+range
+(num_samples):
+
+
+    data_batch, labels_batch 
+=
+ train_generator[i]
+
+
+    all_data.append(data_batch)
+
+
+    all_labels.append(labels_batch)
+
+
+
+
+# Concatenate the data and labels arrays to obtain the full training dataset
+
+
+train_data 
+=
+ np.concatenate(all_data)
+
+
+train_labels 
+=
+ np.concatenate(all_labels)
+
+
+
+
+train_predictions_baseline 
+=
+ model.predict(train_data, batch_size
+=
+32
+)
+
+
+
+
+
+
+
+
+# Get the number of samples in the training dataset
+
+
+num_samples 
+=
+ 
+len
+(validation_generator)
+
+
+
+
+# Initialize empty arrays to store training data and labels
+
+
+all_data 
+=
+ []
+
+
+all_labels 
+=
+ []
+
+
+
+
+# Iterate through the generator to collect data and labels
+
+
+for
+ i 
+in
+ 
+range
+(num_samples):
+
+
+    data_batch, labels_batch 
+=
+ validation_generator[i]
+
+
+    all_data.append(data_batch)
+
+
+    all_labels.append(labels_batch)
+
+
+
+
+# Concatenate the data and labels arrays to obtain the full training dataset
+
+
+test_data 
+=
+ np.concatenate(all_data)
+
+
+test_labels 
+=
+ np.concatenate(all_labels)
+
+
+
+
+# train_features = model.predict_generator(train_generator, verbose=1)
+
+
+# test_features = model.predict_generator(train_generator, verbose=1)
+
+
+# train_labels = train_generator.classes
+
+
+# test_labels = validation_generator.classes
+
+
+
+
+test_predictions_baseline 
+=
+ model.predict(test_data, batch_size
+=
+32
+)
+
+
+
+
+63/63 [==============================] - 0s 5ms/step
+32/32 [==============================] - 0s 5ms/step
+
+
+
+
+
+
+
+
+
+
+baseline_results 
+=
+ model.evaluate(test_data, test_labels,
+
+
+                                  batch_size
+=
+32
+, verbose
+=
+0
+)
+
+
+for
+ name, value 
+in
+ 
+zip
+(model.metrics_names, baseline_results):
+
+
+  
+print
+(name, 
+': '
+, value)
+
+
+print
+()
+
+
+
+
+plot_cm(test_labels, test_predictions_baseline)
+
+
+
+
+loss :  0.5297476649284363
+acc :  0.7400000095367432
+
+True Negatives:  286
+False Positives:  214
+False Negatives:  46
+True Positives:  454
+Total Detections  500
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# plot ROC
+
+
+
+
+plot_roc(
+"Train Baseline"
+, train_labels, train_predictions_baseline)
+
+
+plot_roc(
+"Test Baseline"
+, test_labels, test_predictions_baseline, linestyle
+=
+'--'
+)
+
+
+plt.legend(loc
+=
+'lower right'
+)
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+CNN Example Architectures
+
+
+
+
+
+
+
+
+
+
+Visualizing what convnets learn
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

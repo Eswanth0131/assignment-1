@@ -1,0 +1,581 @@
+Notebooks
+NMS Example
+
+
+
+
+
+
+
+
+
+
+
+
+NMS Example
+
+
+
+
+
+
+
+
+
+
+This section describes the 1st generation of the so-called 
+Region based CNN detectors
+. Despite the fact that the RCNN detector is slow and has been replaced by faster detectors, it is important to understand the principles behind it as they are the basis for the faster detectors.
+
+
+
+
+Region Proposals
+
+
+We can think about the detection problem as a classification problem of 
+all possible portions
+ (windows/masks) of the input image since an object can be located at any position and scale in the image. It is natural to search therefore everywhere and an obvious method to generate region proposals, is to slide various width-height ratio windows around the image and using a metric to declare that the window contains one or more blob of pixels.
+
+
+Such method is computationally infeasible and we need to think of how to reduce this number by employing an algorithm to guide where to look in the image for possible general object instances. Such algorithm is called 
+selective search via hierarchical grouping
+ and is used by the baseline RCNN implementation, noting that the RCNN detector can accommodate a number of other algorithms for such purpose.
+
+
+
+
+
+
+
+
+Hierarchical Grouping
+
+
+
+
+
+
+
+
+Graph-based segmentation
+
+
+The hierarchical grouping algorithm itself uses a 
+graph-based segmentation scheme
+ to obtain the set 
+\(R=\{r_1, \dots, r_n \}\)
+ of initial regions.
+
+
+The segmentation algorithm starts by formulating the image as a graph. Let G = (V, E) be an undirected graph with vertices 
+\(v_i \in V\)
+ , the set of elements to be segmented, and edges 
+\((v_i, v_j) ∈ E\)
+ corresponding to pairs of neighboring vertices. Each edge has a corresponding weight 
+\(w((v_i, v_j ))\)
+, which is a non-negative measure of the 
+dissimilarity
+ between neighboring elements 
+\(v_i\)
+ and 
+\(v_j\)
+. In the case of image segmentation, the elements in 
+\(V\)
+ are 
+pixels
+ and the weight of an edge is some measure of the dissimilarity between the two pixels connected by that edge (e.g., the difference in intensity, color, motion, location or some other local attribute).
+
+
+A segmentation 
+\(S\)
+ is a partition of 
+\(V\)
+ into components such that each component (or region) 
+\(C ∈ S\)
+ corresponds to a connected component in a graph 
+\(G' = (V, E')\)
+, where 
+\(E' ⊆ E\)
+. In other words, any segmentation is a subset of the edges in 
+\(E\)
+. There are different ways to measure the quality of a segmentation but in general we want the elements in a component to be similar, and elements in different components to be dissimilar. This means that edges between two vertices in the same component should have relatively low weights, and edges between vertices in different components should have higher weights.
+
+
+For example, a pixel 
+\(p_i\)
+ corresponds to a vertex 
+\(v_i\)
+ and it has 8 neighboring pixels. We can define the weight to be the absolute value of the dissimilarity between the pixel light intensity 
+\(I(p_i)\)
+ and its neighbors.
+
+
+\[w((v_i, v_j )) = |I(p_i) − I(p_j )|\]
+
+
+Before we compute the weights we use the 2D Gaussian kernel / filter we met in the earlier discussion on CNN filters - the end result being a smoothing of the image that helps with noise reduction. For color images we run the algorithm for each of the three channels.
+
+
+There is one runtime parameter for the algorithm, which is the value of 
+\(k\)
+ that is used in the threshold function 
+\(τ(C) =k/|C|\)
+ where 
+\(|C|\)
+ is the number of elements in the sect 
+\(C\)
+. Thus a larger 
+\(k\)
+ causes a preference for larger components. The graph algorithm can also accommodate dissimilarity weights between neighbors at a 
+feature space
+ rather at 
+pixel
+ level based on a Euclidean distance metric with other distance functions possible.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 1: Graph representation of the segmentation problem
+
+
+
+
+
+
+
+Notice that the initial segments may be many and do not necessarily accurately represent distinct objects as shown below:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+graph-based-segmentation2
+
+
+
+
+
+
+
+
+
+Figure 2: Result of the initial segments produced by the graph-based algorithm, 
+\(k=300\)
+
+
+
+
+
+
+
+
+
+
+
+
+Grouping
+
+
+After the initial regions are produced, we use a greedy algorithm to iteratively group regions together. This is what gives the 
+hierarchical
+ in the name of the algorithm.
+
+
+First the similarities between all neighboring regions are calculated. The two most similar regions are grouped together, and new similarities are calculated between the resulting region and its neighbors. The process of grouping the most similar regions is repeated until the whole image becomes a single region.
+
+
+For the similarity 
+\(s(r_i ,r_j)\)
+ between region 
+\(r_i\)
+ and 
+\(r_j\)
+ we apply a variety of complementary measures under the constraint that they are fast to compute. In effect, this means that the similarities should be based on features that can be propagated through the hierarchy, i.e. when merging region 
+\(r_i\)
+ and 
+\(r_j\)
+ into 
+\(r_t\)
+, the features of region 
+\(r_t\)
+ need to be calculated from the features of 
+\(r_i\)
+ and 
+\(r_j\)
+ without accessing the image pixels. Such feature similarities include color, texture, size, fill - we create a binary sum of such individual similarities.
+
+
+\[ s(r_i ,r_j) = a_1 s_{color}(r_i ,r_j)+a_2 s_{texture}(r_i ,r_j) + a_3 s_{size}(r_i ,r_j) + a_4 s_{fill}(r_i ,r_j) \]
+
+
+where 
+\(a_i ∈ \{0,1\}\)
+ denotes if the similarity measure is used or not.
+
+
+The end result of the grouping is a hierarchy of regions ranked according to creation time. As earlier created regions may end up being the largest some permutation in the ranking is applied.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 3: Example of hierarchical grouping
+
+
+
+
+
+
+
+The above selective search strategy is diversified (1) by using a variety of color spaces with different invariance properties, (2) by using different similarity measures 
+\(s(r_i, r_j)\)
+, and (3) by varying our initial regions. Each strategy results in a different hierarchy and after a permutation that randomizes the ranking the final list of regions is produced. For RCNN we use 2000 such region proposals.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 4: Final proposals - in reality we have 2000 of such regions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Training the RCNN
+
+
+Each of these proposals is then fed into a CNN - since regions are of various rectangular shapes, we warp the regions to a fixed size since CNNs can only process fixed input tensors. The CNN used at the time was AlexNet that required 
+\(227 \times 227\)
+ pixels. The original AlexNet was pretrained on ImageNet and the weights were frozen. The ImageNet dataset has 1000 classes and as a result the last layer of the CNN classifier is a softmax layer that produces a 1000-dim vector. We need to start from this network and finetune for the task and domain at hand.
+
+
+
+
+Finetuning over all classes
+
+
+To start, we replace the pretrained network head with a new head that matches the number of classes we are interested in. For example for the COCO dataset the number of classes is 80 plus the background class. We then continue from the pretrained weights and finetune the network on the new dataset that consists of warped region images and region labels - the later are assigned as follows:
+
+
+We have the ground truth bounding boxes for the original training images. and 
+not
+ for the region proposals and therefore we form a new finetuning classification dataset where,
+
+
+
+
+all proposals that have 
+\(IoU \gt t_{feat}\)
+ with the ground truth box that belongs to the class 
+\(k\)
+ are declared as positive proposals for this class assigning these proposals the label 
+\(k\)
+ and
+
+
+the rest are treated as negative (background) assigning these proposals the, typical for background, label 0.
+
+
+
+
+The finetunning IoU threshold is set to 
+\(t_{feat}=0.5\)
+.
+
+
+We now can start the finetuning from the pretrained weights and at each SGD iteration we form a minibatch (of size 128) with 32 positive (25%) 
+over all classes
+ and 96 background (75%) regions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note
+
+
+
+
+
+
+
+Note the important difference between this arrangement and typical classification tasks. Here, because of the introduction of the background class in the classification head, we are able to easily produce an objectness score which is 
+\(1-\hat{y}_0\)
+ assuming that 0 is the index of the background class. We could use the output directly to classify the region as being in class 
+\(k\)
+ or not, but the IoU filtering we did earlier underrepresents hard negatives (negatives that have 
+\(0.2 < IoU < 0.5\)
+ and therefore are borderline cases) and we will pay a performance penalty. We address this in the next section.
+
+
+
+
+
+
+
+
+
+
+Binary classification per class
+
+
+After finetuning, the CNN can produce a 4096-dim feature vector from each of the regions. Note that this representation of each region is 
+shared
+ across classes, in other words the feature vector does not represent a class but the “object-ness” of each region.
+
+
+We attach a binary Support Vector Machine (SVM) linear classifier head to the CNN portion of the network, swapping the K+1 classification head we had in the finetuning stage. Using these stored features the binary classifier produces a positive or negative prediction on whether this feature contains the class of interest or not.
+
+
+We train a separate binary SVM classifier per class, using a binary classification dataset that is itself produced from the original training dataset using yet another time the IoU and a new threshold 
+\(t_{svm}=0.3\)
+. We label as positive examples 
+only
+ the ground truth boxes of the corresponding class and therefore assign them the label 1. Negative example are all the regions that have IoU with the ground truth box less than 
+\(t_{svm}\)
+ and therefore are assigned the label 0. We ignore the rest of the regions that have 
+\(IoU > t_{svm}\)
+ and are not ground truth boxes.
+
+
+
+
+
+
+Linear Regression for bounding box adjustment
+
+
+Finally, a bounding box regressor, predicts the location of the bounding boxes using the proposal boxes and nearby ground truth box data so that we can adjust the final detection box and avoid situations that whole objects are detected but partially included in the detection box.
+
+
+The details of the bounding box regressor are shown in 
+Annex C of the original paper
+ and since this regression is going to be replaced by more modern methods we will not go into details here.
+
+
+
+
+
+
+
+
+Inference
+
+
+Inference is made by feeding through the CNN the region proposals and then scoring each region with the SVM classifier.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 5: RCNN Architecture - Inference
+
+
+
+
+
+
+
+
+
+Non-Max Suppression (NMS)
+
+
+After the scoring of each proposed region by the SVM we apply a greedy 
+Non-Maximum Suppression (NMS) algorithm
+ 
+for each class
+ independently, that 
+rejects
+ a region if it has an Intersection over Union (IoU) metric with a higher scoring region, higher than a threshold 
+\(t_{nms}\)
+ . This threshold was empirically determined to be 
+\(t_{nms}=0.3\)
+ for the task outlined in the paper, but it is expected to be a hyperparameter in practice. The NMS algorithm is shown below:
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 6: NMS Algorithm. The the “soft” part can be ignored and what is quoted as 
+\(N_t\)
+ we call it 
+\(t_{nms}\)
+.
+
+
+
+
+
+
+
+Non-maximum suppression starts with a list of detection boxes B with scores S. After selecting the detection with the maximum score M , it removes it from the set B and appends it to the set of final detections D. It also removes any box which has an overlap greater than a threshold 
+\(t_{nms}\)
+ with M in the set B. This process is repeated for remaining boxes B.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note
+
+
+
+
+
+
+
+An issue with non-maximum suppression is that it sets the score for neighboring detections to zero. Thus, if an object was actually present in that overlap threshold, it would be missed and this would lead to a drop in average precision. However, if we lower the detection scores as a function of its overlap with M , it would still be in the ranked list, although with a lower confidence.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 7: Example plotting the input (left) and output (right) of the NMS Algorithm.
+
+
+
+
+
+
+
+:::
+
+
+
+
+Source: NMS Example
+
+
+:::
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Object Detection and Semantic Segmentation Metrics
+
+
+
+
+
+
+
+
+
+
+Fast RCNN Object Detection
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

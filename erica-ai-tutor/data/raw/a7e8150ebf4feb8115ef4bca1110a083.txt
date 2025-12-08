@@ -1,0 +1,86 @@
+Bellman Equations
+Applying the Bellman Optimality Backup
+
+
+
+
+Applying the Bellman Optimality Backup
+
+
+
+
+
+
+
+
+
+
+
+
+Problem statement
+
+
+ 
+Finite State Machine of a a recycling robot and MDP dynamics LUT
+
+
+
+
+
+
+Solution
+
+
+
+
+
+
+
+
+solution
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Bellman Optimality Backup
+
+
+
+
+
+
+
+
+
+
+Policy Improvement (Control)
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

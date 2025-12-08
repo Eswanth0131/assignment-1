@@ -1,0 +1,63 @@
+Training Deep Netwoks
+Fashion MNIST Case Study
+
+
+
+
+Fashion MNIST Case Study
+
+
+
+
+
+
+
+
+
+
+
+
+Fashion MNIST Case Study
+
+
+This is a case study on MNIST Fashion dataset that due to the almost perfect classification of MNIST is now the new point of reference dataset to learn and try ML algorithms on. You can click on the button “Run in Google Colab” in 
+this
+ notebook and step through the code.
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Backpropagation DNN exercises
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

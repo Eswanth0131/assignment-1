@@ -1,0 +1,209 @@
+Computing Neural Network Gradients
+Kevin Clark
+1 Introduction
+The purpose of these notes is to demonstrate how to quickly compute neural
+network gradients in a completely vectorized way. It is complementary to the
+last part of lecture 3 in C$224n 2019, which goes over the same material.
+2 Vectorized Gradients
+While it is a good exercise to compute the gradient of a neural network with re-
+spect to a single parameter (e.g., a single element in a weight matrix), in practice
+this tends to be quite slow. Instead, it is more efficient to keep everything in ma-
+trix/vector form. The basic building block of vectorized gradients is the Jacobian
+Matrix. Suppose we have a function f : R” > R” that maps a vector of length n
+to a vector of length m: f(a) = [fi(a1,...,¢n), fo(a1, +5 2n)s 05 fm (1; +) Ln).
+Then its Jacobian is the following m x n matrix:
+Oft Ofi
+Ox Loin ) aia |
+That is, (2f);, = ne (which is just a standard non-vector derivative). The
+Jacobian matrix will be useful for us because we can apply the chain rule to a
+vector-valued function just by multiplying Jacobians.
+As a little illustration of this, suppose we have a function f(x) = [fi(x), fo(x)]
+taking a scalar to a vector of size 2 and a function g(y) = [91(y1, y2), go(Y1, y2)|
+taking a vector of size two to a vector of size two. Now let’s compose them to
+get g(x) = [gi (fila), fo(x)), go(filx), fo(x))]. Using the regular chain rule, we
+can compute the derivative of g as the Jacobian
+Ag, 4 oA
+Og _ Kn (fix), fo(x))
+Of, Ox Of2 Ox
+Ox | 5g 92(fi (x), folx)) 292 Of 4 I92 Pfe
+And we see this is the same as multiplying the two Jacobians:
+agi Agt :
+Ox ~ Of on ar Of 2
+3 Useful Identities
+This section will now go over how to compute the Jacobian for several simple
+functions. It will provide some useful identities you can apply when taking neu-
+ral network gradients.
+1) Matartirxi x tit imes coll umn vectt or withi th resppeecctt to to th the coll umn vecttor
+(z = Wa, what is 22?)
+Suppose W € R”*TM. Then we can think of z as a function of « taking an
+m-dimensional vector to an n-dimensional vector. So its Jacobian will be
+nxm. Note that
+m
+k=1
+So an entry ($2); of the Jacobian will be
+(OSzn) = BOez;y ~ Oxay 24 VOOR= y "OnO; *
+—);;,= = W; = W; = W;;
+k=1 =
+a . . . Oz
+because dxL)k = lif k = 9 and 0 if otherwise. So we see that Aa =W
+2) Row vector times matrix with resppect to the row vector
+(z = aw , what is gz?)
+Oz
+A computation similar to (1) shows that an = Ww.
+x
+(3) A vector with itself
+(z =a, what is 92? )
+We have z; = x;. So
+(2%) dx, =O l ifi=j
+Ox’ = Ox; ~— Ox; QO if otherwise
+So we see that the Jacobian 22 is a diagonal matrix where the entry at (3, 7)
+is 1. This is just the identity matrix: a0 = I|. When applying the chain
+x
+rule, this term will disappear because a matrix or vector multiplied by the
+identity matrix does not change.
+An elementwise function applied a vector
+(z = f(x), what is 22? )
+Since f is being applied elementwise, we have z; = f(a;). So
+dx Oxy = Oxy” «YO sf otherwise
+So we see that the Jacobian gz is a diagonal matrix where the entry at (i, 7)
+is the derivative of f applied to x;. We can write this as <0= = diag(f’(x)) |.
+Since multiplication by a diagonal matrix is the same as doing elementwise
+multiplication by the diagonal, we could also write lof'(a) | when applying
+the chain rule.
+Matrix times column vector with respect to the matrix
+(z = Wa, 6 = 9 what is $5 = 91 82 = 683,27)
+This is a bit more complicated than the other identities. ‘The reason for in-
+cluding Shin the above problem formulation will become clear in a moment.
+First suppose we have a loss function J (a scalar) and are computing its
+gradient with respect to a matrix W € R”*TM. Then we could think of J as
+a function of W taking nm inputs (the entries of W) to a single output (J).
+This means the Jacobian re would be a 1 x nm vector. But in practice
+this is not a very useful way of arranging the gradient. It would be much
+nicer if the derivatives were in an X m matrix like this:
+OF OF
+Wey ay |
+OW nt i OW nm
+Since this matrix has the same shape as W, we could just subtract it (times
+the learning rate) from W when doing gradient descent. So (in a slight abuse
+of notation) let’s find this matrix as a instead.
+This way of arranging the gradients becomes complicated when computing
+z.. Unlike J, z is a vector. So if we are trying to rearrange the gradients
+like with ae, ae would be an n x m x n tensor! Luckily, we can avoid
+the issue by taking the gradient with respect to a single weight W;,; instead.
+soe is just a vector, which is much easier to deal with. We have
+aj
+m
+Zk = ) Wri!
+I=1
+Oz, “ O
+eOWR; da _aw_;w,
+Note that ae Wt = 1lift=k and 7 =/ and 0 if otherwise. So if k 41
+ag
+everything in the sum is zero and the gradient is zero. Otherwise, the only
+nonzero element of the sum is when | = 7, so we just get x;. Thus we find
+ante =a; if k =2 and 0 if otherwise. Another way of writing this is
+ij
+0
+Oz . < ith element
+= |x; ith elemen
+= 0 =
+Now let’s compute sot
+aj
+OJ OJ Oz _ . Oz _ OZR
+OW; 0z0Wi; — ow, 7 doh OWi; im
+(the only nonzero term in the sum is dian): To get a we want a ma-
+trix where entry (i,j) is 6;2;. This matrix is equal to the outer product
+OJ _ bi at
+OW
+Row vector time matrix with respect to the matrix
+(z=aW, 6 = 2 what is 25 = 62%7)
+OJ
+A similar computation to (5) shows that aw = x d|.
+Cross-entropy loss with respect to logits (yg = softmax(@), J =
+CE(y,9), what is 247)
+OJ
+Th e graddiienetn tiiss } 0—~ = y9 --y
+(or (§ — y)? if y is a column vector).
+These identities will be enough to let you quickly compute the gradients for many
+neural networks. However, it’s important to know how to compute Jacobians
+for other functions as well in case they show up. Some examples if you want
+practice: dot product of two vectors, elementwise product of two vectors, 2-norm
+of a vector. Feel free to use these identities in the assignments. One option is
+just to memorize them. Another option is to figure them out by looking at the
+dimensions. For example, only one ordering/orientation of 6 and x will produce
+the correct shape for oe (assuming W is not square).
+4 Gradient Layout
+Jacobean formulation is great for applying the chain rule: you just have to mul-
+tiply the Jacobians. However, when doing SGD it’s more convenient to follow
+the convention “the shape of the gradient equals the shape of the parameter”
+(as we did when computing at). That way subtracting the gradient times the
+learning rate from the parameters is easy. We expect answers to homework
+questions to follow this convention. Therefore if you compute the gradient
+of a column vector using Jacobian formulation, you should take the transpose
+when reporting your final answer so the gradient is a column vector. Another
+option is to always follow the convention. In this case the identities may not
+work, but you can still figure out the answer by making sure the dimensions of
+your derivatives match up. Up to you which of these options you choose!
+5 Example: 1-Layer Neural Network
+This section provides an example of computing the gradients of a full neural
+network. In particular we are going to compute the gradients of a one-layer
+neural network trained with cross-entropy loss. The forward pass of the model
+is as follows:
+x = input
+z=W2+5b,
+h = ReLU(z)
+6=Uh+b,
+yg = softmax(@)
+J=CE(y9,)
+It helps to break up the model into the simplest parts possible, so note that
+we defined z and @ to split up the activation functions from the linear trans-
+formations in the network’s layers. ‘The dimensions of the model’s parameters
+are
+a2 ce R?:*! b, € R?Prx! W Ee RPrXPe by € RN*! U © RNcxPn
+where D, is the size of our input, Dy is the size of our hidden layer, and N, is
+the number of classes.
+In this example, we will compute all of the network’s gradients:
+al ad oF aT
+To start with, recall that ReLU(x) = max(x,0). This means
+1 ifx#>0
+ReLU! (a) = Q if otherwise = sgn(RReeLLUU(z))
+where sgn is the signum function. Note that we are able to write the derivative
+of the activation in terms of the activation itself.
+Now let’s write out the chain rule for os and oe:
+as _ a1 09 00
+dU 0g 00 OU
+OJ _ OJ OY 06
+db, OG 00 Dby
+Notice that 5a og = oe is present in both gradients. This makes the math a bit
+cumbersome. Even worse, if we’re implementing the model without automatic
+differentiation, computing os twice will be inefficient. So it will help us to define
+some variables to represent the intermediate derivatives:
+OJ OJ
+01
+00 Oz
+These can be thought as the error signals passed down to @ and z when doing
+backpropagation. We can compute them as follows:
+6, = “ =(g-y)" this is just identity (7)
+OJ OJ 000h
+bd -_F7e L= 0C0 DTh "Dz using the chhaaini n rulrule
+= 5, 20 oh bstituting in 6
+= 1p 5s substitutinign 6,
+=6,U ~h using identity (1)
+= 6; UoReLU’(z) using identity (4)
+= 6; U osgn(h) we computed this earlier
+A good way of checking our work is by looking at the dimensions of the Jaco-
+bians:
+“ = or U O sgn(h)
+(1 x Dn) (1 x N-) (N. x Dh) (Dn)
+We see that the dimensions of all the terms in the gradient match up (i.e., the
+number of columns in a term equals the number of rows in the next term). This
+will always be the case if we computed our gradients correctly.
+Now we can use the error terms to compute our gradients. Note that we trans-
+pose out answers when computing the gradients for column vectors terms to
+follow the shape convention.
+OJ 0300, 00
+a = 3000 = 61 aT = bf ht using identity (5)
+— = - = a = 6; using identity (3) and transposing
+= on ae = be = 63a" using identity (5)
+— = - = = = 65 using identity (3) and transposing
+os — ore = (6.W)* using identity (1) and transposing

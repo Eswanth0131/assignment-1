@@ -1,0 +1,247 @@
+Generative model - Wikipedia 12/7/25, 3:35 AM
+of<\ WIKIPEDIA
+* « [7 The Free Encyclopedia
+1
+Ge~nerative model
+In statistical classification, two main approaches are called the generative approach and the
+discriminative approach. These compute classifiers by different approaches, differing in the
+degree of statistical modelling. Terminology is inconsistent,!@! but three major types can be
+distinguished:
+1. Agenerative model is a statistical model of the joint probability distribution P(X, Y) on a given
+observable variable X and target variable y:l4l A generative model can be used to "generate"
+random instances (outcomes) of an observation x9!
+2. Adiscriminative model is a model of the conditional probability P(Y | X = x) of the target Y,
+given an observation x. It can be used to "discriminate" the value of the target variable Y, given
+an observation x.!4!
+3. Classifiers computed without using a probability model are also referred to loosely as
+"discriminative".
+The distinction between these last two classes is not consistently made;15! Jebara (2004) refers to
+these three classes as generative learning, conditional learning, and discriminative learning, but
+Ng & Jordan (2002) only distinguish two classes, calling them generative classifiers (joint
+distribution) and discriminative classifiers (conditional distribution or no distribution), not
+distinguishing between the latter two classes.'©! Analogously, a classifier based on a generative
+model is a generative classifier, while a classifier based on a discriminative model is a
+discriminative classifier, though this term also refers to classifiers that are not based on a model.
+Standard examples of each, all of which are linear classifiers, are:
+= generative classifiers:
+= naive Bayes classifier and
+= linear discriminant analysis
+= discriminative model:
+= logistic regression
+In application to classification, one wishes to go from an observation x to a label y (or probability
+distribution on labels). One can compute this directly, without using a probability distribution
+(distribution-free classifier); one can estimate the probability of a label given an observation,
+P(Y|X = 2) (discriminative model), and base classification on that; or one can estimate the joint
+distribution P(X,Y) (generative model), from that compute the conditional probability
+P(Y|X =z), and then base classification on that. These are increasingly indirect, but increasingly
+https://en.wikipedia.org/wiki/Generative_model Page 1 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+probabilistic, allowing more domain knowledge and probability theory to be applied. In practice
+different approaches are used, depending on the particular problem, and hybrids can combine
+strengths of multiple approaches.
+Definition
+An alternative division defines these symmetrically as:
+=» a generative model is a model of the conditional probability of the observable xX, given a target
+y, symbolically, P(X | Y = y)§
+= a discriminative model is a model of the conditional probability of the target Y, given an
+observation x, symbolically, P(Y | X = x)!
+Regardless of precise definition, the terminology is constitutional because a generative model can
+be used to "generate" random instances (outcomes), either of an observation and target (x, y), or
+of an observation x given a target value y, 31 while a discriminative model or discriminative
+classifier (without a model) can be used to "discriminate" the value of the target variable Y, given
+an observation x.'4! The difference between "discriminate" (distinguish) and "classify" is subtle,
+and these are not consistently distinguished. (The term "discriminative classifier" becomes a
+pleonasm when "discrimination" is equivalent to "classification".)
+The term "generative model” is also used to describe models that generate instances of output
+variables in a way that has no clear relationship to probability distributions over potential samples
+of input variables. Generative adversarial networks are examples of this class of generative models,
+and are judged primarily by the similarity of particular outputs to potential inputs. Such models
+are not classifiers.
+Relationships between models
+In application to classification, the observable _X is frequently a continuous variable, the target Y is
+generally a discrete variable consisting of a finite set of labels, and the conditional probability
+P(Y | X) can also be interpreted as a (non-deterministic) target function f: X — Y, considering
+X as inputs and Yas outputs.
+Given a finite set of labels, the two definitions of "generative model" are closely related. A model of
+the conditional distribution P(X | Y = y) is a model of the distribution of each label, and a model
+of the joint distribution is equivalent to a model of the distribution of label values P(Y), together
+with the distribution of observations given a label, P(X|Y); symbolically,
+https://en.wikipedia.org/wiki/Generative_model Page 2 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+P(X, Y) = P(X | Y)P(Y). Thus, while a model of the joint probability distribution is more
+informative than a model of the distribution of label (but without their relative frequencies), it is a
+relatively small step, hence these are not always distinguished.
+Given a model of the joint distribution, P(X, Y), the distribution of the individual variables can be
+computed as the marginal distributions P(X) = Ss) P(X, Y = y) and P(Y) = / P(Y,X =2)
+y 4
+(considering X as continuous, hence integrating over it, and Y as discrete, hence summing over it),
+and either conditional distribution can be computed from the definition of conditional probability:
+P(X | Y) = P(X,Y)/P(Y) and P(Y | X) = P(X,Y)/P(X).
+Given a model of one conditional probability, and estimated probability distributions for the
+variables X and Y, denoted P(X) and P(Y), one can estimate the opposite conditional probability
+using Bayes’ rule:
+P(X | Y)P(Y) = P(Y | X)P(X).
+For example, given a generative model for P(X | Y), one can estimate:
+P(Y | X) = P(X | Y)P(Y)/P(X),
+and given a discriminative model for P(Y | X), one can estimate:
+Note that Bayes' rule (computing one conditional probability in terms of the other) and the
+definition of conditional probability (computing conditional probability in terms of the joint
+distribution) are frequently conflated as well.
+Contrast with discriminative classifiers
+A generative algorithm models how the data was generated in order to categorize a signal. It asks
+the question: based on my generation assumptions, which category is most likely to generate this
+signal? A discriminative algorithm does not care about how the data was generated, it simply
+categorizes a given signal. So, discriminative algorithms try to learn p(y|x) directly from the data
+and then try to classify data. On the other hand, generative algorithms try to learn p(z, y) which
+can be transformed into p(y|x) later to classify the data. One of the advantages of generative
+algorithms is that you can use p(x, y) to generate new data similar to existing data. On the other
+hand, it has been proved that some discriminative algorithms give better performance than some
+generative algorithms in classification tasks.!Z!
+https://en.wikipedia.org/wiki/Generative_model Page 3 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+Despite the fact that discriminative models do not need to model the distribution of the observed
+variables, they cannot generally express complex relationships between the observed and target
+variables. But in general, they don't necessarily perform better than generative models at
+classification and regression tasks. The two classes are seen as complementary or as different views
+of the same procedure.!®!
+Deep generative models
+With the rise of deep learning, a new family of methods, called deep generative models (DGMs)2,!
+10] is formed through the combination of generative models and deep neural networks. An
+increase in the scale of the neural networks is typically accompanied by an increase in the scale of
+the training data, both of which are required for good performance.4
+Popular DGMs include variational autoencoders (VAEs), generative adversarial networks (GANs),
+and auto-regressive models. Recently, there has been a trend to build very large deep generative
+models.!9! For example, GPT-3, and its precursor GPT-2,12! are auto-regressive neural language
+models that contain billions of parameters, BigGAN"3! and VQ-VAE"4! which are used for image
+generation that can have hundreds of millions of parameters, and Jukebox is a very large
+generative model for musical audio that contains billions of parameters.!45!
+Types
+Generative models
+Types of generative models are:
+=» Gaussian mixture model (and other types of mixture model)
+=» Hidden Markov model
+= Probabilistic context-free grammar
+» Bayesian network (e.g. Naive bayes, Autoregressive model)
+=» Averaged one-dependence estimators
+= Latent Dirichlet allocation
+» Boltzmann machine (e.g. Restricted Boltzmann machine, Deep belief network)
+= Variational autoencoder
+=» Generative adversarial network
+» Flow-based generative model
+» Energy based model
+= Diffusion model
+https://en.wikipedia.org/wiki/Generative_model Page 4 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+If the observed data are truly sampled from the generative model, then fitting the parameters of the
+generative model to maximize the data likelihood is a common method. However, since most
+statistical models are only approximations to the true distribution, if the model's application is to
+infer about a subset of variables conditional on known values of others, then it can be argued that
+the approximation makes more assumptions than are necessary to solve the problem at hand. In
+such cases, it can be more accurate to model the conditional density functions directly using a
+discriminative model (see below), although application-specific details will ultimately dictate
+which approach is most suitable in any particular case.
+Discriminative models
+=» k-nearest neighbors algorithm
+= Logistic regression
+=» Support Vector Machines
+= Decision Tree Learning
+=» Random Forest
+=» Maximum-entropy Markov models
+=» Conditional random fields
+Examples
+Simple example
+Suppose the input data is x € {1,2}, the set of labels for x is y € {0,1}, and there are the
+following 4 data points: (#, y) = {(1, 0), (1, 1), (2,0), (2, 1)}
+For the above data, estimating the joint probability distribution p(xz,y) from the empirical
+measure will be the following:
+y=0 y=l
+e2=1 1/4 | 1/4
+a=2 1/4 | 1/4
+while p(y|x) will be following:
+https://en.wikipedia.org/wiki/Generative_model Page 5 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+y=0 y=1
+g=1) 1/2 1/2
+2=2 1/2 1/2
+Text generation
+Shannon (1948) gives an example in which a table of frequencies of English word pairs is used to
+generate a sentence beginning with "representing and speedily is an good"; which is not proper
+English but which will increasingly approximate it as the table is moved from word pairs to word
+triplets etc.
+See also
+=» Discriminative model
+; A Mathematics portal
+=» Graphical model x P
+Notes
+a. Three leading sources, Ng & Jordan 2002, Jebara 2004, and Mitchell 2015, give different
+divisions and definitions.
+References
+1. Jebara, Tony (2004). Machine Learning: Discriminative and Generative (https://www.springer.c
+om/us/book/978 1402076473). The Springer International Series in Engineering and Computer
+Science. Kluwer Academic (Springer). ISBN 978-1-4020-7647-3.
+2. Ng & Jordan (2002): "Generative classifiers learn a model of the joint probability, p(a, y), of the
+inputs x and the label y, and make their predictions by using Bayes rules to calculate p(y | x),
+and then picking the most likely label y.
+3. Mitchell 2015: "We can use Bayes rule as the basis for designing learning algorithms (function
+approximators), as follows: Given that we wish to learn some target function f: X — Y, or
+equivalently, P(Y | X), we use the training data to learn estimates of P(X | Y) and P(Y).
+New X examples can then be classified using these estimated probability distributions, plus
+Bayes rule. This type of classifier is called a generative classifier, because we can view the
+distribution P(X | Y) as describing how to generate random instances X conditioned on the
+target attribute Y.
+4. Mitchell 2015: "Logistic Regression is a function approximation algorithm that uses training
+data to directly estimate P(Y | X), in contrast to Naive Bayes. In this sense, Logistic
+https://en.wikipedia.org/wiki/Generative_model Page 6 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+Regression is often referred to as a discriminative classifier because we can view the
+distribution P(Y | X) as directly discriminating the value of the target value Y for any given
+instance X
+5. Jebara 2004, 2.4 Discriminative Learning: "This distinction between conditional learning and
+discriminative learning is not currently a well-established convention in the field."
+6. Ng & Jordan 2002: "Discriminative classifiers model the posterior p(y|x) directly, or learn a
+direct map from inputs x to the class labels."
+7. Ng & Jordan 2002
+8. Bishop, C. M.; Lasserre, J. (24 September 2007), "Generative or Discriminative? getting the
+best of both worlds", in Bernardo, J. M. (ed.), Bayesian statistics 8: proceedings of the eighth
+Valencia International Meeting, June 2-6, 2006 (https://oooks.google.com/books?id=Vh7vAAAA
+MAAJ&pg=PA3), Oxford University Press, pp. 3-23, ISBN 978-0-19-921465-5
+9. "Scaling up—researchers advance large-scale deep generative models" (https://www.microsof
+t.com/en-us/research/blog/a-deep-generative-model-trifecta-three-advances-that-work-towards
+-harnessing-large-scale-power/). Microsoft. April 9, 2020.
+10. "Generative Models" (https://openai.com/blog/generative-models/). OpenAl. June 16, 2016.
+11. Kaplan, Jared; McCandlish, Sam; Henighan, Tom; Brown, Tom B.; Chess, Benjamin; Child,
+Rewon; Gray, Scott; Radford, Alec; Wu, Jeffrey; Amodei, Dario (2020). "Scaling Laws for
+Neural Language Models". arXiv:2001.08361 (https://arxiv.org/abs/2001.08361) [stat.ML (http
+s://arxiv.org/archive/stat.ML)].
+12. "Better Language Models and Their Implications" (https://openai.com/blog/better-language-mo
+dels/). OpenAl. February 14, 2019.
+13. Brock, Andrew; Donahue, Jeff; Simonyan, Karen (2018). "Large Scale GAN Training for High
+Fidelity Natural Image Synthesis". arXiv:1809.11096 (https://arxiv.org/abs/1809. 11096) [cs.LG (
+https://arxiv.org/archive/cs.LG)].
+14. Razavi, Ali; van den Oord, Aaron; Vinyals, Oriol (2019). "Generating Diverse High-Fidelity
+Images with VQ-VAE-2". arXiv:1906.00446 (https://arxiv.org/abs/1906.00446) [cs.LG (https://ar
+xiv.org/archive/cs.LG)].
+15. "Jukebox" (https://openai.com/blog/jukebox/). OpenAl. April 30, 2020.
+External links
+= Shannon, C. E. (1948). "A Mathematical Theory of Communication" (https://web.archive.org/we
+b/20160607/h6itt2p :/2/w0ww.0tn0t. uni-hannover.de/edu/vorlesungen/Info Theor/download/shann
+on1948.pdf) (PDF). Bell System Technical Journal. 27 (July, October): 379-423, 623-656.
+doi:10.1002/j. 1538-7305. 1948.tb01338.x (https://doi.org/10.1002%2F}j. 1538-7305. 1948.tb0133
+8.x). hdl:10338.dmlcz/101429 (https://hdl.handle.net/10338.dmlcz%2F 101429). Archived from
+the original (https ://www.tnt. uni-hannover.de/edu/vorlesungen/Info Theor/download/shannon1 94
+8.pdf) (PDF) on 2016-06-06. Retrieved 2016-01-09.
+= Mitchell, Tom M. (2015). "3. Generative and Discriminative Classifiers: Naive Bayes and
+Logistic Regression" (https://www.cs.cmu.edu/~tom/mlbook/NBayesLogReg.pdf) (PDF).
+Machine Learning.
+https://en.wikipedia.org/wiki/Generative_model Page 7 of 8
+Generative model - Wikipedia 12/7/25, 3:35 AM
+=» Ng, Andrew Y.; Jordan, Michael I. (2002). "On discriminative vs. generative classifiers: A
+comparison of logistic regression and naive bayes" (http://robotics.stanford.edu/~ang/papers/ni
+ps0 1-discriminativegenerative.pdf) (PDF). Advances in Neural Information Processing
+Systems.
+a Jebara, Tony (2002). Discriminative, generative, and imitative learning (PhD). Massachusetts
+Institute of Technology. hdl:1721.1/8323 (https://ndl.handle.net/1721.1%2F8323)., (mirror (http
+s://www.cs.columbia.edu/~jebara/papers/jebara4.pdf), mirror (http://citeseerx.ist.psu.edu/viewd
+oc/download ?doi=10.1.1.7.513&rep=rep1 &type=pdf)), published as book (above)
+Retrieved from "https://en. wikipedia.org/w/index.php ?title=Generative_model&oldid=1289902843"
+https://en.wikipedia.org/wiki/Generative_model Page 8 of 8

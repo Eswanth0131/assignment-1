@@ -1,0 +1,14 @@
+Extract all entities and relationships from the following text.
+
+Return ONLY valid JSON with EXACT keys:
+{
+  "entities": [
+    {"name": "...", "type": "..."}
+  ],
+  "relationships": [
+    {"source": "...", "target": "...", "relation": "..."}
+  ]
+}
+
+TEXT:
+{{CHUNK_TEXT}}

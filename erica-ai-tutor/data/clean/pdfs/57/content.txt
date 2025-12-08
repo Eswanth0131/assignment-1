@@ -1,0 +1,218 @@
+NL2LTL —- A Python Package for Converting Natural Language (NL)
+Instructions to Linear Temporal Logic (LTL) Formulas
+Francesco Fuggitti!’~ - Tathagata Chakraborti°
+' Sapienza University, Rome (Italy)
+York University, Toronto (Canada)
+> IBM Research, Cambridge (USA)
+francesco.fuggitti@ibm.com, tchakra2 @ibm.com
+Abstract | Translate |
+This is a demonstration of our newly released Python pack- | Templates | | NLU Engines | | Filters |
+age NL2LTL which leverages the latest in natural language
+understanding (NLU) and large language models (LLMs) DECLARE + RASA GPT-3 WA db Structural Greedy Optimal +
+to translate natural language instructions to linear temporal Pro
+logic (LTL) formulas. This allows direct translation to for-
+mal languages that a reasoning system can use, while at the Figure 1: NL2LTL components
+same time, allowing the end-user to provide inputs in natural
+language without having to understand any details of an un-
+derlying formal language. The package comes with support
+human-readable construct given an LTL formula (Cherukuri,
+for a set of default LTL patterns, corresponding to popular
+Ferrari, and Spoletini 2022). In this work, we aim to make
+DECLARE templates, but is also fully extensible to new for-
+the journey in the opposite direction — from natural language
+mulas and user inputs. The package is open-source and is free
+to use for the AI community under the MIT license. to LTL. This has two main advantages: 1) unstructured in-
+puts to a system can be translated to a form that reasoning
+Open Source: https://github.com/IBM/nl12Itl
+engines can consume; while 2) the interface to the end-user
+Video Link: https://tinyurl.com/2cu9jtsx remains as accessible as possible.
+Related Work Existing works fall under two buckets: one
+Natural Language and LTL
+which admits support for a range of LTL formulas but com-
+A host of enterprise applications revolve around the manage-
+promises on the expressiveness of the input (Hahn et al.
+ment of workflows — this includes data processing pipelines
+2022; Schmitt 2022; Narizzano et al. 2018; Narizzano and
+in AutoML (He, Zhao, and Chu 2021), web service compo-
+Vuotto 2017), and the other which admits natural language
+sition (Lemos, Daniel, and Benatallah 2015), dialogue trees
+inputs but were built for a particular domain like robotics
+in conversational systems (Muise et al. 2020), and so on. An
+and are not readily useful as a general purpose package for
+emerging theme in this area is the adoption of natural lan-
+practitioners (Wang et al. 2020; Wang 2020; Nikora and Bal-
+guage as a desired input modality (Chakraborti et al. 2022),
+com 2009; Dwyer, Avrunin, and Corbett 1998; Kim, Banks,
+aimed at reducing the barrier of entry and expertise required
+and Shah 2017; Lignos et al. 2015). Furthermore, among
+for users looking to adopt workflow management tools.
+these works, other than (Wang 2020; Narizzano and Vuotto
+One of the scientific advances towards easier authoring
+2017; Schmitt 2022), none have publicly available code and
+tools for workflow management is the notion of “declarative
+are therefore not readily usable for practitioners. On the
+specifications”. An important specification language in this
+other hand, there are a couple of code bases that have also
+paradigm is LTL (Pnueli 1977), which allows for compila-
+attempted natural language to LTL translation (Head 2015;
+tions to many well-known problems in process management
+Zheng 2020) but they are at a very rudimentary stage with
+e.g. conformance checking (De Giacomo et al. 2017; De Gi-
+little to no support or documentation. To the best of our
+acomo 2021), while also admitting translations to specifica-
+knowledge, our package is the first one going public with
+tions of standard reasoning engines such as automated plan-
+support for a significant breadth of LTL patterns and an ex-
+ners (more on this later).
+tensible API to make it usable in different domains.
+While allowing for a declarative design paradigm, LTL
+also has a secondary benefit: LTL formulas can be read-
+NL2LTL Overview
+ily described in an easy-to-understand natural language for-
+mat. For example, DECLARE templates (Pesic and Van der NL2LTL is built with a unique focus on extensibility: 1) The
+Aalst 2006) — a very popular specification language in the inputs and outputs are domain agnostic so it can be adopted
+world of business process management — 1s readily translat- into any domain of choice; and 2) any and all components —
+able to LTL formulas (De Giacomo, De Masellis, and Mon- be it the natural language understanding module or the scope
+tali 2014); and there exists a variety of tools to generate a of supported LTL formulas — are extendable or modifiable.
+e A developer must manually inspect parse trees and write code for a few limited patterns.
+¢ We also lose all such patterns when we move to a new parser.
+@ ne Deca; ; ’ ec Constraints DDL 5A0AA0I0 Aut tec
+Gi» —_ De a sc n r g i uop a tsg i o e n —_>. e P p a e r n s a e d r e n ——— nowleage —> Compil; er —PDD>L u P t l o a m nn a e t r e —> Fl°ow
+of Task AMR
+User
+| { PDDL |
+> NL2LTL Control rules. —————_> PDDL + LTL Com piler — New PDDL
+Domain
+Independent * Domain dependent parser + knowledge graph get us what things are in the flow.
+Parser ¢ Domain independent parser gives us the control rules.
+Figure 2: An application of NL2LTL to a real industrial application (Brachman et al. 2022).
+DECLARE Template: (ChainResponse Slack Gmail) This is because the patterns are not independent: 1) two LTL
+English meaning: Every time activity Slack happens, it must be
+directly followed by activity Gmail. formulas can conflict with each other when both cannot be
+Confidence: 0.9999997615814209
+true at the same time; or 2) one LTL formula can be sub-
+DECLARE Template: (ExistenceTwo Slack) sumed by another when the latter always implies the former.
+English meaning: Slack will happen at least twice.
+Confidence: 1.0441302578101386e-07
+Demonstration Logistics
+DECLARE Template: (RespondedExistence Slack Gmail)
+English meaning: If Slack happens at least once then Gmail has Following our demonstration at AAAT 2023, here we will
+to happen or happened before Slack.
+Confidence: 6.342362723898987e—-08 showcase new results on new language models such as GPT-
+4 (OpenAI 2023). The demonstration will consist of two live
+Figure 3: Sample output (pretty print) of NL2LTL, illustrat- components — first the package itself, and then an illustration
+ing candidate DECLARE templates suggested by the pack- of how it can be employed in a real-world application.
+age, using the Rasa NLU Engine, for the request: “Send me
+a Slack after receiving a Gmail”. Demonstration of NL2LTL For demonstration of the
+package itself, the ICAPS audience will be able to inter-
+act with a command line interface where they can type
+in constraints in English, and explore the resultant LTL-
+Sample Interactions Figure 3 illustrates the NL2LTL out-
+translations along with the entities detected and what those
+put — a list of translations, ranked by confidence. Each can-
+translations mean when translated back to English.
+didate translation has two interesting properties: 1) Expla-
+nations: Each formula is translated back to English to il- Industry Application For the real-world industry-scale
+lustrate how the formal representation interprets it. Depend- application, we will build on a system demonstration at
+ing on the downstream application, the developer can use AAAI 2022 (Brachman et al. 2022) on a web service compo-
+this to explain to the end user to what extent the translation sition task using natural language. Such a system was depen-
+matches their original request; and 2) Alternative Repre- dent on code that is specific to the parser in order to look for
+sentations: While this example if for DECLARE templates, specific patterns requested by the user — this means that there
+each candidate can also be translated to other equivalent rep- is a significant developer overhead in manually investigating
+resentations, such as LTL¢ (De Giacomo and Vardi 2013) the parser (Abstract Syntax Representations (Astudillo et al.
+and PPLTL (De Giacomo et al. 2020). 2020)) for a set of inputs, writing pattern extraction methods
+for it limited to that scope, while eventually that code is not
+Architecture The primary function of NL2LTL is a trans- reusable once the system upgrades to a different parser.
+lation function, which is assisted by three different compo- By augmenting the processing pipeline with the NL2LTL
+nents (Figure 1). The first component is a set of supported package, we are able to remove all parser-specific code and
+patterns, or “templates”, to be identified e.g. DECLARE instead generate the required patterns with zero maintenance
+templates (Pesic and Van der Aalst 2006). While this cov- overhead. The patterns detected using the package, parallel
+ers a wider range of LTL formulas, a developer can also to the original processing pipeline, are eventually merged for
+add their own templates specific to their application. Sec- a singular PDDL input to the automated planner in the end,
+ondly, NL2LTL can be configured with different NLU en- using the compilation which receives as input the PDDL
+gines while the API remains exactly the same. At the mo- specification generated by the original pipeline along with
+ment, NL2LTL comes with two engines pre-configured — the LTL patterns detected by the NL2LTL package, and pro-
+one based on the intent-entity paradigm from Rasa (Bock- duces a compiled PDDL for the planner where the control
+lisch et al. 2017) that is traditionally used for natural lan- rules are enforced (Figure 2). For the LTL to PDDL compila-
+guage understanding, while the other is a language model- tion, we use (Bonassi et al. 2023) but any existing approach
+based extraction, tapping into the Open AI API (Brown et al. (Bacchus and Kabanza 2000; Baier and MclIlraith 2006b,a;
+2020). Finally, the package also implements a filter func- Torres and Baier 2015) will suffice.
+tions to post-process for better candidate sets of translations.
+Acknowledgments. Francesco started and completed Dwyer, M. B.; Avrunin, G. S.; and Corbett, J. C. 1998. Prop-
+most of this work as an intern at IBM Research. He was also erty Specification Patterns for Finite-State Verification. In
+partially supported by the ERC Advanced Grant WhiteMech Workshop on Formal Methods in Software Practice.
+(No. 834228), the EU ICT-48 2020 project TAILOR (No. Hahn, C.; Schmitt, F.; Tillman, J. J.; Metzger, N.; Siber, J.;
+952215), and the PRIN project RIPER (No. 20203FFYLK). and Finkbeiner, B. 2022. Formal Specifications from Natu-
+ral Language. arXiv:2206.01962.
+References
+He, X.; Zhao, K.; and Chu, X. 2021. AutoML: A Survey of
+Astudillo, R. F.; Ballesteros, M.; Naseem, T.; Blodgett, A.; the State-of-the-Art. Knowledge-Based Systems.
+and Florian, R. 2020. Transition-Based Parsing with Stack-
+Head, A. 2015. LTLTrans. https://github.com/andrewhead/
+Transformers. arXiv:2010.10669.
+LTLTrans. Accessed: 2016-02-09.
+Bacchus, F.; and Kabanza, F. 2000. Using temporal logics
+Kim, J.; Banks, C. J.; and Shah, J. A. 2017. Collaborative
+to express search control knowledge for planning. Artificial
+Planning with Encoding of Users’ High-Level Strategies. In
+intelligence, 116(1-2): 123-191.
+AAAI.
+Baier, J. A.; and Mcllraith, S. A. 2006a. Planning with First-
+Lemos, A. L.; Daniel, F.; and Benatallah, B. 2015. Web
+Order Temporally Extended Goals using Heuristic Search.
+Service Composition: A Survey of Techniques and Tools.
+In AAAI.
+ACM Computing Surveys.
+Baier, J. A.; and Mcllraith, S. A. 2006b. Planning with Tem-
+Lignos, C.; Raman, V.; Finucane, C.; Marcus, M. P.; and
+porally Extended Goals Using Heuristic Search. In JCAPS.
+Kress-Gazit, H. 2015. Provably correct reactive control from
+Bocklisch, T.; Faulkner, J.; Pawlowski, N.; and Nichol, A. natural language. Autonomous Robots, 38(1): 89-105.
+2017. Rasa: Open Source Language Understanding and Di-
+Muise, C.; Chakraborti, T.; Agarwal, S.; Bajgar, O.; Chaud-
+alogue Management. arXiv:1712.05181.
+hary, A.; Lastras-Montano, L. A.; Ondrej, J.; Vodolan, M.;
+Bonassi, L.; De Giacomo, G.; Favorito, M.; Fuggitti, F.; and Wiecha, C. 2020. Planning for Goal-Oriented Dialogue
+Gerevini, A.; and Scala, E. 2023. Planning for Temporally Systems. arXiv: 1910.08137,
+Extended Goals in Pure-Past Linear Temporal Logic. In
+Narizzano, M.; Pulina, L.; Tacchella, A.; and Vuotto, S.
+ICAPS.
+2018. Consistency of Property Specification Patterns with
+Brachman, M.; Bygrave, C.; Chakraborti, T.; Chaudhary, A.; Boolean and Constrained Numerical Signals. In NASA For-
+Ding, Z.; Dugan, C.; Gros, D.; Gschwind, T.; Johnson, J.; mal Methods Symposium.
+Laredo, J.; Czasch, C. M.; Pan, Q.; Rai, P.; Ramalingam, R.;
+Narizzano, M.; and Vuotto, S. 2017. Structured Natural
+Scotton, P.; Surabathina, N.; and Talamadupula, K. 2022. A
+Language To Formal Language. https://github.com/SAGE-
+Goal-driven Natural Language Interface for Creating Appli-
+Lab/snI2fl. Accessed: 2018-07-12.
+cation Integration Workflows. In AAAI Demonstration.
+Nikora, A. P.; and Balcom, G. 2009. Automated Identifica-
+Brown, T.; Mann, B.; Ryder, N.; Subbiah, M.; Kaplan, J. D.;
+tion of LTL Patterns in Natural Language Requirements. In
+Dhariwal, P.; Neelakantan, A.; Shyam, P.; Sastry, G.; Askell,
+Symposium on Software Reliability Engineering.
+A.; et al. 2020. Language Models are Few-Shot Learners.
+OpenAI. 2023. GPT-4 Technical Report. arXiv:2303.08774.
+NeurlIPS.
+Chakraborti, T.; Rizk, Y.; Isahagian, V.; Aksar, B.; and Fug- Pesic, M.; and Van der Aalst, W. M. 2006. A Declarative
+gitti, F. 2022. From Natural Language to Workflows: To- Approach for Flexible Business Processes Management. In
+wards Emergent Intelligence in Robotic Process Automa- BPM.
+tion. In BPM. Pnueli, A. 1977. The Temporal Logic of Programs. In Sym-
+Cherukuri, H.; Ferrari, A.; and Spoletini, P. 2022. Towards posium on Foundations of Computer Science.
+Explainable Formal Methods: From LTL to Natural Lan- Schmitt, F. 2022. ML2: Machine Learning for Mathematics
+guage with Neural Machine Translation. In REFSQ. and Logics. https://github.com/reactive-systems/ml2. Ac-
+De Giacomo, G. 2021. Artificial Intelligence-based Declar- cessed: 2022-02-03.
+ative Process Synthesis for BPM. Invited Talk. Torres, J.; and Baier, J. A. 2015. Polynomial-Time Reformu-
+De Giacomo, G.; De Masellis, R.; and Montali, M. 2014. lations of LTL Temporally Extended Goals into Final-State
+Reasoning on LTL on Finite Traces: Insensitivity to Infinite- Goals. In LJCAIT.
+ness. In AAAI, Wang, C. 2020. Grounded LTL Parser. https://github.com/
+De Giacomo, G.; Di Stasio, A.; Fuggitti, FR; and Rubin, S. czlwang/grounded_LTL_parser. Accessed: 2021-04-27.
+2020. Pure-Past Linear Temporal and Dynamic Logic on Wang, C.; Ross, C.; Kuo, Y.; Katz, B.; and Barbu, A. 2020.
+Finite Traces. In JJCAI, volume 20. Learning a Natural-Language to LTL Executable Semantic
+De Giacomo, G.; Maggi, F.; Marrella, A.; and Patrizi, F. Parser for Grounded Robotics. In Proceedings of Machine
+2017. On the Disruptive Effectiveness of Automated Plan- Learning Research.
+ning for LTLf-Based Trace Alignment. In AAAI. Zheng, S. 2020. Translation from natural language to Linear
+De Giacomo, G.; and Vardi, M. 2013. Linear Temporal Temporal Logic. https://github.com/suchzheng2/Lang2LTL.
+Logic and Linear Dynamic Logic on Finite Traces. In /J- Accessed: 2020-12-12.
+CAI.

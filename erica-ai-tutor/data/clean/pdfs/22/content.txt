@@ -1,0 +1,242 @@
+Vector, Matrix, and ‘Tensor Derivatives
+Erik Learned-Miller
+The purpose of this document is to help you learn to take derivatives of vectors, matrices,
+and higher order tensors (arrays with three dimensions or more), and to help you take
+derivatives with respect to vectors, matrices, and higher order tensors.
+1 Simplify, simplify, simplify
+Much of the confusion in taking derivatives involving arrays stems from trying to do too
+many things at once. These “things” include taking derivatives of multiple components
+simultaneously, taking derivatives in the presence of summation notation, and applying the
+chain rule. By doing all of these things at the same time, we are more likely to make errors,
+at least until we have a lot of experience.
+1.1 Expanding notation into explicit sums and equations for each
+component
+In order to simplify a given calculation, it is often useful to write out the explicit formula for
+a single scalar element of the output in terms of nothing but scalar variables. Once one has
+an explicit formula for a single scalar element of the output in terms of other scalar values,
+then one can use the calculus that you used as a beginner, which is much easier than trying
+to do matrix math, summations, and derivatives all at the same time.
+Example. Suppose we have a column vector y of length C that is calculated by forming
+the product of a matrix W that is C rows by D columns with a column vector # of length
+D:
+Suppose we are interested in the derivative of y with respect to 7. A full characterization
+of this derivative requires the (partial) derivatives of each component of y with respect to each
+component of 7, which in this case will contain C’ x D values since there are C' components
+in y and D components of 7.
+Let’s start by computing one of these, say, the 3rd component of y with respect to the
+7th component of 7. That is, we want to compute
+ifs
+OF,’
+1
+which is just the derivative of one scalar with respect to another.
+The first thing to do is to write down the formula for computing y3 so we can take its
+derivative. From the definition of matrix-vector multiplication, the value y3 is computed by
+taking the dot product between the 3rd row of W and the vector 2:
+dD
+Us =D) Way 5. (2)
+j=l
+At this point, we have reduced the original matrix equation (Equation|1) to a scalar equation.
+This makes it much easier to compute the desired derivatives.
+1.2 Removing summation notation
+While it is certainly possible to compute derivatives directly from Equation |2| people fre-
+quently make errors when differentiating expressions that contain summation notation (>°)
+or product notation ([]). When you’re beginning, it is sometimes useful to write out a
+computation without any summation notation to make sure you're doing everything right.
+Using “1” as the first index, we have:
+Y3 = W312 + W3 2% +. + W3,727 +... W3 p&p.
+Of course, I have explicitly included the term that involves 77, since that is what we are
+differenting with respect to. At this point, we can see that the expression for ys; only depends
+upon #7 through a single term, W3777. Since none of the other terms in the summation
+include 77, their derivatives with respect to 77 are all 0. Thus, we have
+OY: 0 > > > =>
+OX7 OX7
+O
+OX7
+“(Waza (5)
+= 2Oz, 3,7x47
+= W327. (6)
+By focusing on one component of 7 and one component of 7, we have made the calculation
+about as simple as it can be. In the future, when you are confused, it can help to try to
+reduce a problem to this most basic setting to see where you are going wrong.
+1.2.1 Completing the derivative: the Jacobian matrix
+Recall that our original goal was to compute the derivatives of each component of y with
+respect to each component of 7, and we noted that there would be C' x D of these. They
+can be written out as a matrix in the following form:
+roy | OY OF Oy 7
+OX} O£2 O£3 OLD
+Oy2 Oy2 Oye OY2
+OX} O£2 O£3 OLD
+We We Ie Yc
+L OF 1 O£2 OX3 OX p
+In this particular case, this is called the Jacobian matriz, but this terminology is not too
+important for our purposes.
+Notice that for the equation
+y= Wa,
+the partial of y3 with respect to 77 was simply given by W377. If you go through the same
+process for other components, you will find that, for all z and J,
+ON;
+= Wij.
+Oz;
+This means that the matrix of partial derivatives is
+roy, OF CO OY17
+OP OT OF OFD Wii Wi2 Wig... Wip
+Oj, Oj Die Of Wei Wo2 Wo3 ... Wap
+Of, Of Of; °'' Ofp| = , ,
+dic Ato Ate die [Wor Wor Was .-- Wop.
+L OF) O£2 O03 ut O£p4
+This, of course, is just W itself.
+Thus, after all this work, we have concluded that for
+yY=Wa,
+we have it
+Y
+—=W.
+dz
+2 Row vectors instead of column vectors
+It is important in working with different neural networks packages to pay close attention to
+the arrangement of weight matrices, data matrices, and so on. For example, if a data matrix
+X contains many different vectors, each of which represents an input, is each data vector a
+row or column of the data matrix X?
+In the example from the first section, we worked with a vector 7 that was a column
+vector. However, you should also be able to use the same basic ideas when % is a row vector.
+3
+2.1 Example 2
+Let yf be a row vector with C’ components computed by taking the product of another row
+vector Y with D components and a matrix W that is D rows by C’ columns.
+yj = TW.
+Importantly, despite the fact that 7 and x have the same number of components as before,
+the shape of W is the transpose of the shape that we used before for W. In particular, since
+we are now left-multiplying by 7, whereas before 7 was on the right, W must be transposed
+for the matrix algebra to work.
+In this case, you will see, by writing
+D
+Yy3 >= ) LiW 3
+j=l
+that
+Notice that the indexing into W is the opposite from what it was in the first example.
+However, when we assemble the full Jacobian matrix, we can still see that in this case as
+well,
+dy
+—Ti= W. (77)
+3 Dealing with more than two dimensions
+Lets consider another closely related problem, that of computing
+dy
+dW
+In this case, 7 varies along one coordinate while W varies along two coordinates. Thus, the
+entire derivative is most naturally contained in a three-dimensional array. We avoid the term
+“three-dimensional matrix” since it is not clear how matrix multiplication and other matrix
+operations are defined on a three-dimensional array.
+Dealing with three-dimensional arrays, it becomes perhaps more trouble than it’s worth
+to try to find a way to display them. Instead, we should simply define our results as formulas
+which can be used to compute the result on any element of the desired three dimensional
+array.
+Let’s again compute a scalar derivative between one component of y, say y3 and one
+component of W, say W7.. Let’s start with the same basic setup in which we write down
+an equation for yz in terms of other scalar components. Now we would like an equation that
+expresses Y/3 in terms of scalar values, and shows the role that W7. plays in its computation.
+However, what we see is that W7 plays no role in the computation of y3, since
+3 = LiWi 3 + TW 23 +... LpWp3. (8)
+In other words,
+Os _
+OW78
+However, the partials of 73 with respect to elements of the 3rd column of W will certainly
+be non-zero. For example, the derivative of ys with respect to W233 is given by
+OY;
+OW,= ”To, 99)
+as can be easily seen by examining Equation [8]
+In general, when the index of the 7 component is equal to the second index of W, the
+derivative will be non-zero, but will be zero otherwise. We can write:
+OV; — ,
+——_ — Ly,
+OW;
+but the other elements of the 3-d array will be 0. If we let F' represent the 3d array
+representing the derivative of y with respect to W, where
+OY;
+IE OW;b
+then
+Fig = Xj,
+but all other entries of F’ are zero.
+Finally, if we define a new two-dimensional array G as
+Gig = Fig
+we can see that all of the information we need about F' can be stored in G, and that the
+non-trivial portion of F' is really two-dimensional, not three-dimensional.
+Representing the important part of derivative arrays in a compact way is critical to
+efficient implementations of neural networks.
+4 Multiple data points
+It is a good exercise to repeat some of the previous examples, but using multiple examples of
+x, stacked together to form a matrix X. Let’s assume that each individual x is a row vector
+of length D, and that X is a two-dimensional array with N rows and D columns. W, as in
+our last example, will be a matrix with D rows and C columns. Y, given by
+Y=Xw.
+will also be a matrix, with N rows and C columns. Thus, each row of Y will give a row
+vector associated with the corresponding row of the input X.
+Sticking to our technique of writing down an expression for a given component of the
+output, we have
+D
+k=1
+We can see immediately from this equation that among the derivatives
+OY.»
+OXed
+they are all zero unless a = c. That is, since each component of Y is computed using only
+the corresponding row of X, derivatives of components between different rows of Y and X
+are all zero.
+Furthermore, we can see that
+OY;,;
+= W;,,; (10)
+OXik
+doesn’t depend at all upon which row of Y and X we are comparing.
+In fact, the matrix W holds all of these partials as it is-we just have to remember to
+index into it according to Equation [10] to obtain the specific partial derivative that we want.
+If we let Y;,, be the ith row of Y and let X;. be the ith row of X, then we see that
+OY,
+W,
+OX.
+which is a simple generalization of our previous result from Equation[7|
+5 The chain rule in combination with vectors and ma-
+trices
+Now that we have worked through a couple of basic examples, let’s combine these ideas with
+an example of the chain rule. Again, assuming y and # are column vectors, let’s start with
+the equation
+y=VWza,
+and try to compute the derivative of y with respect to 7. We could simply observe that the
+product of two matrices V and W is simply another matrix, call it U, and therefore
+dy
+_vwe=uw.
+dx
+However, we want to go through the process of using the chain rule to define intermediate
+results, so that we can see how the chain rule applies in the context of non-scalar derivatives.
+Let us define the intermediate result
+m=Wa.
+Then we have that
+y=Vm.
+We can then write, using the chain rule, that
+dy— dy dm
+dz dm dz’
+To make sure that we know exactly what this means, let’s take the old approach of
+analyzing one component at a time, starting with a single component of y and a single
+component of 7:
+dy, — dy; dm
+dz; dmdz;
+But how exactly should we interpret the product on the right? The idea with the chain
+rule is to multaply the change in y; with respect to each scalar intermediate variable by the
+change in the scalar intermediate variable with respect to #;. In particular, if m has M
+components, then we write
+dij, <n dy; divx
+di; — dit, dz;
+Recall from our previous results about derivatives of a vector with respect to a vector
+that ,
+yj
+din
+is just V;, and that
+dm k
+di’,
+is just W,;. So we can write
+ij <<
+~ = S- VinwWe,j;
+dz;
+k=l
+which is just the component expression for VW, our original answer to the problem.
+To summarize, we can use the chain rule in the setting of vector and matrix derivatives
+by
+e Clearly stating intermediate results and the variables used to represent them,
+e Expressing the chain rule for individual components of the final derivatives,
+e Summing appropriately over the intermediate results within the chain rule expression.

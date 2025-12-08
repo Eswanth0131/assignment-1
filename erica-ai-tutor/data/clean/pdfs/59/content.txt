@@ -1,0 +1,1124 @@
+The Matrix Calculus You Need For Deep Learning
+o
+Oo
+Ye
+woncent
+ON,
+amor”
+woe8N
+sooo
+more material, see Jeremy’ S fast.al courses A¥d‘a1l”
+peyry%ayYtyeMm ~V e4r ay+P ONaE OaFt +To b+en y egy Geygeaeety p 4iV EeryaXerE h i4. any eweo o oyCae OrMtTyP rPsiRge
+Fanaa!
+Ye a
+Nooo!
+(EL version (The PDF and HTML were generated from markup using booki+sh)
+meoceed
+s
+hares
+Sard
+*a d3
+Abstract
+SAAT
+This paper is an attempt to explain all the matrix calculus you need in order to understand
+the training of deep neural networks. We assume no math knowledge beyond what you learned
+in calculus 1, and provide links to help you refresh the necessary math where needed. Note that
+you do not need to understand this material before you start learning to train and use deep
+yet
+oe, learning in practice; rather, this material is for those who are already familiar with the basics of
+!N ana”.
+a neural networks, and wish to deepen their understanding of the underlying math. Don’t worry
+PoRaS}
+k a k ) , if you get stuck at some point along the way—just go back and reread the previous section, and
+Sea
+PoNA NSat try writing down and working through some exAMp ICs. And iyf ou re still stuck, we’re> happy
+‘noe
+yet to atinosn awetr ythoeu re nqude sotf itohnes pian ptehre sVuhmemaarryi zing all the ey rmmisafatstr.aii.x - caNlcoutlues :r ulTehs earnedi st ear3m inoleongcye
+yx
+= discussed here.
+s wey
+Ka
+FY
+2head
+at
+Sad
+Contents
+1 Introduction 3
+2 Review: Scalar derivative rules 4
+3 Introduction to vector calculus and partial derivatives 5
+4 Matrix calculus 4)
+4.1 Generalization of the Jacobian .. 2... 1... ?
+4.2 Derivatives of vector element-wise binary operators... . 2... 2. ee 9
+4.3 Derivatives involving scalar expansion .... 2... 2... 2 ee ii
+4.4 Vector sum reduction... 2... ee ee ee ee eee TG
+4.5 The Chain Rules... 2... . 2 2 i4
+4.5.1 Single-variable chainrule . 2... 2...ee i4
+4.5.2 Single-variable total-derivative chain rule ...........0.0 20.0000. pee eee 18
+4.5.3 Vector chainrule .... 2...eee 2h
+5 The gradient of neuron activation
+6 The gradient of the neural network loss function ao
+6.1 The gradient with respect to the weights... .......0. .e.ee0 e.e e.ee 0ee 26
+6.2 The derivative with respect to the bias... . 2... 2... ee ee ee 27
+7 Summary 29
+8 Matrix Calculus Reference
+8.1 Gradients and Jacobian0s.0 .e.e......0.0
+8.2 Element-wise operations on vectors . 2... 30
+8.3 Scalar expansion . 2...ee 30
+8.4 Vector reductions .......... 0... 0 ee ot
+8.5 Chainrules ....0.000.. e.e. 0..0e.e0 3]
+9 Notation Si
+10 Resources 32
+1 Introduction
+Most of us last saw calculus in school, but derivatives are a critical part of machine learning,
+particularly deep neural networks, which are trained by optimizing a loss function. Pick up a
+machine learning paper or the documentation of a library such as PyTorch and calculus comes
+screeching back into your life like distant relatives around the holidays. And it’s not just any old
+scalar calculus that pops up—you need differential matrix calculus, the shotgun wedding of linear
+algebra and multivariate calculus.
+Well... maybe need isn’t the right word; Jeremy’s courses show how to become a world-class deep
+learning practitioner with only a minimal level of scalar calculus, thanks to leveraging the automatic
+differentiation built in to modern deep learning libraries. But if you really want to really understand
+what’s going on under the hood of these libraries, and grok academic papers discussing the latest
+advances in model training techniques, you'll need to understand certain bits of the field of matrix
+calculus.
+For example, the activation of a single computation unit in a neural network is typically calculated
+using the dot product (from linear algebra) of an edge weight vector w with an input vector x plus
+a scalar bias (threshold): z(x) = 50; wai +b=w-x-+b. Function z(x) is called the unit’s affine
+function and is followed by a rectified linear unit, which clips negative values to zero: max(0, z(x)).
+Such a computational unit is sometimes referred to as an “artificial neuron” and looks like:
+activation
+x, a function
+wy, WOO activation(x)
+x, OW,
+affine
+function
+Neural networks consist of many of these units, organized into multiple collections of neurons called
+layers. ‘The activation of one layer’s units become the input to the next layer’s units. ‘The activation
+of the unit or units in the final layer is called the network output.
+Training this neuron means choosing weights w and bias b so that we get the desired output for all N
+inputs x. To do that, we minimize a loss function that compares the network’s final activation(x)
+with the target(x) (desired output of x) for all input x vectors. To minimize the loss, we use
+some variation on gradient descent, such as plain stochastic gradient descent (SGD), SGD with
+momentum, or Adam. All of those require the partial derivative (the gradient) of activation(x)
+with respect to the model parameters w and 6. Our goal is to gradually tweak w and 6 so that the
+overall loss function keeps getting smaller across all x inputs.
+If we’re careful, we can derive the gradient by differentiating the scalar version of a common loss
+function (mean squared error):
+|z|
+W 1 > (target(x) — acti . vati . o n(x))* 2 = W1 ) (target(x) — max(0, > wx; + b))2
+x
+But this is just one neuron, and neural networks must train the weights and biases of all neurons
+in all layers simultaneously. Because there are multiple inputs and (potentially) multiple network
+outputs, we really need general rules for the derivative of a function with respect to a vector and
+even rules for the derivative of a vector-valued function with respect to a vector.
+This article walks through the derivation of some important rules for computing partial derivatives
+with respect to vectors, particularly those useful for training neural networks. This field is known as
+matrix calculus, and the good news is, we only need a small subset of that field, which we introduce
+here. While there is a lot of online material on multivariate calculus and linear algebra, they are
+typically taught as two separate undergraduate courses so most material treats them in isolation.
+The pages that do discuss matrix calculus often are really just lists of rules with minimal explanation
+or are just pieces of the story. They also tend to be quite obscure to all but a narrow audience
+of mathematicians, thanks to their use of dense notation and minimal discussion of foundational
+concepts. (See the annotated list of resources at the end.)
+In contrast, we’re going to rederive and rediscover some key matrix calculus rules in an effort to
+explain them. It turns out that matrix calculus is really not that hard! There aren’t dozens of new
+rules to learn; just a couple of key concepts. Our hope is that this short paper will get you started
+quickly in the world of matrix calculus as it relates to training neural networks. We’re assuming
+youre already familiar with the basics of neural network architecture and training. If you’re not,
+head over to Jeremy’s course and complete part 1 of that, then we’ll see you back here when you’re
+done. (Note that, unlike many more academic approaches, we strongly suggest first learning to
+train and use neural networks in practice and then study the underlying math. The math will be
+much more understandable with the context in place; besides, it’s not necessary to grok all this
+calculus to become an effective practitioner.)
+A note on notation: Jeremy’s course exclusively uses code, instead of math notation, to explain
+concepts since unfamiliar functions in code are easy to search for and experiment with. In this
+paper, we do the opposite: there is a lot of math notation because one of the goals of this paper is
+to help you understand the notation that you’ll see in deep learning papers and books. At the end
+of the paper, you'll find a brief table of the notation used, including a word or phrase you can use
+to search for more details.
+2 Review: Scalar derivative rules
+Hopefully you remember some of these main scalar derivative rules. If your memory is a bit fuzzy
+on this, have a look at Khan academy vid on scalar derivative rules.
+Rule f(x) Scalar derivative notation Example
+with respect to x
+Constant C 0 99 = 0
+Multiplication cf ci A 3a =3
+by constant
+Power Rule xg” nan} de a?= 3x7
+Sum Rule fg a 4 9g A (x? + 3x2) = 2243
+Difference Rule f-—g af a a (x? — 3x) == 27-3
+Product Rule fg ag + Wg tty=a 4+ 22a= 30?
+Chain Rule f(g(2)) ate) let u = g(z) # In(x?) = 52x = 3
+There are other rules for trigonometry, exponentials, etc., which you can find at Khan Academy
+differential calculus course.
+When a function has a single parameter, f(x), you'll often see f’ and f’(a) used as shorthands for
+a (2). We recommend against this notation as it does not make clear the variable we’re taking
+the derivative with respect to.
+You can think of a as an operator that maps a function of one parameter to another function.
+That means that aff(x) maps f ) to its derivative with respect to x, which is the same thing
+S ae) Also, if y = f(a), then4= ae) = + f(x). Thinking of the derivative as an operator
+helps to simplify complicated derivatives because the operator is distributive and lets us pull out
+constants. For example, in the following equation, we can pull out the constant 9 and distribute
+the derivative operator across the elements within the parentheses.
+“(a +27) = 9 (0 +27) = 9( = d
+r+ =a") = 9(1 + 2a) = 9 + 18x
+That procedure reduced the derivative of 9(a + x7) to a bit of arithmetic and the derivatives of x
+and x”, which are much easier to solve than the original derivative.
+3 Introduction to vector calculus and partial derivatives
+Neural network layers are not single functions of a single parameter, f(z). So, let’s move on to
+functions of multiple parameters such as f(2,y). For example, what is the derivative of ry (i.e.,
+the multiplication of z and y)? In other words, how does the product xy change when we wiggle
+the variables? Well, it depends on whether we are changing x or y. We compute derivatives with
+respect to one variable (parameter) at a time, giving us two different partial derivatives for this two-
+parameter function (one for 2 and one for y). Instead of using operator a the partial derivative
+operatoris a (a stylized d and not the Greek letter 6). So, Lay and ry are the partial derivatives
+of xy; often, these are just called the partials. For functions of a single parameter, operator 2 is
+equivalent to a (for sufficiently smooth functions). However, it’s better to usea+ to make it clear
+you're referring to a scalar derivative.
+The partial derivative with respect to x is just the usual scalar derivative, simply treating any other
+variable in the equation as a constant. Consider function f(x,y) = 3x7y. The partial derivative
+with respect to & is written 2 3a7y. There are three constants from the perspective of 2: 3, 2,
+and y. Therefore, 2 3yx? = 3y 2° = 3y2x = 6byx. The partial derivative with respect to y treats
+x like a constant: w3n7y = 30° Py = 3a? Su = 32? x 1 = 327. It’s a good idea to derive these
+yourself before continuing otherwise the rest of the article won’t make sense. Here’s the Khan
+Academy video on partials if you need help.
+To make it clear we are doing vector calculus and not just multivariate calculus, let’s consider what
+we do with the partial derivatives of ow) and ote) (another way to say 2 fla, y) and Sf (a, y))
+that we computed for f(z, y) = 3x7y. Instead of having them just floating around and not organized
+in any way, let’s organize them into a horizontal vector. We call this vector the gradient of f(x, y)
+and write it as:
+Of(xz,y) Of(z,y)
+Vi(z,y) = | __ 2
+So the gradient of f(x,y) is simply a vector of its partials. Gradients are part of the vector calculus
+world, which deals with functions that map n scalar parameters to a single scalar. Now, let’s get
+crazy and consider derivatives of multiple functions simultaneously.
+4 Matrix calculus
+When we move from derivatives of one function to derivatives of many functions, we move from
+the world of vector calculus to matrix calculus. Let’s compute partial derivatives for two functions,
+both of which take two parameters. We can keep the same f(x,y) = 3x7y from the last section,
+but let’s also bring in g(a, y) = 27 + y®. The gradient for g has two entries, a partial derivative for
+each parameter:
+Og(x,y) 02x dy Ox
+Ox Ox + —Ox“ =2O—x- ++ 0=2x*1=2
+and
+Og(@,y) O2a dy 7 7
+Oy = Oy r —Oy= 0+8reyy' =8y
+giving us gradient Vg(x, y) = [2, 8y"].
+Gradient vectors organize all of the partial derivatives for a specific scalar function. If we have two
+functions, we can also organize their gradients into a matrix by stacking the gradients. When we
+do so, we get the Jacobian matrix (or just the Jacobian) where the gradients are rows:
+_fvr(e.y)) [SRY SEY Joye 302
+Va(a,y)} | Sew Sakray) 2 By"
+Welcome to matrix calculus!
+Note that there are multiple ways to represent the Jacobian. We are using the so-called
+numerator layout but many papers and software will use the denominator layout. This is just
+transpose of the numerator layout Jacobian (flip it around its diagonal):
+b6yr 2
+302 By"
+4.1 Generalization of the Jacobian
+So far, we’ve looked at a specific example of a Jacobian matrix. To define the Jacobian matrix
+more generally, let’s combine multiple parameters into a single vector argument: f(x,y, z) > f(x).
+(You will sometimes see notation ¢ for vectors in the literature as well.) Lowercase letters in bold
+font such as x are vectors and those in italics font like x are scalars. 2; is the i*” element of vector
+x and is in italics because a single vector element is a scalar. We also have to define an orientation
+for vector x. We'll assume that all vectors are vertical by default of size n x 1:
+Ly
+L2
+in
+With multiple scalar-valued functions, we can combine them all into a vector just like we did with
+the parameters. Let y = f(x) be a vector of m scalar-valued functions that each take a vector x
+of length n = |x| where |x| is the cardinality (count) of elements in x. Each f; function within f
+returns a scalar just as in the previous section:
+yr = filx)
+wy = folx)
+Ym = FinlX)
+For instance, we'd represent f(x,y) = 3x7y and g(x,y) = 2x + y® from the last section as
+yi = filx) = 32722 (substituting x, for x, x2 for y)
+yo = fo(x) = 2a, +23
+It’s very often the case that m = n because we will have a scalar function result for each element
+of the x vector. For example, consider the identity function y = f(x) = x:
+y= filtx) = 1
+yo = fol(x) = 22
+So we have m = n functions and parameters, in this case. Generally speaking, though, the Jacobian
+matrix is the collection of all m x n possible partial derivatives (m rows and n columns), which is
+the stack of m gradients with respect to x:
+V fi(x) ZA] | fi) A® --. SA)
+Ox foo. foo _—
+vino] L2fa60] | se fin (X) geo Iim(x) --. ge m()|
+Each 2 fi(x) is a horizontal n-vector because the partial derivative is with respect to a vector, x,
+whose length is n = |x|. The width of the Jacobian is n if we’re taking the partial derivative with
+respect to x because there are n parameters we can wiggle, each potentially changing the function’s
+value. Therefore, the Jacobian is always m rows for m equations. It helps to think about the
+possible Jacobian shapes visually:
+vector
+scalar x
+x
+scalar
+f of of
+Ox Ox
+vector
+f aOnf Ooxf
+The Jacobian of the identity function f(x) = x, with f;(x) = 2;, has n functions and each function
+has n parameters held in a single vector x. The Jacobian is, therefore, a square matrix since m = n:
+Oy _ | axfo(x) } ae, Fo(x) x folx) -.. go fo(x)
+Ox .. ..
+L Ox 1 LY RTI Orn, 1 |
+— Oa 2 Bay? Orn
+a)
+Dereua 0 ‘a
+_ @) oe
+| 0 0 noon
+‘1 O 0]
+0 l 0
+| O QO... L
+Make sure that you can derive each step above before moving on. If you get stuck, just consider each
+element of the matrix in isolation and apply the usual scalar derivative rules. That is a generally
+useful trick: Reduce vector expressions down to a set of scalar expressions and then take all of the
+partials, combining the results appropriately into vectors and matrices at the end.
+Also be careful to track whether a matrix is vertical, x, or horizontal, x’ where x’ means x
+transpose. Also make sure you pay attention to whether something is a scalar-valued function,
+y =..., or a vector of functions (or a vector-valued function), y =....
+4.2 Derivatives of vector element-wise binary operators
+Element-wise binary operations on vectors, such as vector addition w + x, are important because
+we can express many common vector operations, such as the multiplication of a vector by a scalar,
+as element-wise binary operations. By “element-wise binary operations” we simply mean applying
+an operator to the first item of each vector to get the first item of the output, then to the second
+items of the inputs for the second item of the output, and so forth. This is how all the basic math
+operators are applied by default in numpy or tensorflow, for example. Examples that often crop
+up in deep learning are max(w,x) and w > x (returns a vector of ones and zeros).
+We can generalize the element-wise binary operations with notation y = f(w) © g(x) where m =
+n = |y| = |w| = |z|. (Reminder: |2| is the number of items in x.) The © symbol represents
+any element-wise operator (such as +) and not the o function composition operator. Here’s what
+equation y = f(w) © g(x) looks like when we zoom in to examine the scalar equations:
+Yi | fi(w) O g(x)|
+yo fo(w) © g2(x)
+Yn} LIn(w) O gn(x)J
+where we write n (not m) equations vertically to emphasize the fact that the result of element-wise
+operators give m = n sized vector results.
+Using the ideas from the last section, we can see that the general case for the Jacobian with respect
+to w is the square matrix:
+P52 (fiw) Ogi(x)) sS(Aw)O mlx) --. ge (AiOb nw(x)) ]
+— Oy— | x (foOl gwa(x))) 325 (feO( gwa(x))) .-. gC felO gwa(x)))
+Jw
+= By=
+n2(Fn(W) O.gulx)) g2s(Falw) Ogu). g2CfaOl awul))
+and the Jacobian with respect to x is:
+A(hiw)Omls)) s2(hlw) Om)... g&ChOl awilx)))]
+_ dy— | (foOl ml)x) x2 Cfo(w) Ogo(x)) -.. x2(foO( gow(x)))
+Jy = =
+Ox
+s2(falw) Ogn(x)) g2(fuOCl guwlx))) <-- g2Cfa© lguwl))|
+9
+That’s quite a furball, but fortunately the Jacobian is very often a diagonal matrix, a matrix that
+is zero everywhere but the diagonal. Because this greatly simplifies the Jacobian, let’s examine in
+detail when the Jacobian reduces to a diagonal matrix for element-wise operations.
+In a diagonal Jacobian, all elements off the diagonal are zero, Bay ( fi(w) © gi(x)) = 0 where j F i.
+(Notice that we are taking the partial derivative with respect to w; not w;.) Under what conditions
+are those off-diagonal elements zero? Precisely when f; and g; are contants with respect to wy,
+Bay fi(w) = Bay G(X) = 0. Regardless of the operator, if those partial derivatives go to zero, the
+operation goes to zero, OC) 0 = 0 no matter what, and the partial derivative of a constant is zero.
+Those partials go to zero when f; and g; are not functions of w;.. We know that element-wise
+operations imply that f; is purely a function of w; and g; is purely a function of x;. For example,
+w +x sums w; + 2;. Consequently, fi(w) © gi(x) reduces to f;(w;) O gi(a;) and the goal becomes
+Bay fi(ws) = Bay Gi (i) = 0. f;(w;) and g;(a;) look like constants to the partial differentiation op-
+erator with respect to w; when j #7 so the partials are zero off the diagonal. (Notation f;(w;) is
+technically an abuse of our notation because f; and g; are functions of vectors not individual ele-
+ments. We should really write something like fi(wi) = f;(w), but that would muddy the equations
+further, and programmers are comfortable overloading functions, so we’ll proceed with the notation
+anyway.)
+We'll take advantage of this simplification later and refer to the constraint that f;(w) and g;(x)
+access at most w; and 2;, respectively, as the element-wise diagonal condition.
+Under this condition, the elements along the diagonal of the Jacobian are ae ( fi(wi) O g:(ai)):
+52 (fi(wr) O g(21))
+oy _ 525 (fo(w2) O g2(22)) 0
+Ow _—
+0) 52 (fn(wn) © Gn(an)).
+(The large “O”s are a shorthand indicating all of the off-diagonal are 0.)
+More succinctly, we can write:
+& — diag (soc Fatun) Osler). S—(alwa) Ogala))s + Sawn) © on(tn))
+and
+°Y = diag (son (filwn) Ona) 5 (falw2) O gale) _ Fo (fawn) Oda(en)) )
+where diag(x) constructs a matrix whose diagonal elements are taken from vector x.
+Because we do lots of simple vector arithmetic, the general function f(w) in the binary element-
+wise operation is often just the vector w. Any time the general function is a vector, we know
+that fi(w) reduces to f;(w;) = w;. For example, vector addition w+x fits our element-wise
+10
+diagonal condition because f(w) + g(x) has scalar equations y; = f;(w) + g;(x) that reduce to just
+yi = fi(wi) + gi(ai) = wi + x; with partial derivatives:
+? (fi(+ wgii(vi))) = DuO,
+(wje+a;)=14+0=1
+Ow;
+(situ) + gi(xi)) = 0 (w;+2;)=0+1=1
+ax; a 1} — —
+O(w+x) _ O(w+x)
+That gives us = I, the identity matrix, because every element along the diagonal
+Ow Ox
+is 1. J represents the square identity matrix of appropriate dimensions that is zero everywhere but
+the diagonal, which contains all ones.
+Given the simplicity of this special case, f;(w) reducing to f;(w;), you should be able to derive the
+Jacobians for the common element-wise binary operations on vectors:
+Op Partial with respect to w
++ Ow) = diag(... YI |) = diag(T) =1
+— Or) = diag(... =") ) = diag(T) =1
+® Awe) = diag(... Mixed) = diag(x)
+@ wend = diag(... 24) ||) = diag(... +...)
+Op Partial with respect to x
+aO(w+x)
+7 Ow) = diag(... MHD.) = diag(—I) = -I
+@ Ae) — diag(w)
+Q AWN) — diag(... =...)
+The © and @ operators are element-wise multiplication and division; & is sometimes called the
+Hadamard product. There isn’t a standard notation for element-wise multiplication and division so
+we're using an approach consistent with our general binary operation notation.
+4.3 Derivatives involving scalar expansion
+When we multiply or add scalars to vectors, we’re implicitly expanding the scalar to a vector
+and then performing an element-wise binary operation. For example, adding scalar z to vector x,
+y =x+z, is really y = f(x) + g(z) where f(x) = x and g(z) = Iz. (The notation I represents
+a vector of ones of appropriate length.) z is any scalar that doesn’t depend on x, which is useful
+because then ge = 0 for any 2; and that will simplify our partial derivative computations. (It’s
+okay to think of variable z as a constant for our discussion here.) Similarly, multiplying by a scalar,
+11
+y = xz, is really y = f(x) ®g(z)=x® Tz where ® is the element-wise multiplication (Hadamard
+product) of the two vectors.
+The partial derivatives of vector-scalar addition and multiplication with respect to vector x use our
+element-wise rule:
+me = diag ( Z (file) O gi(z)).- )
+This follows because functions f(x) = x and g(z) = Iz clearly satisfy our element-wise diagonal
+condition for the Jacobian (that f;(x) refer at most to 2; and g;(z) refers to the i” value of the 1z
+vector).
+Using the usual rules for scalar partial derivatives, we arrive at the following diagonal elements of
+the Jacobian for vector-scalar addition:
+O Olait+z) Ox | Oz
+—(fi(a;) + gi(z)) = Da, a, | On, 1+0=1
+Ox;
+So, (x + z) = diag(I) = I.
+Computing the partial derivative with respect to the scalar parameter z, however, results in a
+vertical vector, not a diagonal matrix. The elements of the vector are:
+6) 6)(aj +2z) Ox; Oz
+5, ili) + 9(2)) = De De sr
+Therefore, 2 (x +2) <1.
+The diagonal elements of the Jacobian for vector-scalar multiplication involve the product rule for
+scalar derivatives:
+O Oz Ox;
+Da, file) ® gi(z)) = tia + or, =0+2=2
+So, 2. (xz) = diag(Iz) = Iz.
+The partial derivative with respect to scalar parameter z is a vertical vector whose elements are:
+O Oz Ox;
+5, dilei) @ gilz)) = ria + z ap =27,+0=2%;
+This gives us 2 (xz) =x.
+4.4 Vector sum reduction
+Summing up the elements of a vector is an important operation in deep learning, such as the
+network loss function, but we can also use it as a way to simplify computing the derivative of
+vector dot product and other operations that reduce vectors to scalars.
+12
+Let y = sum(f£(x)) = 0, fi(x). Notice we were careful here to leave the parameter as a vector x
+because each function f; could use all values in the vector, not just 2;. The sum is over the results
+of the function and not the parameter. The gradient (1 x n Jacobian) of vector summation is:
+oy _ | dy dy Oy
+Ox — |Ox1? 0x2?" **? Den
+= |%, ees YS; ness tees Dy aS (move derivative inside 5~*)
+(The summation inside the gradient elements can be tricky so make sure to keep your notation
+consistent.)
+Let’s look at the gradient of the simple y = sum(x). The function inside the summation is just
+fi(x) = xz; and the gradient is then:
+Vy= |e BOf;S , i BOf; S, DAOf; E _= |.Ox; eOx;e DeOx];
+Because Boj ti = 0 for 7 £7, we can simplify to:
+Vy = [$2 Or. fee) = [11.1 = 17
+O21) Ox? > Oxn
+Notice that the result is a horizontal vector full of 1s, not a vertical vector, and so the gradient is
+17. (The T exponent of 17 represents the transpose of the indicated vector. In this case, it flips a
+vertical vector to a horizontal vector.) It’s very important to keep the shape of all of your vectors
+and matrices in order otherwise it’s impossible to compute the derivatives of complex functions.
+As another example, let’s sum the result of multiplying a vector by a constant scalar. If y = sum(xz)
+then f;(x,z) = a;z. The gradient is:
+Oy _ On. O ». dO».
+i) i] i]
+= [z, Zyeeey z|
+The derivative with respect to scalar variable z is 1 x 1:
+Oy _ 9¢O n
+=_ Di BOe ri».t
+= sum(x)
+13
+4.5 The Chain Rules
+We can’t compute partial derivatives of very complicated functions using just the basic matrix
+calculus rules we’ve seen so far. For example, we can’t take the derivative of nested expressions like
+sum(w + x) directly without reducing it to its scalar equivalent. We need to be able to combine
+our basic vector rules using what we can call the vector chain rule. Unfortunately, there are a
+number of rules for differentiation that fall under the name “chain rule” so we have to be careful
+which chain rule we’re talking about. Part of our goal here is to clearly define and name three
+different chain rules and indicate in which situation they are appropriate. To get warmed up, we’ll
+start with what we'll call the single-variable chain rule, where we want the derivative of a scalar
+function with respect to a scalar. Then we’ll move on to an important concept called the total
+derivative and use it to define what we’ll pedantically call the single-variable total-derivative chain
+rule. Then, we’ll be ready for the vector chain rule in its full glory as needed for neural networks.
+The chain rule is conceptually a divide and conquer strategy (like Quicksort) that breaks compli-
+cated expressions into subexpressions whose derivatives are easier to compute. Its power derives
+from the fact that we can process each simple subexpression in isolation yet still combine the
+intermediate results to get the correct overall result.
+The chain rule comes into play when we need the derivative of an expression composed of nested
+subexpressions. For example, we need the chain rule when confronted with expressions like # sin(2).
+The outermost expression takes the sin of an intermediate result, a nested subexpression that
+squares x. Specifically, we need the single-variable chain rule, so let’s start by digging into that in
+more detail.
+4.5.1 Single-variable chain rule
+Let’s start with the solution to the derivative of our nested expression: 4 sin(x?) = 2xcos(2?). It
+doesn’t take a mathematical genius to recognize components of the solution that smack of scalar
+differentiation rules, 42? = 2x and #sin(u) = cos(u). It looks like the solution is to multiply
+the derivative of the outer expression by the derivative of the inner expression or “chain the pieces
+together,” which is exactly right. In this section, we’ll explore the general principle at work and
+provide a process that works for highly-nested expressions of a single variable.
+Chain rules are typically defined in terms of nested functions, such as y = f(g(x)) for single-variable
+chain rules. (You will also see the chain rule defined using function composition (f o g)(#), which
+is the same thing.) Some sources write the derivative using shorthand notation y/ = f’(g(x))g'(2),
+but that hides the fact that we are introducing an intermediate variable: u = g(a), which we’ll see
+shortly. It’s better to define the single-variable chain rule of f(g(a)) explicitly so we never take the
+derivative with respect to the wrong variable. Here is the formulation of the single-variable chain
+rule we recommend:
+dy _ dy du
+dx dudz
+To deploy the single-variable chain rule, follow these steps:
+14
+1. Introduce intermediate variables for nested subexpressions and subexpressions for both binary
+and unary operators; e.g., x is binary, sin(a) and other trigonometric functions are usually
+unary because there is a single operand. This step normalizes all equations to single operators
+or function applications.
+2. Compute derivatives of the intermediate variables with respect to their parameters.
+3. Combine all derivatives of intermediate variables by multiplying them together to get the
+overall result.
+4. Substitute intermediate variables back in if any are referenced in the derivative equation.
+The third step puts the “chain” in “chain rule” because it chains together intermediate results.
+Multiplying the intermediate derivatives together is the common theme among all variations of the
+chain rule.
+Let’s try this process on y = f(g(x)) = sin(x?):
+1. Introduce intermediate variables. Let u = x? represent subexpression 2? (shorthand for
+u(x) = 27). This gives us:
+u = 2 (relative to definition f(g(x)), g(2) = x7)
+y = sintu) (y= flu) = sin(u))
+The order of these subexpressions does not affect the answer, but we recommend working in
+the reverse order of operations dictated by the nesting (innermost to outermost). That way,
+expressions and derivatives are always functions of previously-computed elements.
+2. Compute derivatives.
+ou = 2 (Take derivative with respect to x)
+ou = cos(u) (Take derivative with respect to u not 2)
+3. Combine.
+a = ae = cos(u)2x
+4. Substitute.
+dy _ dy du
+Tn — 2du d2a cos(a*2\)o2n a —= 2 2xcos(x*2)
+Notice how easy it is to compute the derivatives of the intermediate variables in isolation! The
+chain rule says it’s legal to do that and tells us how to combine the intermediate results to get
+2xcos(x”).
+You can think of the combining step of the chain rule in terms of units canceling. If we let y be miles,
+i : dy _ dy du miles __ miles gallon
+x be the gallons in a gas tank, and u as gallons we can interpret dx — dude °° tank = gallon tank °
+The gallon denominator and numerator cancel.
+15
+Another way to to think about the single-variable chain rule is to visualize the overall expression
+as a dataflow diagram or chain of operations (or abstract syntax tree for compiler people):
+y =sin \ dy
+u = square au
+x dx
+Changes to function parameter x bubble up through a squaring operation then through a szn
+operation to change result y. You can think of au as “getting changes from x to u” and au as
+“setting changes from u to y.” Getting from x to y requires an intermediate hop. The chain rule
+is, by convention, usually written from the output variable down to the parameter(s), au = ay du
+But, the x-to-y perspective would be more clear if we reversed the flow and used the equivalent
+dy _ du dy
+dx dxdu’
+Conditions under which the single-variable chain rule applies. Notice that there is a single
+dataflow path from zx to the root y. Changes in x can influence output y in only one way. ‘That is the
+condition under which we can apply the single-variable chain rule. An easier condition to remember,
+though one that’s a bit looser, is that none of the intermediate subexpression functions, u(x) and
+y(u), have more than one parameter. Consider y(x) = 2 + 2*, which would become y(x,u) = x+u
+after introducing intermediate variable u. As we'll see in the next section, y(#,u) has multiple
+paths from zx to y. To handle that situation, we’ll deploy the single-variable total-derivative chain
+rule.
+As an aside for those interested in automatic differentiation, papers and library documentation use
+terminology forward differentiation and backward differentiation (for use in the back-propagation
+algorithm). From a dataflow perspective, we are computing a forward differentiation because it
+follows the normal data flow direction. Backward differentiation, naturally, goes the other direc-
+tion and we’re asking how a change in the output would affect function parameter x. Because
+backward differentiation can determine changes in all function parameters at once, it turns out to
+be much more efficient for computing the derivative of functions with lots of parameters. Forward
+differentiation, on the other hand, must consider how a change in each parameter, in turn, affects
+the function output y. The following table emphasizes the order in which partial derivatives are
+computed for the two techniques.
+Forward differentiation from zx to y Backward differentiation from y to x
+dy _ du dy dy _ dy du
+dx dxdu dx dudz
+Automatic differentiation is beyond the scope of this article, but we’re setting the stage for a future
+article.
+Many readers can solve £ sin(x?) in their heads, but our goal is a process that will work even for
+very complicated expressions. This process is also how automatic differentiation works in libraries
+like PyTorch. So, by solving derivatives manually in this way, you’re also learning how to define
+functions for custom neural networks in Py'‘Torch.
+16
+With deeply nested expressions, it helps to think about deploying the chain rule the way a compiler
+unravels nested function calls like f4(f3(fo(fi(x)))) into a sequence (chain) of calls. The result of
+calling function f; is saved to a temporary variable called a register, which is then passed as a
+parameter to fj41. Let’s see how that looks in practice by using our process on a highly-nested
+equation like y = f(x) = In(sin(x?)?):
+1. Introduce intermediate variables.
+uw o= file) =2°
+ug = fo(uj) = sin(uy)
+uz = fs(u2) = us
+us = fa(uz) = In(us)(y = ua)
+al = ox = 32°
+uy U2 = a iru) = cos(u,)
+fy, = “us = 2ue
+‘d ‘Bin l
+3. Combine four intermediate values.
+dy dua __ du dug dug dui = ta, cos(u )3a? _ 6uz%~cos(u1)
+dx dx duz dug du, dx — us ; t 7
+U3
+4. Substitute.
+dy 6sin(u,)a*cos(x?) — 6sin(x?)x*cos(x?) — 6sin(x?)a*cos(x®) — 6x*cos(x")
+dx us sin(uy)? 7 sin(x?)? — sin(x3)
+Here is a visualization of the data flow through the chain of operations from zx to y:
+Vu'"ry; oo cdhui,,
+du,
+du,
+r, sin dui,
+| du,
+r, cue du
+x dx
+At this point, we can handle derivatives of nested expressions of a single variable, x, using the
+chain rule but only if x can affect y through a single data flow path. To handle more complicated
+expressions, we need to extend our technique, which we’ll do next.
+17
+4.5.2 Single-variable total-derivative chain rule
+Our single-variable chain rule has limited applicability because all intermediate variables must be
+functions of single variables. But, it demonstrates the core mechanism of the chain rule, that of
+multiplying out all derivatives of intermediate subexpressions. To handle more general expressions
+such as y = f(x) =x +27, however, we need to augment that basic chain rule.
+Of course, we immediately see au = “x + fx? = 1+ 22, but that is using the scalar addition
+derivative rule, not the chain rule. If we tried to apply the single-variable chain rule, we’d get
+the wrong answer. In fact, the previous chain rule is meaningless in this case because derivative
+operator os does not apply to multivariate functions, such as ug among our intermediate variables:
+u,(x) = x
+ug(@,w1) = @rt+u (y = f(x) = u2(z, u1))
+Let’s try it anyway to see what happens. If we pretend that cua =0+1=1 and a = 27, then
+ddiyc _= ddueg _= dduugs dduei _= 92»& i| nstead of the right answer 1 + 22.
+Because u2(x,u) = x+u, has multiple parameters, partial derivatives come into play. Let’s blindly
+apply the partial derivative operator to all of our equations and see what we get:
+so | _ 2a (same as du (#))
+U2 o(xn,uU —_ a (etm) =0+1=1
+Sua (aus) ) 2 (x +u,;)=1+0=1 (something’s not quite right here!)
+Ou2(x,U1)
+Ooops! The partial is wrong because it violates a key assumption for partial derivatives.
+Ox
+When taking the partial derivative with respect to x, the other variables must not vary as x varies.
+Otherwise, we could not act as if the other variables were constants. Clearly, though, u,(x) = x”
+is a function of x and therefore varies with z. Guia { vt) 4#1+0 because Ou) #0. A quick look
+at the data flow diagram for y = u2(x,u1) shows multiple paths from x to y, thus, making it clear
+we need to consider direct and indirect (through u;(x)) dependencies on «:
++ y = u(x,u)
+xX square Uu,(Xx)
+X
+A change in x affects y both as an operand of the addition and as the operand of the square
+operator. Here’s an equation that describes how tweaks to x affect the output:
+g = («+ Ax) +(x + Ax)?
+Then, Ay = 7 — y, which we can read as “the change in y is the difference between the original y
+and y at a tweaked x.”
+18
+Ifwe let x = 1, then y = 1417 = 2. If we bump z by 1, Ax = 1, then g = (1+1)+(1+1)* = 244 =6.
+The change in y is not 1, as Oug/u; would lead us to believe, but 6 — 2 = 4!
+Enter the “law” of total derivatives, which basically says that to compute ws we need to sum up
+all possible contributions from changes in x to the change in y. The total derivative with respect to
+x assumes all variables, such as wu; in this case, are functions of 2 and potentially vary as x varies.
+The total derivative of f(a) = ue(x,u1) that depends on x directly and indirectly via intermediate
+variable u(x) is given by:
+dy _ Af(x) _ Oug(e.uy) _ Aug Ox , Duy Buy _ Ou, Duy Jun
+dx Ox Ox Ox Ox Ou, Ox ~~ Ox Ou, Ox
+Using this formula, we get the proper answer:
+dy Of(a) Oug | Ou2 Ou,
+a7 = = 4 Pt x 2r =142
+dx Ox Ox + Ou, Ox Tix ee + en
+That is an application of what we can call the single-variable total-derivative chain rule:
+fest stn) OF , Of Ou | Of Ow, | AF On _ OF | ws AF Au
+Ox Or Ou, Ox Oug Ox OUn, OF Ox = Ou; Ox
+The total derivative assumes all variables are potentially codependent whereas the partial derivative
+assumes all variables but x are constants.
+There is something subtle going on here with the notation. All of the derivatives are shown as
+partial derivatives because f and u; are functions of multiple variables. This notation mirrors
+that of MathWorld’s notation but differs from Wikipedia, which uses df(x,wu1,...,Un)/dx instead
+(possibly to emphasize the total derivative nature of the equation). We’ll stick with the partial
+derivative notation so that it’s consistent with our discussion of the vector chain rule in the next
+section.
+In practice, just keep in mind that when you take the total derivative with respect to x, other
+variables might also be functions of x so add in their contributions as well. The left side of the
+equation looks like a typical partial derivative but the right-hand side is actually the total derivative.
+It’s common, however, that many temporary variables are functions of a single parameter, which
+means that the single-variable total-derivative chain rule degenerates to the single-variable chain
+rule.
+Let’s look at a nested subexpression, such as f(x) = sin(a +27). We introduce three intermediate
+variables:
+u(x) = x
+ug(@,u1) = et+uy
+ug(u2) = sin(u2) (y = f(x) = us(ue))
+and partials:
+Our = 2
+bus — Gey Oued _ 14x 1Qe = 1422
+Or “Ox Ou, Ox _ _
+of) = Bay en tae = 0+ co0s(u2)92 = cos(x+ax?)(1+ 22)
+19
+where both tes and Ofte) have wie terms that take into account the total derivative.
+Also notice that the total derivative formula always sums versus, say, multiplies terms ol ou
+It’s tempting to think that summing up terms in the derivative makes sense because, for example,
+y = «+2? adds two terms. Nope. The total derivative is adding terms because it represents a
+weighted sum of all 2 contributions to the change in y. For example, given y = x x x? instead
+of y = x + 27, the total-derivative chain rule formula still adds partial derivative terms. (x x x?
+simplifies to 2° but for this demonstration, let’s not combine the terms.) Here are the intermediate
+variables and partial derivatives:
+u(x) = x
+ug(z,ui) = ruy (y = f(x) = ue(z, uw)
+Our = 2W&
+— = UW (for ug= 2+ u4, a = 1)
+oun = £ (for uw=2+u,52= 1)
+The form of the total derivative remains the same, however:
+d d y z _ O Ou r g | . 4 O O u m g d O uyz r Uy +22 2 0 2 2 = = a? + 2x°* 207 = 3 x2
+It’s the partials (weights) that change, not the formula, when the intermediate variable operators
+change.
+Those readers with a strong calculus background might wonder why we aggressively introduce
+intermediate variables even for the non-nested subexpressions such as 2? in z+ 2%. We use this
+process for three reasons: (i) computing the derivatives for the simplified subexpressions is usually
+trivial, (ii) we can simplify the chain rule, and (iii) the process mirrors how automatic differentiation
+works in neural network libraries.
+Using the intermediate variables even more aggressively, let’s see how we can simplify our single-
+variable total-derivative chain rule to its final form. The goalis to get rid of the $f! sticking out on
+the front like a sore thumb:
+Of (@,UO1x, .--,Un) n+ DtOef OOux;
+We can achieve that by simply introducing a new temporary variable as an alias for x: Un41 = 2.
+Then, the formula reduces to our final form:
+Oflu. Unt1) Se Ou;
+Ou; Ox
+This chain rule that takes into consideration the total derivative degenerates to the single-variable
+chain rule when all intermediate variables are functions of a single variable. Consequently, you
+can remember this more general formula to cover both cases. As a bit of dramatic foreshadowing,
+notice that the summation sure looks like a vector dot product, oF : gu or a vector multiply oF gu
+Before we move on, a word of caution about terminology on the web. Unfortunately, the chain rule
+given in this section, based upon the total derivative, is universally called “multivariable chain rule”
+20
+in calculus discussions, which is highly misleading! Only the intermediate variables are multivariate
+functions. The overall function, say, f(z) = v + 2’, is a scalar function that accepts a single
+parameter x. The derivative and parameter are scalars, not vectors, as one would expect with a
+so-called multivariate chain rule. (Within the context of a non-matrix calculus class, “multivariate
+chain rule” is likely unambiguous.) To reduce confusion, we use “single-variable total-derivative
+chain rule” to spell out the distinguishing feature between the simple single-variable chain rule,
+wy — ou @ and this one.
+4.5.3 Vector chain rule
+Now that we’ve got a good handle on the total-derivative chain rule, we’re ready to tackle the
+chain rule for vectors of functions and vector variables. Surprisingly, this more general chain rule
+is just as simple looking as the single-variable chain rule for scalars. Rather than just presenting
+the vector chain rule, let’s rediscover it ourselves so we get a firm grip on it. We can start by
+computing the derivative of a sample vector function with respect to a scalar, y = f(x), to see if
+we can abstract a general formula.
+nt _ at _ a
+y2(zx) fo(x) sin(3z)
+Let’s introduce two intermediate variables, g; and gg, one for each f; so that y looks more like
+= f(g(2)):
+mol = bel
+‘fi(g)| _ | in(gi) |
+fe(g)| — [stn(ge)
+The derivative of vector y with respect to scalar x is a vertical vector with elements computed
+using the single-variable total-derivative chain rule:
+Ox oie ath ba + He bee 0 + cos(g2)3 3cos(3x)| | 3cos(3z)
+Ok, so now we have the answer using just the scalar rules, albeit with the derivatives grouped into
+a vector. Let’s try to abstract from that result what it looks like in vector form. The goal is to
+convert the following vector of scalar operations to a vector operation.
+eh Cou 4 oh O&g2
+g1 OF g2 Ox
+Of2 Ogi 4 Of2 Og2
+Og, Ox Og2 Ox
+If we split the ae oe terms, isolating the Oss terms into a vector, we get a matrix by vector
+multiplication:
+BOfi AOf: | |7dg = 5e3"
+a2 On|2 Lage2] | Og Oe
+21
+That means that the Jacobian is the multiplication of two other Jacobians, which is kinda cool.
+Let’s check our results:
+Of Og _ A 0 20) a 2x + 0 2
+Og dx |0 cos(ge)| | 3 0 + cos(g2)3 ~ |3cos(32)
+Whew! We get the same answer as the scalar approach. This vector chain rule for vectors of
+functions and a single parameter appears to be correct and, indeed, mirrors the single-variable
+chain rule. Compare the vector rule:
+5 flea) = 58
+with the single-variable chain rule:
+d df dg
+— (gL(v a)—= 5
+To make this formula work for multiple parameters or vector x, we just have to change «x to vector
+x in the equation. The effect is that ce and the resulting Jacobian, ot are now matrices instead
+of vertical vectors. Our complete vector chain rule is:
+Lf (g(x)) = oe ce (Note: matrix multiply doesn’t commute; order of oe matters)
+The beauty of the vector formula over the single-variable chain rule is that it automatically takes
+into consideration the total derivative while maintaining the same notational simplicity. The Ja-
+cobian contains all possible combinations of f; with respect to g; and g; with respect to x;. For
+completeness, here are the two Jacobian components in their full glory:
+T oh oh an ) faa Og Ogi)
+g1 g2 —_ Ik Ox, Oxo ‘""° Oa
+9 dp Oh Of | |ee op Og
+Ofm Ofm Ofm |) | O9Gn 29x 9K
+| Ogi Og2 “ee Og, 1 LOx, Ox2 see OrnJ
+where m = |f|, n = |x|, and k = |g|. The resulting Jacobian is m x n (an m x k matrix multiplied
+by a k x n matrix).
+Even within this of oe formula, we can simplify further because, for many applications, the Jaco-
+bians are square Gn== n) and the off-diagonal entries are zero. Itis the nature of neural networks
+that the associated mathematics deals with functions of vectors not vectors of functions. For ex-
+ample, the neuron affine function has term sum(w ® x) and the activation function is maz(0, x);
+we'll consider derivatives of these functions in the next section.
+As we saw ina previous section, element-wise operations on vectors w and x yield diagonal matrices
+with elements2T“a+ because w; is a function purely of x; but not 2; for 7 4 7. The same thing happens
+here when f; is purely a function of g; and g; is purely a function of 2;:
+Of Of;
+De == diag (a)
+Og _ Ogi
+Ox = diag(a)
+22
+In this situation, the vector chain rule simplifies to:
+axt (e(x)) = diag a )diag( 5) = diag a a)
+Therefore, the Jacobian reduces to a diagonal matrix whose elements are the single-variable chain
+rule values.
+After slogging through all of that mathematics, here’s the payoff. All you need is the vector chain
+rule because the single-variable formulas are special cases of the vector chain rule. The following
+table summarizes the appropriate components to multiply in order to get the Jacobian.
+vector
+scalar x
+x
+vector vector
+aOn f (g(x)) _= BOef OOgx scalar u u
+U
+of of
+scalar du du du ou
+f of |[ du Ox Ox
+Ou || Ox
+vector
+Ou
+f of |LOx of || ou or du
+Ou Ou Ox Ou Ox
+5 The gradient of neuron activation
+We now have all of the pieces needed to compute the derivative of a typical neuron activation for
+a single neural network computation unit with respect to the model parameters, w and b:
+activation(x) = max(0,w-x-+ b)
+(This represents a neuron with fully connected weights and rectified linear unit activation. There
+are, however, other affine functions such as convolution and other activation functions, such as
+exponential linear units, that follow similar logic.)
+Let’s worry about maz later and focus on computing x (w -x +b) and Z(w -x +b). (Recall that
+neural networks learn through optimization of their weights and biases.) We haven’t discussed the
+derivative of the dot product yet, y = f(w)- g(x), but we can use the chain rule to avoid having to
+memorize yet another rule. (Note notation y not y as the result is a scalar not a vector.)
+The dot product w - x is just the summation of the element-wise multiplication of the elements:
+So; (wi2;) = sum(w ® x). (You might also find it useful to remember the linear algebra notation
+23
+w-x = w’ x.) We know how to compute the partial derivatives of sum(x) and w ® x but haven’t
+looked at partial derivatives for sum(w @ x). We need the chain rule for that and so we can
+introduce an intermediate vector variable u just as we did using the single-variable chain rule:
+u= W&x
+y = sum(u)
+Once we’ve rephrased y, we recognize two subexpressions for which we already know the partial
+derivatives:
+ie = 2 (w @x) = diag(x)
+Ae 2 sum(u) — jT
+The vector chain rule says to multiply the partials:
+d_ ydy Ou
+dw dudw _ 7T d4;i ag(x) _= xTt
+To check our results, we can grind the dot product down into a pure scalar function:
+- — Wx = Lip (wiz)
+Bw, DuDai WyIM) = DT Fay (Wits) = Fay lwyey) = 2;
+Then:
+SOe = [etsy] =x"
+Hooray! Our scalar results match the vector chain rule results.
+Now, let y = w-x +), the full expression within the max activation function call. We have two
+different partials to compute, but we don’t need the chain rule:
+ihe = ew-xt 2d = x?4QF = xT
+vos $w-x+%b = 0+1 = 1
+Let’s tackle the partials of the neuron activation, max(0,w-x-+ 6). The use of the maz(0z,)
+function call on scalar z just says to treat all negative z values as 0. The derivative of the max
+function is a piecewise function. When z < 0, the derivative is 0 because z is a constant. When
+z > 0, the derivative of the max function is just the derivative of z, which is 1:
+O 9) z<0
+a max(0,z)=4 4
+Oz Zui z>0
+An aside on broadcasting functions across scalars. When one or both of the max arguments are
+vectors, such as max(0, x), we broadcast the single-variable function maz across the elements. This
+is an example of an element-wise unary operator. Just to be clear:
+ae
+max(0,2n)
+24
+For the derivative of the broadcast version then, we get a vector of zeros and ones where:
+Ox; maz(0,2;) ‘ = a . =1 24>0
+jagcmar (0,21)
+a 0
+| ge-max (0, Ln) |
+To get the derivative of the activation(x) function, we need the chain rule because of the nested
+subexpression, w-x +b. Following our process, let’s introduce intermediate scalar variable z to
+represent the affine function giving:
+z(w,b,x) =w-x+b
+activation(z) = max(0, z)
+The vector chain rule tells us:
+Oactivation _ Oactivation Oz
+Ow Oz Ow
+which we can rewrite as follows:
+Oactivation _ 022 = oF z<0
+Ow 1 = gz =x? z>0 (we computed gz — x’ previously)
+and then substitute z = w-x+ b back in:
+Oactivation _ oF w:-xt+b<0
+Ow x? w-x+b>0
+That equation matches our intuition. When the activation function clips affine function output z
+to 0, the derivative is zero with respect to any weight w;. When z > 0, it’s as if the maz function
+disappears and we get just the derivative of z with respect to the weights.
+Turning now to the derivative of the neuron activation with respect to b, we get:
+Oactivation 0% =0 w-x+b<0
+Ob 1%=1 w-x+b>0
+Let’s use these partial derivatives now to handle the entire loss function.
+6 The gradient of the neural network loss function
+Training a neuron requires that we take the derivative of our loss or “cost” function with respect to
+the parameters of our model, w and b. Because we train with multiple vector inputs (e.g., multiple
+images) and scalar targets (e.g., one classification per image), we need some more notation. Let
+X= [x1,X2,...,xy]-
+25
+where N = |X|, and then let
+y = |target(x), target(x2),...,target(xy)|?
+where y; is a scalar. Then the cost equation becomes:
+N N
+1 1
+C(w,b, X,y) = W ) (y; — activation(x;))? = W ) (y; — max(0, w - x; +b))?
+Following our chain rule process introduces these intermediate variables:
+u(w,b,x) = mazx(0,w-x-+b)
+Cv) = wERe
+Let’s compute the gradient with respect to w first.
+6.1 The gradient with respect to the weights
+From before, we know:
+oF w-x+6<0
+O
+Fa hw b, x) = T
+x w-x+b>0
+and
+or Ou ate w-x+bd<0
+Ov(y,u) 0 _
+Ow = By w=
+Ow dw —x* w-x+bd>0
+Then, for the overall gradient, we get:
+200) _ A Lys ,2
+Ow _ Ow N —
+_~ 14»
+ON Ow
+4i=1
+_ Lydv?s ov
+_ N& Ov Ow
+1 Ov
+= Wray
+Q w:-x;+6<0
+2(y;,—u)xl w-x,+b>0 !
+|-
+=
+o |
+|
+w:-x,;+6<0
+—2(y; —(w-x;+0))xP w-x;+b>0
+Q w:-x,;+6<0
+2(y; — max(0,w-x;+b))xF w-x,+b>0 !
+!
+|-
+=
+|-
+=
+i
+e
+a
+7
+w-x;j+bd<0
+oe (yi — (wx; +d))xP w-x; +b>0 |
+a yS
+lleS
+ela
+| w-x;j+bd<0
+(wx; +b—y)x? w-x,+b>0
+To interpret that equation, we can substitute an error term e; = w- x; + b — y; yielding:
+aC 2 » a
+dw N Ss” e;x; (for the nonzero activation case)
+i=l
+From there, notice that this computation is a weighted average across all x; in _X. The weights are
+the error terms, the difference between the target output and the actual neuron output for each x;
+input. The resulting gradient will, on average, point in the direction of higher cost or loss because
+large e; emphasize their associated x;. Imagine we only had one input vector, N = |X| = 1, then
+the gradient is just Qe,x?. If the error is 0, then the gradient is zero and we have arrived at the
+minimum loss. If e; is some small positive difference, the gradient is a small step in the direction
+of x1. If e; is large, the gradient is a large step in that direction. If e; is negative, the gradient is
+reversed, meaning the highest cost is in the negative direction.
+Of course, we want to reduce, not increase, the loss, which is why the gradient descent recurrence
+relation takes the negative of the gradient to update the current position (for scalar learning rate
+m):
+OC
+Wt+i = Wi — 1S
+Because the gradient indicates the direction of higher cost, we want to update x in the opposite
+direction.
+6.2 The derivative with respect to the bias
+To optimize the bias, b, we also need the partial with respect to b. Here are the intermediate
+variables again:
+u(w,b,x) = mazx(0,w-x-+b)
+Cv) = ¥ et vw
+27
+We computed the partial with respect to the bias for equation u(w, b,x) previously:
+Ou 0 w-x+0<0
+Ob \1 w-x+bd>0
+For v, the partial is:
+Ov(y,u) oO Ou Ou 0 w-x+b<0
+Ob Ob Ob Ob —1 w-x+b>0
+And for the partial of the cost function itself we get:
+1 me w-x+bd<0
+No —2u w-x+b>0
+w-x+b<0
+_ i = fo
+- Na —2(y; — maz(0,w-x;+6)) w-x+b>0
+7 ay 0 wxtb<0
+7 N «> | 2(w-xitb—yi) w-x+b>0
+0
+w-x;+b<0
+2 (wx; tb—-yi) wx; +b>0
+As before, we can substitute an error term:
+ac 26 oo
+ap ~ N Ss” e; (for the nonzero activation case)
+i=1
+The partial derivative is then just the average error or zero, according to the activation level. To
+update the neuron bias, we nudge it in the opposite direction of increased cost:
+OC
+bi41 = by — Tap
+28
+In practice, it is convenient to combine w and 0 into a single vector parameter rather than having
+to deal with two different partials: w — [w?,}]?. This requires a tweak to the input vector x as
+well but simplifies the activation function. By tacking a 1 onto the end of x, X = [x’,1], w-x +b
+becomes W- X.
+This finishes off the optimization of the neural network loss function because we have the two
+partials necessary to perform a gradient descent.
+7 Summary
+Hopefully you’ve made it all the way through to this point. You’re well on your way to understand-
+ing matrix calculus! We’ve included a reference that summarizes all of the rules from this article
+in the next section. Also check out the annotated resource link below.
+Your next step would be to learn about the partial derivatives of matrices not just vectors. For
+example, you can take a look at the matrix differentiation section of Matrix calculus.
+Acknowledgements. We thank Yannet Interian (Faculty in MS data science program at Univer-
+sity of San Francisco) and David Uminsky (Faculty/director of MS data science) for their help with
+the notation presented here.
+8 Matrix Calculus Reference
+8.1 Gradients and Jacobians
+The gradient of a function of two variables is a horizontal 2-vector:
+Of(xz,y) Of(z,y)
+Vile)=
+The Jacobian of a vector-valued function that is a function of a vector is an m x n (m = |f| and
+n = |x|) matrix containing all possible scalar partial derivatives:
+dy h V o fi a x) ) | Z B A( e x) s ) | a a o A @ fo s (x S ) A 5 i % ( f x o( ) x - ) . -. . - 5 3 % %fil X x x )
+fa(x)
+Xx
+Ox ints gitntw) | qP-tatwdgPasate)--- petal
+The Jacobian of the identity function f(x) = x is J.
+29
+8.2 Element-wise operations on vectors
+Define generic element-wise operations on vectors w and x using operator () such as +:
+Yi fi(w) OC (x)|
+Y2 In(w) O ga(x)
+in| — [falw) © gn(x)|
+The Jacobian with respect to w (similar for x) is:
+dar (fi(w) Om(x)) ais (fiOl gw(x))... ay, (F i(© wgi (x))) |
+2 ( fy(w) © golx)) 2 (fo(w) © golx)) + Gax(f2© (g2w(x)))
+ESIQ eciIQ
+Oy_
+Ie =
+Ow
+52(ul© gwul3))) g2s(Fu(w) Ogn(x)) 2+ g2Cfa© lguwls))|
+Given the constraint (element-wise diagonal condition) that f;(w) and g;(x) access at most w; and
+x;, respectively, the Jacobian simplifies to a diagonal matrix:
+O (Fra(tn) O on(tn))
+Own
+Here are some sample element-wise operators:
+Op Partial wi th respect to w rParmtia=l= wIith respect to x
+: o 0 wt n +x - 3 wx
+@ _ O A w nO ew TX s ) = _ d T i ag(x) ac w ev e o x ) ~_ d - iaglw)
+Q A) — diag(... i...) Otwor) — diag(.., =Bi...)
+8.3 Scalar expansion
+Adding scalar z to vector x, y =x +2, is really y = f(x) + g(z) where f(x) = x and g(z) = Iz.
+2 iy + z) = diag(1) =I
+Ox
+ox +2z)= 1
+Scalar multiplication yields:
+(x2) =Iz
+(x2) =x
+30
+8.4 Vector reductions
+The partial derivative of a vector sum with respect to one of the vectors is:
+VxeI—= OOyy _= | POLy, bpyL ... OPy| | _= [yy OfAi(ex)? Dui OFDig(x ) tt) Dai Offi(ex)]
+For y = sum(x):
+Vxay= lt
+For y = sum(xz) and n = |a|, we get:
+Vxy= [2,2,---2,]
+Vzy = sum(x)
+Vector dot product y = f(w)- g(x) = >>; (wia;) = sum(w @x). Substituting u = w @x and using
+the vector chain rule, we get:
+qu — 4 (w @x) = diag(w)
+ia = # sum(u =
+Similarly,
+8.5 Chain rules
+The vector chain rule is the general form as it degenerates to the others. When f is a function
+of a single variable x and all intermediate variables u are functions of a single variable, the single-
+variable chain rule applies. When some or all of the intermediate variables are functions of multiple
+variables, the single-variable total-derivative chain rule applies. In all other cases, the vector chain
+rule applies.
+Single-variable rule Single-variable total-derivative rule Vector rule
+di — du de an = Bu dx dxf (8(X)) = Se dx
+9 Notation
+Lowercase letters in bold font such as x are vectors and those in italics font like x are scalars. 2;
+is the i” element of vector x and is in italics because a single vector element is a scalar. |x| means
+“length of vector x.”
+The T exponent of x? represents the transpose of the indicated vector.
+a x; is just a for-loop that iterates 7 from a to b, summing all the 2;.
+31
+Notation f(z) refers to a function called f with an argument of 2.
+I represents the square “identity matrix” of appropriate dimensions that is zero everywhere but
+the diagonal, which contains all ones.
+diag(x) constructs a matrix whose diagonal elements are taken from vector x.
+The dot product w.-x is the summation of the element-wise multiplication of the elements:
+Sy) (wai) = sum(w @ x). Or, you can look at it as wl a.
+Differentiation a is an operator that maps a function of one parameter to another function. That
+means that a f(z) maps f(a) to its derivative with respect to 2, which is the same thing as ae)
+Also, ify = f(x), then au = aie) = i (x).
+The partial derivative of the function with respect to x, a f(x), performs the usual scalar derivative
+holding all other variables constant.
+The gradient of f with respect to vector x, V f(x), organizes all of the partial derivatives for a
+specific scalar function.
+The Jacobian organizes the gradients of multiple functions into a matrix by stacking them:
+y= * ra
+V fo(x)
+The following notation means that y has the value a upon condition, and value b upon conditiong.
+y= t condition,
+6 conditions
+10 Resources
+Wolfram Alpha can do symbolic matrix algebra and there is also a cool dedicated matrix calculus
+differentiator.
+When looking for resources on the web, search for “matrix calculus” not “vector calculus.” Here
+are some comments on the top links that come up from a Google search:
+e https://en.wikipedia.org/wiki/Matrix_calculus The Wikipedia entry is actually quite good
+and they have a good description of the different layout conventions. Recall that we use the
+numerator layout where the variables go horizontally and the functions go vertically in the
+Jacobian. Wikipedia also has a good description of total derivatives, but be careful that they
+use slightly different notation than we do. We always use the Ox notation not dx.
+e http://www.ee.ic.ac.uk/hp/staff/dmb/matrix/calculus.html This page has a section on ma-
+trix differentiation with some useful identities; this person uses numerator layout. This might
+32
+be a good place to start after reading this article to learn about matrix versus vector differ-
+entiation.
+This iispatofthe course ‘notes for “Introduction -to5 Finite Element Methods” I believe by €
+los A. Felippa. His Jacobians are transposed from our notation because he uses denominator
+layout..
+; 3 Fy /matrix /cs us.htrf This page has a huge number of
+useful derivatives computed for a¢ variety of vectors and matrices. A great cheat sheet. There
+is no discussion to speak of, just a set of rules.
+e https: // wowmat ; mvrolkowi /matrixcookbook.pdfAnother cheat sheet that fo-
+cuses on ‘matrix operations in zeneralwith more discussion than the previous item.
+npdf A useful set of slides. tn
+To learn more about neural networks and the mathematics behind optimization and back propa-
+gation, we highly recommend Michael Nicisen’s book.
+For those interested specificallyin convolutional neural networks, check outA guide to convolution
+AepPaTtO: HbMaepci; I 5 ceo TFYorP Oc5etcohr ilyAaAp nP im.oF
+We reference the law of tota! derivative, which is an important concept that just means derivatives
+with respect to x must take into consideration the derivative with respect x of all variables that
+are a function of 2.
+33

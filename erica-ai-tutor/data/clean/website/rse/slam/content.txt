@@ -1,0 +1,158 @@
+SLAM: Simultaneous Localization and Mapping – Engineering AI Agents
+Engineering AI Agents
+BOOK
+Foundations
+Training Deep Networks
+Perception
+Kinematics
+State Estimation
+Large Language Models
+Multimodal Reasoning
+Task Planning
+Global Planning
+Local Planning
+Markov Decision Processes
+Reinforcement Learning
+VLA Agents
+COURSES
+Introduction to AI
+AI for Robotics
+Deep Learning for Computer Vision
+DATA MINING - BEING PORTED
+MEDIA
+AI for Robotics
+ABOUT ME
+Recursive State Estimation
+SLAM: Simultaneous Localization and Mapping
+Recursive State Estimation
+Recursive State Estimation
+Discrete Bayes Filter
+Kalman Filters
+Localization
+Occupancy Grid Mapping
+SLAM: Simultaneous Localization and Mapping
+On this page
+Why SLAM is Hard
+Kalman Filter for SLAM
+Properties of EKF-SLAM
+Approximations and Alternatives
+Edit this page
+View source
+Report an issue
+Recursive State Estimation
+SLAM: Simultaneous Localization and Mapping
+SLAM: Simultaneous Localization and Mapping
+Author
+Based on Probabilistic Robotics, Ch. 10
+The
+SLAM problem
+asks: can a robot simultaneously build a map of an unknown environment and estimate its own trajectory within that map?
+Given: - The robot’s controls
+\(u_{1:t}\)
+, - Observations of nearby features
+\(z_{1:t}\)
+,
+Estimate: - The map
+\(m\)
+, - The path
+\(x_{1:t}\)
+.
+Formally, we want the posterior distribution
+\[
+p(x_{1:t}, m \mid z_{1:t}, u_{1:t}),
+\]
+which couples both localization and mapping. There are two principal formulations:
+Full SLAM
+: estimate the entire path and the map
+\[
+p(x_{1:t}, m \mid z_{1:t}, u_{1:t}).
+\]
+Online SLAM
+: estimate the current pose and the map
+\[
+p(x_t, m \mid z_{1:t}, u_{1:t}).
+\]
+Graphical models make the conditional dependencies explicit: the map, robot poses, controls, and observations are jointly dependent.
+Why SLAM is Hard
+Coupled uncertainties
+:
+Errors in robot pose propagate into errors in the map, and vice versa.
+Data association
+:
+Observations must be correctly matched to landmarks. Wrong associations lead to catastrophic map corruption.
+Correlation of landmarks
+:
+As Dissanayake et al. (2001) showed, in the limit all landmark estimates become fully correlated.
+Techniques for Consistent Maps
+Scan Matching
+: Align consecutive scans by maximizing their likelihood under a relative pose.
+EKF-SLAM
+: Model the posterior as a joint Gaussian over robot pose and landmarks.
+FastSLAM
+: Factorize the problem using Rao–Blackwellisation.
+Graph-SLAM / SEIFs
+: Represent constraints sparsely in graph or information form.
+Kalman Filter for SLAM
+The
+Extended Kalman Filter (EKF)
+is the classical solution (Smith & Cheesman, 1986).
+State vector:
+\[
+x_t = \begin{bmatrix}
+x_t^r \\
+m
+\end{bmatrix},
+\]
+where
+\(x_t^r\)
+is the robot pose and
+\(m\)
+the landmark locations.
+Update consists of:
+Prediction
+: propagate pose using motion model
+\[
+\hat{x}_t = f(x_{t-1}, u_t) + \epsilon_t.
+\]
+Correction
+: incorporate observation
+\[
+K_t = \Sigma_t H_t^\top (H_t \Sigma_t H_t^\top + Q_t)^{-1},
+\]
+\[
+x_t \leftarrow \hat{x}_t + K_t (z_t - h(\hat{x}_t)),
+\]
+\[
+\Sigma_t \leftarrow (I - K_t H_t)\Sigma_t.
+\]
+The EKF maintains correlations between all landmarks through the covariance matrix.
+Properties of EKF-SLAM
+Complexity
+\(O(n^2)\)
+in the number of landmarks.
+Proven convergence for linear cases.
+Diverges if nonlinearities are severe.
+Approximations (submaps, sparse information filters) reduce complexity.
+In the limit, landmarks become fully correlated.
+Approximations and Alternatives
+Submaps
+(Leonard et al., 1999; Bosse et al., 2002): partition environment into local maps.
+Sparse links
+(Lu & Milios, 1997; Guivant & Nebot, 2001): reduce correlations.
+SEIF (Sparse Extended Information Filter)
+: exploit sparsity in information matrix.
+FastSLAM
+(Montemerlo et al., 2002): factorize into particle filter over robot trajectories and EKFs for landmarks.
+SLAM is fundamentally a
+Bayesian estimation problem
+:
+\[
+p(x_{1:t}, m \mid z_{1:t}, u_{1:t}).
+\]
+Classical EKF-SLAM maintains correlations but is quadratic in complexity.
+FastSLAM and Graph-SLAM exploit structure for efficiency.
+Data association and uncertainty coupling remain the central challenges.
+Occupancy Grid Mapping
+Edit this page
+View source
+Report an issue

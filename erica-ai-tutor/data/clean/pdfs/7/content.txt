@@ -1,0 +1,1488 @@
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+ot:\) WIKIPEDIA
+to y The Free Encyclopedia
+Normal distribution
+In probability theory and statistics, a normal distribution or Gaussian
+Normal distribution
+distribution is a type of continuous probability distribution for a real-valued
+random variable. The general form of its probability density function is!2JISII41
+Probability density function
+_ ea? TT T a
+f(@) = ew
+/ 2ro0?
+The parameter p is the mean or expectation of the distribution (and also its median
+and mode), while the parameter o” is the variance. The standard deviation of the
+distribution is o (sigma). A random variable with a Gaussian distribution is said to be
+normally distributed and is called a normal deviate.
+Normal distributions are important in statistics and are often used in the natural and
+social sciences to represent real-valued random variables whose distributions are not
+known.|5Il¢l Their importance is partly due to the central limit theorem. It states
+that, under some conditions, the average of many samples (observations) of a
+random variable with finite mean and variance is itself a random variable—whose
+distribution converges to a normal distribution as the number of samples increases.
+Therefore, physical quantities that are expected to be the sum of many independent
+processes, such as measurement errors, often have distributions that are nearly
+normal.lZ]
+Moreover, Gaussian distributions have some unique properties that are valuable in
+analytic studies. For instance, any linear combination of a fixed collection of
+independent normal deviates is a normal deviate. Many results and methods, such as
+propagation of uncertainty and least squares!®! parameter fitting, can be derived
+analytically in explicit form when the relevant variables are normally distributed.
+A normal distribution is sometimes informally called a bell curve.!9!2°] However,
+many other distributions are bell-shaped (such as the Cauchy, Student's f, and
+logistic distributions). (For other names, see Naming.)
+The univariate probability distribution is generalized for vectors in the multivariate
+normal distribution and for matrices in the matrix normal distribution.
+Definitions
+Standard normal distribution
+The simplest case of a normal distribution is known as the standard normal
+distribution or unit normal distribution. This is a special case when w = 0 and
+o? = 1, and it is described by this probability density function (or density):04
+en /2
+y(z) =
+/ 20
+The variable z has a mean of o and a variance and standard deviation of 1. The
+density y(z) has its peak aa at z = 0 and inflection points at z = +1 and z= —1.
+iT
+Although the density above is most commonly known as the standard normal, a few
+authors have used that term to describe other versions of the normal distribution.
+Carl Friedrich Gauss, for example, once defined the standard normal as
+https://en.wikipedia.org/wiki/Normal_distribution
+P }cf
+07=0.2,—— 4
+07=1.0, —
+07=5.0, ——
+,0=05,—— 4
+ntaT | oos
+I hN
+0.2
+0.0
+The red curve is the standard normal disiribution.
+Cumulative distribution function
+Notation N(p, 0”)
+Parameters p € R =mean (location)
+o” € Ryo = variance (squared scale)
+Support zER
+PDF 1 _&#?
+E€ 2
+V2n0*
+CDF 6 (2) = 5 |i+en()|
+o 2 oV/2
+Quantile p+ov2erf (2p — 1)
+Mean Tv
+Median Tv
+Mode Tv
+Variance oa
+MAD o/2 erf' (1/2)
+AAD oy/2/
+Skewness 0
+Page 1 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+e* Excess kurtosis 0
+y(z) = —, 1
+JT Entropy 5 log(2me0”)
+which has a variance of 31 and Stephen Stigler!'2! once defined the standard normal MGF exp(ut + o2t4? /2)
+as CF exp(ipt — ot? /2)
+y(z) n=eeT?M, Fiinsfhoerrm ation L(y, a) = ( 1/‘o ? s0et
+which has a simple functional form and a variance of 0? = =.
+Ho") ( 1/00 ? 1/(200 4))
+T(p, 07) =
+General normal distribution
+Every normal distribution is a version of the standard normal distribution whose | Kullback-Leibler | 1 ( o ) n (1 — Ho)” lin oy
+domain has been stretched by a factor o (the standard deviation) and then translated divergence 2 eal 2 on
+o7
+by pu (the mean value):
+Expected -(%())
+f(a| n,0?) ==1 2 (— shortfall t m e e 7
+H,o ) = o 4 o : uUto i-p [1]
+The probability density must be scaled by 1/e so that the integral is still 1.
+If Z is a standard normal deviate, then X = oZ + p will have a normal distribution with expected value wz and standard deviation o. This is
+equivalent to saying that the standard normal distribution Z can be scaled/stretched by a factor of o and shifted by y to yield a different normal
+distribution, called X. Conversely, if X is a normal deviate with parameters ps and o, then this X distribution can be re-scaled and shifted via the
+formula Z = (X — p)/o to convert it to the standard normal distribution. This variate is also called the standardized form of X.
+Notation
+The probability density of the standard Gaussian distribution (standard normal distribution, with zero mean and unit variance) is often denoted
+with the Greek letter (phi).!"3! The alternative form of the Greek letter phi, y, is also used quite often.
+The normal distribution is often referred to as N(p, 07) or N(p,0”).44! Thus when a random variable X is normally distributed with mean p
+and standard deviation a, one may write
+X~ N(u,0").
+Alternative parameterizations
+Some authors advocate using the precision T as the parameter defining the width of the distribution, instead of the standard deviation o or the
+variance o”. The precision is normally defined as the reciprocal of the variance, 1 / o” 5] The formula for the distribution then becomes
+— | 7 o-r@-n)?/2
+f(z) 57° .
+This choice is claimed to have advantages in numerical computations when @ is very close to zero, and simplifies formulas in some contexts, such
+as in the Bayesian inference of variables with multivariate normal distribution.
+Alternatively, the reciprocal of the standard deviation 7’ = 1/0 might be defined as the precision, in which case the expression of the normal
+distribution becomes
+f(a) = LU e ew?/2,
+20
+According to Stigler, this formulation is advantageous because of a much simpler and easier-to-remember formula, and simple approximate
+formulas for the quantiles of the distribution.
+Normal distributions form an exponential family with natural parameters 0, = + and @) = = and natural statistics x and x2. The dual
+oO
+expectation parameters for normal distribution are 4, = 4 and 74 = we +0.
+https://en.wikipedia.org/wiki/Normal_distribution Page 2 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Cumulative distribution function
+The cumulative distribution function (CDF) of the standard normal distribution, usually denoted with the capital Greek letter ®, is the integral
+8(2) = —1 / Hid oP at.
+Vv 20 —0o
+Error function
+The related error function erf(x) gives the probability of a random variable, with normal distribution of mean o and variance 1/2 falling in the
+range [—2x,]. That is:
+erf(z) = =! e* dt= = / e* dt.
+T J—z WT J0
+These integrals cannot be expressed in terms of elementary functions, and are often said to be special functions. However, many numerical
+approximations are known; see below for more.
+The two functions are closely related, namely
+B(x) = 5 c ret()| ,
+For a generic normal distribution with density f, mean p and variance o”, the cumulative distribution function is
+F(e) = #( zr — HY = 1 |i ert( xz — “)|
+a 2 o/2
+The complement of the standard normal cumulative distribution function, Q(z) = 1 -— ©&(#), is often called the Q-function, especially in
+engineering texts.!6[17] It gives the probability that the value of a standard normal random variable X will exceed a: P(X > x). Other
+definitions of the Q-function, all of which are simple transformations of ®, are also used occasionally.4'8!
+The graph of the standard normal cumulative distribution function ® has 2-fold rotational symmetry around the point (0,1/2); that is,
+6(—z) = 1 — ®(z). Its antiderivative (indefinite integral) can be expressed as follows:
+[2 dz = ®(x) + v(x) + C.
+The cumulative distribution function of the standard normal distribution can be expanded by integration by parts into a series:
+1 1 2 3 2° gent
+@(7) (= = +— 7 e57° t /2 e5a 3en5 aGaap
+where !! denotes the double factorial.
+An asymptotic expansion of the cumulative distribution function for large x can also be derived using integration by parts. For more, see Error
+function § Asymptotic expansion.19!
+A quick approximation to the standard normal distribution's cumulative distribution function can be found by using a Taylor series
+approximation:
+®(x) x — + > C ;
+2 fm th QF k(2k+ 1)
+Recursive computation with Taylor series expansion
+The recursive nature of the e*” family of derivatives may be used to easily construct a rapidly converging Taylor series expansion using recursive
+entries about any point of known value of the distribution, ®(a9):
+62) =oeo any,
+n=0
+where:
+https://en.wikipedia.org/wiki/Normal_distribution Page 3 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+BO (eq) = — | zo et) dt
+Vv 27 J—oo
+&Y (ay) = e~%9/?
+20
+6 (29) = — (xo) (ao) + (n — 2) 6") (20)) , on>2.
+Using the Taylor series and Newton's method for the inverse function
+An application for the above Taylor series expansion is to use Newton's method to reverse the computation. That is, if we have a value for the
+cumulative distribution function, (x), but do not know the x needed to obtain the ®(z), we can use Newton's method to find x, and use the
+Taylor series expansion above to minimize the number of computations. Newton's method is ideal to solve this problem because the first
+derivative of (2), which is an integral of the normal standard distribution, is the normal standard distribution, and is readily available to use in
+the Newton's method solution.
+To solve, select a known approximate solution, zg, to the desired ®(x). x9 may be a value from a distribution table, or an intelligent estimate
+followed by a computation of ®(z9) using any desired means to compute. Use this value of ag and the Taylor series expansion above to minimize
+computations.
+Repeat the following process until the difference between the computed ®(z,,) and the desired ®, which we will call &(desired), is below a
+chosen acceptably small error, such as 10-5, 107", etc.:
+®(xn, 20, B(ao)) — (desired)
+®' (zn)
+where
+@(x, 29, ®(a)) is the (x) from a Taylor series solution using zp and ®(2)
+5'(a_) = - eR?
+V 47
+When the repeated computations converge to an error below the chosen acceptably small value, x will be the value needed to obtain a ®(z) of the
+desired value, @(desired).
+Standard deviation and coverage
+About 68% of values drawn from a normal distribution are within one standard deviation o
+from the mean; about 95% of the values lie within two standard deviations; and about
+99.7% are within three standard deviations.!9! This is known as the 68-—95-—99.7 (empirical)
+rule, or the 3-sigma rule.
+More precisely, the probability that a normal deviate lies in the range between fp — no and
+pu + no is given by
+F(uw+no) — F(u—no) = 8(n) — 8(—n) = at() .
+To 12 significant digits, the values for n = 1,2,...,6 are:
+https://en.wikipedia.org/wiki/Normal_distribution
+4.0
+30
+2.0
+34.1% | 34.1%
+1.0
+2
+So
+For the normal distribution, the values less than one
+standard deviation from the mean account for 68.27% of
+the set; while two standard deviations from the mean
+account for 95.45%; and three standard deviations
+account for 99.73%.
+Page 4 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+n | p=F(p+— Fn(uo—n)o) 1-—p o1r in (1 — p) OEIS
+1 0.682 689 492 137 0.317 310 507 863 3.151 487 187 53 OEIS: A178647
+2 0.954 499 736 104 0.045 500 263 896 21.977 894 5080 OEIS: A110894
+3 0.997 300 203 937 0.002 699 796 063 370.398 347 345 OEIS: A270712
+4 0.999 936 657 516 0.000 063 342 484 15 787.192 7673
+5 0.999 999 426 697 0.000 000 573 303 1 744 277.893 62
+6 0.999 999 998 027 0.000 000 001 973 506 797 345.897
+ae ena
+For large n, one can use the approximation 1 — p = ark
+Quantile function
+The quantile function of a distribution is the inverse of the cumulative distribution function. The quantile function of the standard normal
+distribution is called the probit function, and can be expressed in terms of the inverse error function:
+6" (p) = V2erf*(2p—1), pe (0,1).
+For a normal random variable with mean p and variance o”, the quantile function is
+F\(p)=p+o®"(p)=p+oy2erf"(2p—1), pe (0,1).
+The quantile 6~!(p) of the standard normal distribution is commonly denoted as zp. These values are used in hypothesis testing, construction of
+confidence intervals and Q—Q plots. A normal random variable X will exceed fs + 2)o with probability 1 — p, and will lie outside the interval
+j4+ Zo with probability 2(1 — p). In particular, the quantile zp.975 is 1.96; therefore a normal random variable will lie outside the interval
+p+ 1.96e in only 5% of cases.
+The following table gives the quantile z» such that X will lie in the range s+ 2,0 with a specified probability p. These values are useful to
+determine tolerance interval for sample averages and other statistical estimators with normal (or asymptotically normal) distributions.'2! The
+following table shows »/2 erf!(p) = 671 (p=t+l) , not &~!(p) as defined above.
+D 2p D 2p
+0.80 | 1.281 551 565 545 0.999 3.290 526 731 492
+0.90 | 1.644 853 626 951 0.9999 3.890 591 886 413
+0.95 | 1.959 963 984 540 0.99999 4.417 173 413 469
+0.98 | 2.326 347 874 041 0.999999 4.891 638 475 699
+0.99 | 2.575 829 303 549 0.9999999 5.326 723 886 384
+0.995 | 2.807 033 768 344 0.99999999 | 5.730 728 868 236
+0.998 | 3.090 232 306 168 0.999999999 | 6.109 410 204 869
+For small p, the quantile function has the useful asymptotic expansion ~!(p) = — V In 2 —InIn a — In(27) + o(1).
+Properties
+The normal distribution is the only distribution whose cumulants beyond the first two (i.e., other than the mean and variance) are zero. It is also
+the continuous distribution with the maximum entropy for a specified mean and variance.!2#/[22] Geary has shown, assuming that the mean and
+variance are finite, that the normal distribution is the only distribution where the mean and variance calculated from a set of independent draws
+are independent of each other.!231[241
+The normal distribution is a subclass of the elliptical distributions. The normal distribution is symmetric about its mean, and is non-zero over the
+entire real line. As such it may not be a suitable model for variables that are inherently positive or strongly skewed, such as the weight of a person
+or the price of a share. Such variables may be better described by other distributions, such as the log-normal distribution or the Pareto
+distribution.
+https://en.wikipedia.org/wiki/Normal_distribution Page 5 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+The value of the normal density is practically zero when the value z lies more than a few standard deviations away from the mean (e.g., a spread of
+three standard deviations covers all but 0.27% of the total distribution). Therefore, it may not be an appropriate model when one expects a
+significant fraction of outliers—values that lie many standard deviations away from the mean—and least squares and other statistical inference
+methods that are optimal for normally distributed variables often become highly unreliable when applied to such data. In those cases, a more
+heavy-tailed distribution should be assumed and the appropriate robust statistical inference methods applied.
+The Gaussian distribution belongs to the family of stable distributions which are the attractors of sums of independent, identically distributed
+distributions whether or not the mean or variance is finite. Except for the Gaussian which is a limiting case, all stable distributions have heavy
+tails and infinite variance. It is one of the few distributions that are stable and that have probability density functions that can be expressed
+analytically, the others being the Cauchy distribution and the Lévy distribution.
+Symmetries and derivatives
+The normal distribution with density f(a) (mean p and variance o? > 0) has the following properties:
+# Itis symmetric around the point z = p, which is at the same time the mode, the median and the mean of the distributi[o25n]
+# It is unimodal: its first derivative is positive for x < p, negative for x > y, and zero only at z = p.
+=» The area bounded by the curve and the z-axis is unity (i.e. equal to one).
+= Its first derivative is f’(x) = — f(e).
+= Its second derivative is f” (x) = e—pw)?— ¢? (2).
+» Its density has two inflection points (where the second derivative of f is zero and changes sign), located one standard deviation away from
+the mean, namely at ¢ = w—oandz=—p+o.l
+= Its density is log-concav2e5.]
+= Its density is infinitely differentiable, indeed supersmooth of order 2.[261
+Furthermore, the density y of the standard normal distribution (i.e. 4 = 0 and a = 1) also has the following properties:
+« Its first derivative is y’(x) = —xp(z).
+= Its second derivative is p” (x) = (2? — 1)y(z)
+= More generally, its th derivative is yp) (x) = (—1)" He, (x)y(x), where He, (x) is the mth (probabilist) Hermite polynomial.!27]
+The probability that a normally distributed variable X with known ys and o isina particular set, can be calculated given that the fraction
+Z = (X — p)/o has a standard normal distribution.
+Moments
+The plain and absolute moments of a variable X are the expected values of X? and |X|”, respectively. If the expected value ps of X is zero, these
+parameters are called central moments; otherwise, these parameters are called non-central moments. Usually we are interested only in moments
+with integer order p.
+If X has a normal distribution, the non-central moments exist and are finite for any p whose real part is greater than -1. For any non-negative
+integer p, the plain central moments are:!28!
+E[(X — p)?] { o0 ?(p—1)!! iiffppi iss oevdedn.
+— n)?] =
+Here n!! denotes the double factorial, that is, the product of all numbers from n to 1 that have the same parity as n.
+The central absolute moments coincide with plain moments for all even orders, but are nonzero for odd orders. For any non-negative integer p,
+2 . *
+1 if pis even
+ap2p (p2t+1)
+—g?.
+JT
+https://en.wikipedia.org/wiki/Normal_distribution Page 6 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+The last formula is valid also for any non-integer p > —1. When the mean p ¥ 0, the plain and absolute moments can be expressed in terms of
+confluent hypergeometric functions ; F, and U.[291
+B[X?] = oP - (~iy2)” U( P=,-+ 2 ),
+“22? 2g
+E[|X/?] =o? - ntl1+)p iF, (-§. i -4).
+Ja 2 20?
+These expressions remain valid even if p is not an integer. See also generalized Hermite polynomials.
+Order Non-central moment, E/X?] Central moment, E[(X — )?]
+0 1 1
+1 bs 0
+2 wt+o o
+3 p? + 3p07 0
+4 p* + 6y20? + 30% 304
+5 pw + 1L0u3o? + 1504 0
+6 p® + 1540? + 45704 + 1508 1508
+7 p! + 21p5o? + 105u30* + 105pu08 0
+8 p8 + 28p%o? + 210pu4o4 + 420u?0% + 1050% | 10508
+The expectation of X conditioned on the event that X lies in an interval [a, b] is given by
+_ 2 £0) = F(a)
+E[X |a<X<bl=p F() — F(a)’
+where f and F respectively are the density and the cumulative distribution function of X. For b = oo this is known as the inverse Mills ratio.
+Note that above, density f of X is used instead of standard normal density as in inverse Mills ratio, so here we have o? instead of o.
+Fourier transform and characteristic function
+The Fourier transform of a normal density f with mean p and variance o” is!3°
+fA o=/ oo fixjiet* dr=geute —1t2 02t? ,
+—00
+where 7 is the imaginary unit. If the mean ys = 0, the first factor is 1, and the Fourier transform is, apart from a constant factor, a normal density
+on the frequency domain, with mean o and variance 1/ o”. In particular, the standard normal distribution y is an eigenfunction of the Fourier
+transform.
+In probability theory, the Fourier transform of the probability distribution of a real-valued random variable X is closely connected to the
+characteristic function yx(t) of that variable, which is defined as the expected value of e*, as a function of the real variable t (the frequency
+parameter of the Fourier transform). This definition can be analytically extended to a complex-value variable t.'3+! The relation between both is:
+ex(t) = f (-t).
+The real and imaginary parts of fa (t) = Ele"“. *] =e"“. e _ a7 1942 give:
+E|cos(tx)] = cos(ut)e 27"
+and
+: . 14222
+E|sin(tz)| = sin(ut)e 2°".
+Similarly,
+https://en.wikipedia.org/wiki/Normal_distribution Page 7 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+E|cosh(tx)| = cosh(yt)e217”*
+and
+. * 1624
+E|sinh(tx)| = sinh(pt)e2° © .
+These formulas evaluated at t = 1 give the expected value of these basic trigonometric and hyperbolic functions over a Gaussian random variable
+X ~ N(p, 07), which also could be seen as consequences of the Isserlis's theorem.
+Moment- and cumulant-generating functions
+The moment generating function of a real random variable X is the expected value of e’*, as a function of the real parameter t. For a normal
+distribution with density f, mean pu and variance o”, the moment generating function exists and is equal to
+M(t) = E[e*] = f (it) = ete”? ””.
+For any k, the coefficient of t* /k! in the moment generating function (expressed as an exponential power series in t) is the normal distribution's
+expected value E[X*}].
+The cumulant generating function is the logarithm of the moment generating function, namely
+g(t) = In M(E) = pt + sot ;
+The coefficients of this exponential power series define the cumulants, but because this is a quadratic polynomial in £, only the first two cumulants
+are nonzero, namely the mean yp and the variance oa”.
+Some authors prefer to instead work with the characteristic function Efe] = ell rrr and In Efe] = it — $ 27,
+Stein operator and class
+Within Stein's method the Stein operator and class of a random variable X ~ N(p, 07) are Af(x) = 07 f' (x) — (a — uw) f(x) and F the class of
+all absolutely continuous functions f : R > R such that E]| f’(X)|] < oo.
+Zero-variance limit
+In the limit when o? approaches zero, the probability density f approaches zero everywhere except at jz, where it approaches oo, while its integral
+remains equal to 1. An extension of the normal distribution to the case with zero variance can be defined using the Dirac delta measure 4,,
+although the resulting random variables are not absolutely continuous and thus do not have probability density functions. The cumulative
+distribution function of such a random variable is then the Heaviside step function translated by the mean p, namely
+Fe)=_{j90 iiffxe >< pp.
+Maximum entropy
+Of all probability distributions over the reals with a specified finite mean p and finite variance o”, the normal distribution N (4,07) is the one
+with maximum entropy.!24 To see this, let X be a continuous random variable with probability density f(a). The entropy of X is defined as!32!
+[33][34]
+H(X)=-f oo f(@)nfle)dz,
+he
+where f(x) log f(x) is understood to be zero whenever f(z) =0. This functional can be maximized, subject to the constraints that the
+distribution is properly normalized and has a specified mean and variance, by using variational calculus. A function with three Lagrange
+multipliers is defined:
+b=-[- f(x) In f(a) dx — Ag (1- [- f(c) de dy (.- [- f(e)edz) rs G -[- f(e)(e—n)? az)
+At maximum entropy, a small variation 6f(x) about f(a) will produce a variation dL about DZ which is equal to o:
+https://en.wikipedia.org/wiki/Normal_distribution Page 8 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+o=sn= [- 5f(x) (—In f(z) — 14+ Ao + Aw + Ag(z — p)) dz.
+Since this must hold for any small 6f(x), the factor multiplying 6f(x) must be zero, and solving for f(x) yields:
+f(x) = exp(—14 Ap + Aw + Ao (x — p)*).
+The Lagrange constraints that f(a) is properly normalized and has the specified mean and variance are satisfied if and only if Ao, A1, and Ag are
+chosen so that
+_ ea?
+f(z) = e 202
+/ 2x07
+The entropy of a normal distribution X ~ N(, 07) is equal to
+A(X) = $(1 + In2o0’7x),
+which is independent of the mean pz.
+Other properties
+1. If the characteristic function @x of some random variable X is of the form ¢x(t) = exp Q(¢) in a neighborhood of zero, where Q(t) is a
+polynomial, then the Marcinkiewicz theorem (named after Jozef Marcinkiewicz) asserts that Q can be at most a quadratic polynomial, and
+therefore X is a normal random variable./85! The consequence of this result is that the normal distribution is the only distribution with a finite
+number (two) of non-zero cumulants.
+2. If X and Y are jointly normal and uncorrelated, then they are independent. The requirement that X and Y should be jointly normal is
+essential; without it the property does not hold .S6l[$7Ilp'01] For non-normal random variables uncorrelatedness does not imply independence.
+3. The Kullback—Leibler divergence of one normal distribution X1 ~ N(p1, 02) from another X_ ~ N(U2, 02) is given by:22
+Dyt(X | x, —- Mo — w 2 1 1 ( f G o 2 -1-» 4 C 2)
+2052 2 052 05
+The Hellinger distance between the same distributions is equal to
+H?(X1,X2) =1— ,| 2= exp _11 Ya — malpo)”
+oi +05 4 +d?
+4. The Fisher information matrix for a normal distribution w.r.t. 4 and o” is diagonal and takes the form
+1
+T(p, 20°) = 02 1
+2o4
+5. The conjugate prior of the mean of a normal distribution is another normal distribution. 2! Specifically, if 71,...,2%, are iid ~ N(p, oa”) and
+the prior is p ~ N(po, o2), then the posterior distribution for the estimator of pz will be
+T2 Hot ot_ (n 1 —1
+pb | @1,.--,8n YN eo”? sztzy
+nm + % ° 0
+6. The family of normal distributions not only forms an exponential family (EF), but in fact forms a natural exponential family (NEF) with quadratic
+variance function (NEF-QVF). Many properties of normal distributions generalize to properties of NEF-QVF distributions, NEF distributions, or
+EF distributions generally. NEF-QVF distributions comprises 6 families, including Poisson, Gamma, binomial, and negative binomial
+distributions, while many of the common families studied in probability and statistics are NEF or EF.
+7. In information geometry, the family of normal distributions forms a statistical manifold with constant curvature —1. The same family is flat with
+respect to the (+1)-connections V‘) and ViTM [401
+8. If X,,...,Xp are distributed according to N(0, 07), then E[max; X;] < o/2Inn. Note that there is no assumption of independence.|41]
+Related distributions
+https://en.wikipedia.org/wiki/Normal_distribution Page 9 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Central limit theorem
+The central limit theorem states that under certain (fairly common) conditions, the sum of many random
+variables will have an approximately normal distribution. More specifically, where X1,...,X, are
+n=8
+independent and identically distributed random variables with the same arbitrary distribution, zero mean,
+and variance o” and Z is their mean scaled by ./n
+Z= Jn ty x,
+i=1
+Then, as n increases, the probability distribution of Z will tend to the normal distribution with zero mean As the number of discrete events
+and variance 2ao”. increases, the function begins to
+resemble a normal distribution.
+The theorem can be extended to variables (X;) that are not independent and/or not identically
+distributed if certain constraints are placed on the degree of dependence and the moments of the
+n=1
+distributions.
+0.16 1/6
+0 0. . 1 1 2 4 73/648
+Many test statistics, scores, and estimators encountered in practice contain sums of certain random 0.10
+0.08 0.08
+variables in them, and even more estimators can be represented as sums of random variables through the 0 0 . . 0 0 5 4 00..0054 | h
+0.02 00..0002 all |
+use of influence functions. The central limit theorem implies that those statistical parameters will have 0.00123456 4 14 24
+n=2 n=5
+asymptotically normal distributions.
+1/6
+The central limit theorem also implies that certain distributions can be approximated by the normal O10 0 65/648
+00..0085 | | 00..0085
+distribution, for example: 0.04 0.04
+0.00 I I 0.00 all i.
+2 7 12 k 5 17,18 30k
+» The binomial distribution B(n, p) is approximately normal with mean np and variance np(1 — p) for 0 p . i 1 k 8 ) n=3 e ; ~ .
+large n and for p not too close to 0 or 1.
+1/8
+Vi \ \
+» The Poisson distribution with parameter A is approximately normal with mean A and variance A, for fiid Wey
+0.08 Ji Wis
+large values of A./44! 0 0 00 . . .. 0 0 00 4 5 20 al | | ih. } t 4a y 5 / p i ff W X N O wJae
+» The chi-squared distribution x? (k) is approximately normal with mean k and variance 2k, for large k. 3 1911 18k
+Comparison of probability density
+» The Student's t-distribution ¢(v) is approximately normal with mean 0 and variance 1 when v is large. functions, p(x) for the sum of 7 fair 6-
+sided dice to show their convergence to a
+Whether these approximations are sufficiently accurate depends on the purpose for which they are
+normal distribution with increasing na, in
+needed, and the rate of convergence to the normal distribution. It is typically the case that such
+accordance to the central limit theorem.
+approximations are less accurate in the tails of the distribution. In the bottom-right graph, smoothed
+profiles of the previous graphs are
+A general upper bound for the approximation error in the central limit theorem is given by the Berry—
+rescaled, superimposed and compared
+Esseen theorem, improvements of the approximation are given by the Edgeworth expansions.
+with a normal distribution (black curve).
+This theorem can also be used to justify modeling the sum of many uniform noise sources as Gaussian
+noise. See AWGN.
+Operations and functions of normal variables
+Operations on a single normal variable
+If X is distributed normally with mean p and variance o?, then
+» aX + 6, for any real numbers a and 8, is also normally distributed, with mean ay + 6b and variance a*o?. That is, the family of normal
+distributions is closed under linear transformations.
+= The exponential of X is distributed log-normally: eX ~ In(N(, 07)).
+= The standard sigmoid of X is logit-normally distributed: o(X) ~ P(N (p, 07)).
+= The absolute value of X has folded normal distribution: |X| ~ Ny(p, 07). If 4 = 0 this is known as the half-normal distribution.
+» The absolute value of normalized residuals, |X — p|/o, has chi distribution with one degree of freedom: |X — p|/o ~ x1.
+= The square of X/o has the noncentral chi-squared distribution with one degree of freedom: X?/o? ~ x?2(u?/o7). If ~ = 0, the distribution is
+called simply chi-squared.
+» The log-likelinood of a normal variable x is simply the log of its probability density function:
+In p(x) = -4(*) —In(oV2n).
+https://en.wikipedia.org/wiki/Normal_distribution Page 10 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Since this is a scaled and shifted square of a standard normal variable, it is distributed as a scaled and shifted chi-squared variable.
+=» The distribution of the variable X restricted to an interval [a, b] is called the truncated normal distribution.
+=» (X — p)~? has a Lévy distribution with location 0 and scale o~?.
+Operations on two independent normal variables
+= If X; and X2 are two independent normal random variables, with means j41, 42 and variances o, oz, then their sum X1 + X» will also be
+normally distribut!ePd' , with mean jar + fe and variance o? + 02.
+= In particular, if X and Y are independent normal deviates with zero mean and variance o?, then X + Y and X — Y are also independent
+and normally distributed, with zero mean and variance 207. This isa special case of the polarization identity.[49]
+a If X1, X_ are two independent normal deviates with mean p and variance o”, and a, b are arbitrary real numbers, then the variable
+aX, + bX2 —(a+b)u 1
+3
+is also normally distributed with mean ys and variance o”. It follows that the normal distribution is stable (with exponent a = 2).
+a lf X_ ~~ N (mx, 02), k € {0,1} are normal distributions, then their normalized geometric mean 1 X¢ Xi-* is a normal
+San X§ (2) X{-(*2) de
+diosot,ri but.i on WM (mg, 02) wi.t h mz = amj—o—? +(C1r—ea)mm? 102 ang a2, oozto
+ao? +(1—-a)o? 7 ao? +(1—a)o?
+Operations on two independent standard normal variables
+If X; and X2 are two independent standard normal random variables with mean o and variance 1, then
+=» Their sum and difference is distriouted normally with mean zero and variance two: X; + X_ ~ N (0,2).
+= Their product Z = X1Xo follows the product distribution!4! with density function fz(z) = a Ko(|z|) where Ko is the modified Bessel
+function of the second kind. This distribution is symmetric around zero, unbounded at z = 0, and has the characteristic function
+oz (t) = (1+ #7)",
+= Their ratio follows the standard Cauchy distribution: X,/X2 ~ Cauchy(0, 1).
+= Their Euclidean norm ,/X? +X? has the Rayleigh distribution.
+Operations on multiple independent normal variables
+» Any linear combination of independent normal deviates is a normal deviate.
+w If X1,X2,...,Xn are independent standard normal random variables, then the sum of their squares has the chi-squared distribution with n
+degrees of freedom
+XP +++. 4 XP w xh.
+= If X,,X2,...,Xn are independent normally distributed random variables with means pz and variances o?, then their sample mean is
+independent from the sample standard deviation,!45! which can be demonstrated using Basu's theorem or Cochran's theorem.|*5l The ratio of
+these two quantities will have the Student's t-distribution with n — 1 degrees of freedom:
+p- XH n (Ki +--+ %n) =o ~ tro
+S/yn ; = —
+w If X1,Xo,...,Xn, Yi, Yo,...,¥m are independent standard normal random variables, then the ratio of their normalized sums of squares will
+have the F-distribution with (”, m) degrees of freedom [*/]
+_ (XP +X} +--X-R) +/n _
+(YP +YP+---+¥2) /m nm
+Operations on multiple correlated normal variables
+» A quadratic form of a normal vector, i.e. a quadratic function g = >> a? + $7 x; +c of multiple independent or correlated normal variables, is
+https://en.wikipedia.org/wiki/Normal_distribution Page 11 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+a generalized chi-square variable.
+Operations on the density function
+The split normal distribution is most directly defined in terms of joining scaled sections of the density functions of different normal distributions
+and rescaling the density to integrate to one. The truncated normal distribution results from rescaling a section of a single density function.
+Infinite divisibility and Cramér's theorem
+For any positive integer 1, any normal distribution with mean p and variance o? is the distribution of the sum of 1 independent normal deviates,
+each with mean . and variance cals This property is called infinite divisibility.4%!
+Conversely, if X; and X2g are independent random variables and their sum X, + X92 has a normal distribution, then both X; and X2 must be
+normal deviates. [491
+This result is known as Cramér's decomposition theorem, and is equivalent to saying that the convolution of two distributions is normal if and
+only if both are normal. Cramér's theorem implies that a linear combination of independent non-Gaussian variables will never have an exactly
+normal distribution, although it may approach it arbitrarily closely.35!
+The Kac—Bernstein theorem
+The Kac—Bernstein theorem states that if X and Y are independent and X + Y and X —Y are also independent, then both X and Y must
+necessarily have normal distributions./5oll51]
+More generally, if X1,...,X, are independent random variables, then two distinct linear combinations }°a,X, and >> byX;,will be
+independent if and only if all X; are normal and > aj,b,.0% = 0, where oF denotes the variance of X;,.!5°
+Extensions
+The notion of normal distribution, being one of the most important distributions in probability theory, has been extended far beyond the standard
+framework of the univariate (that is one-dimensional) case (Case 1). All these extensions are also called normal or Gaussian laws, so a certain
+ambiguity in names exists.
+» The multivariate normal distribution describes the Gaussian law in the k-dimensional Euclidean space. A vector_€X R* is multivariate-
+normally distributed if any linear combination of its components E14) %; has a (univariate) normal distribution. The variance of Yisak xk
+symmetric positive-definite matrix /. The multivariate normal distribution is a special case of the elliptical distributions. As such, its iso-density
+loci in the k = 2 case are ellipses and in the case of arbitrary & are ellipsoids.
+= Rectified Gaussian distribution a rectified version of normal distribution with all the negative elements reset to 0.
+=» Complex normal distribution deals with the complex normal vectors. A complex vector_€X C* is said to be normal if both its real and
+imaginary components jointly possess a 2k-dimensional multivariate normal distribution. The variance-covariance structure of X is described
+by two matrices: the variance matrix I’, and the relation matrix C.
+= Matrix normal distribution describes the case of normally distributed matrices.
+» Gaussian processes are the normally distributed stochastic processes. These can be viewed as elements of some infinite-dimensional Hilbert
+space H, and thus are the analogues of multivariate normal vectors for the case k = 0. Arandom element / € H is said to be normal if for
+any constant a € H the scalar product (a, /2) has a (univariate) normal distribution. The variance structure of such Gaussian random element
+can be described in terms of the linear covariance operator K: H — H. Several Gaussian processes became popular enough to have their
+own names:
+» Brownian motion;
+» Brownian bridge; and
+» Ornstein—Uhlenbeck process.
+» Gaussian q-distribution is an abstract mathematical construction that represents a q-analogue of the normal distribution.
+» the q-Gaussian is an analogue of the Gaussian distribution, in the sense that it maximises the Tsallis entropy, and is one type of Tsallis
+distribution. This distribution is different from the Gaussian q-distribution above.
+» The Kaniadakis «-Gaussian distribution is a generalization of the Gaussian distribution which arises from the Kaniadakis statistics, being one
+of the Kaniadakis distributions.
+A random variable_X has a two-piece normal distribution if it has a distribution
+fle) _=f {N uN,oonfe)), iiffae >s pp
+https://en.wikipedia.org/wiki/Normal_distribution Page 12 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+where vis the mean and o; and o; are the variances of the distribution to the left and right of the mean respectively.
+The mean E(X), variance V(X), and third central moment T(X) of this distribution have been determined!52!
+B(X) = p+ [2 — 01),
+V(X) = (1 - ) (09 — 01)? +0109,
+T(X)= rE — 04) (= - 1) (o2 —01)* +o102| .
+One of the main practical uses of the Gaussian law is to model the empirical distributions of many different random variables encountered in
+practice. In such case a possible extension would be a richer family of distributions, having more than two parameters and therefore being able to
+fit the empirical distribution more accurately. The examples of such extensions are:
+» Pearson distribution — a four-parameter family of probability distributions that extend the normal law to include different skewness and
+kurtosis values.
+» The generalized normal distribution, also known as the exponential power distribution, allows for distribution tails with thicker or thinner
+asymptotic behaviors.
+Statistical inference
+Estimation of parameters
+It is often the case that we do not know the parameters of the normal distribution, but instead want to estimate them. That is, having a sample
+(21,...,2n) from a normal N(p, 07) population we would like to learn the approximate values of parameters pz and o”. The standard approach
+to this problem is the maximum likelihood method, which requires maximization of the log-likelihood function:
+a n n 1<
+In £(u,07) = Sin f(a: | uo”) = —5 n(2n) — 5 Ino? - i So (ai - H)’.
+i=1 t=1
+Taking derivatives with respect to y and o? and solving the resulting system of first order conditions yields the maximum likelihood estimates:
+p=B=2 ay P= LY wa)
+. =ZfZ=n— o”Li =n eyxi—z)*.
+Then In £L(ji, 6”) is as follows:
+In L(ji, 6?) = (—n/2)[In(276") + 1]
+Sample mean
+Estimator ~ is called the sample mean, since it is the arithmetic mean of all observations. The statistic x is complete and sufficient for yz, and
+therefore by the Lehmann-—Scheffé theorem, ji is the uniformly minimum variance unbiased (UMVU) estimator.'53! In finite samples it is
+distributed normally:
+nw N(u, o”/n).
+The variance of this estimator is equal to the yu-element of the inverse Fisher information matrix Z~. This implies that the estimator is finite-
+sample efficient. Of practical importance is the standard error of f& being proportional to 1/,/n, that is, if one wishes to decrease the standard
+error by a factor of 10, one must increase the number of points in the sample by a factor of 100. This fact is widely used in determining sample
+sizes for opinion polls and the number of trials in Monte Carlo simulations.
+From the standpoint of the asymptotic theory, j is consistent, that is, it converges in probability to 2 as n — oo. The estimator is also
+asymptotically normal, which is a simple corollary of it being normal in finite samples:
+Vali —p) > N(0,?).
+Sample variance
+https://en.wikipedia.org/wiki/Normal_distribution Page 13 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+The estimator 6” is called the sample variance, since it is the variance of the sample ((#1,...,2n)). In practice, another estimator is often used
+instead of the 6”. This other estimator is denoted s?, and is also called the sample variance, which represents a certain ambiguity in terminology;
+its square root s is called the sample standard deviation. The estimator s? differs from 6? by having (n — 1) instead of n in the denominator (the
+so-called Bessel's correction):
+2 Mm ~ 1 . x2
+Oa ae = a Le,
+The difference between s? and 6” becomes negligibly small for large n's. In finite samples however, the motivation behind the use of s? is that it
+is an unbiased estimator of the underlying parameter 0”, whereas 6” is biased. Also, by the Lehmann-Scheffé theorem the estimator s” is
+uniformly minimum variance unbiased (UMVU),L53] which makes it the "best" estimator among all unbiased ones. However it can be shown that
+the biased estimator 6? is better than the s? in terms of the mean squared error (MSE) criterion. In finite samples both s? and 6” have scaled chi-
+squared distribution with (7 — 1) degrees of freedom:
+o 2
+2 9 a2 o 9
+S ~ *Xn—-1? ~ *Xn—-1°
+n—1
+The first of these expressions shows that the variance of s? is equal to 20% /(n — 1), which is slightly greater than the oo-element of the inverse
+Fisher information matrix Z oT which is 20% /n. Thus, s” is not an efficient estimator for 0”, and moreover, since s? is UMVU, we can conclude
+that the finite-sample efficient estimator for o? does not exist.
+Applying the asymptotic theory, both estimators s? and 6” are consistent, that is they converge in probability to o? as the sample size n — oo.
+The two estimators are also both asymptotically normal:
+/n(6* — 0”) ~ /n(s? — 0”) > N(0, 20%).
+In particular, both estimators are asymptotically efficient for 0”.
+Confidence intervals
+By Cochran's theorem, for normal distributions the sample mean # and the sample variance SX are independent, which means there can be no
+gain in considering their joint distribution. There is also a converse theorem: if in a sample the sample mean and sample variance are
+independent, then the sample must have come from the normal distribution. The independence between ji and s can be employed to construct the
+so-called t-statistic:
+o. H =_b
+~ th_-1
+s/n Jaen Dm— 2?
+n(n—1)
+This quantity ¢ has the Student's t-distribution with (7 — 1) degrees of freedom, and it is an ancillary statistic (independent of the value of the
+parameters). Inverting the distribution of this f-statistics will allow us to construct the confidence interval for w;'54! similarly, inverting the Va
+distribution of the statistic s? will give us the confidence interval for o* [551
+HE c — tp_1,1-a/2 = Kt th-1,1-a/2
+A 8 A s
+vn Jn
+n—1l n—1
+oe 8, s”
+2 2
+Xn-1,1-a/2 Xn—-1,0./2
+where f; Dp and Xkp are the pth quantiles of the f- and y°-distributions respectively. These confidence intervals are of the confidence level 1 — a,
+meaning that the true values « and o° fall outside of these intervals with probability (or significance level) a. In practice people usually take
+a= 5%, resulting in the 95% confidence intervals. The confidence interval for o can be found by taking the square root of the interval bounds for
+o.
+Approximate formulas can be derived from the asymptotic distributions of f and s:
+Za/2} [a2
+he |ap vn
+o € |s? — yy lealal go 3? yg ltalal 2
+2a/2 2a/2
+Va Va
+https://en.wikipedia.org/wiki/Normal_distribution Page 14 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+The approximate formulas become valid for large values of m, and are more convenient for the manual calculation since the standard normal
+quantiles z,. do not depend on v. In particular, the most popular value of a = 5%, results in |Zo 925| = 1.96.
+Normality tests
+Normality tests assess the likelihood that the given data set {x1, ..., x,,} comes from a normal distribution. Typically the null hypothesis Ho is that
+the observations are distributed normally with unspecified mean yw and variance Oo, versus the alternative 7, that the distribution is arbitrary.
+Many tests (over 40) have been devised for this problem. The more prominent of them are outlined below:
+Diagnostic plots are more intuitively appealing but subjective at the same time, as they rely on informal human judgement to accept or reject
+the null hypothesis.
+=» Q-Q plot, also known as normal probability plot or rankit plot—is a plot of the sorted values from the data set against the expected values of
+the corresponding quantiles from the standard normal distribution. That is, it is a plot of point of the form (® '(p,), XK); where plotting points
+P;, are equal to pz, = (k— a)/((n + 1 — 2a) and ais an adjustment constant, which can be anything between 0 and 1. If the null hypothesis is
+true, the plotted points should approximately lie on a straight line.
+=» P—P plot — similar to the Q—Q plot, but used much less frequently. This method consists of plotting the points (P(z)), p;,), where
+2k) = (24) — &)/6. For normally distributed data this plot should lie on a straight line between (0, 0) and (1, 1).
+Goodness-of-fit tests:
+Moment-based tests:
+» D'Agostino's K-squared test
+» Jarque—Bera test
+# Shapiro—Wilk test: This is based on the line in the Q—-Q plot having the slope of o. The test compares the least squares estimate of that slope
+with the value of the sample variance, and rejects the null hypothesis if these two quantities differ significantly.
+Tests based on the empirical distribution function:
+» Anderson—Darling test
+« Lilliefors test (an adaptation of the Kolmogorov—Smirnov test)
+Bayesian analysis of the normal distribution
+Bayesian analysis of normally distributed data is complicated by the many different possibilities that may be considered:
+» Either the mean, or the variance, or neither, may be considered a fixed quantity.
+= When the variance is unknown, analysis may be done directly in terms of the variance, or in terms of the precision, the reciprocal of the
+variance. The reason for expressing the formulas in terms of precision is that the analysis of most cases is simplified.
+» Both univariate and multivariate cases need to be considered.
+» Either conjugate or improper prior distributions may be placed on the unknown variables.
+» An additional set of cases occurs in Bayesian linear regression, where in the basic model the data is assumed to be normally distributed, and
+normal priors are placed on the regression coefficients. The resulting analysis is similar to the basic cases of independent identically
+distributed data.
+The formulas for the non-linear-regression cases are summarized in the conjugate prior article.
+Sum of two quadratics
+Scalar form
+The following auxiliary formula is useful for simplifying the posterior update equations, which otherwise become fairly tedious.
+a(x — y)? + B(x — z)? = (a+8)(2- ay+bz\? ab
+(y — z)?
+a+b a+b
+This equation rewrites the sum of two quadratics in x by expanding the squares, grouping the terms in x, and completing the square. Note the
+following about the complex constant factors attached to some of the terms:
+ay+bz
+1. The factor ais has the form of a weighted average of y and z.
+https://en.wikipedia.org/wiki/Normal_distribution Page 15 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+2. “ =F 4 C= (a~1 + b-1)—1. This shows that this factor can be thought of as resulting from a situation where the reciprocals of quantities
+=—+-
+a6
+a and b add directly, so to combine a and 4 themselves, it is necessary to reciprocate, add, and reciprocate the result again to get back into
+the original units. This is exactly the sort of operation performed by the harmonic mean, so it is not surprising that a} is one-half the
+harmonic mean of a and 5b.
+Vector form
+A similar formula can be written for the sum of two vector quadratics: If x, y, z are vectors of length 4, and A and B are symmetric, invertible
+matrices of size k x k, then
+(y — x)'A(y — x) + (x — 2)'B(x — z)
+2 (x— c)'(A+B)(x—c)+(y—2)(A*+B7)"(y—z)
+c= (A+B) !(Ay+ Bz)
+The form x’ A x is called a quadratic form and is a scalar:
+x’ Ax = > QijLiL;
+ij
+In other words, it sums up all possible combinations of products of pairs of elements from x, with a separate coefficient for each. In addition,
+since 4,2; = 2;2;, only the sum a;; +a, matters for any off-diagonal elements of A, and there is no loss of generality in assuming that A is
+symmetric. Furthermore, if A is symmetric, then the form x’ Ay = y’ Ax.
+Sum of differences from the mean
+Another useful formula is as follows:
+n Tm
+Sole =)? = (ei - 8)? +02 - 2)?
+i=l i=1
+where —~# = =1 )ijn_ 4 %..
+With known variance
+For a set of i.i.d. normally distributed data points X of size n where each individual point x follows 2 ~ N(p, 07) with known variance o, the
+conjugate prior distribution is also normally distributed.
+This can be shown more easily by rewriting the variance as the precision, i.e. using t = 1/o”. Then if 2 ~ M(,1/7) and up ~ N (po, 1/70), we
+proceed as follows.
+First, the likelihood function is (using the formula above for the sum of differences from the mean):
+a(X | 47) =[] [5 exe( F(a - wi)
+1
+= (2) exp -F. (St —#) +n(z- “")| ;
+i=1
+Then, we proceed as follows:
+https://en.wikipedia.org/wiki/Normal_distribution Page 16 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+p(w | X) x p(X | p)p(u)
+— (Zz) exp -F. (Se —#) +n(z- a) a exp (-5704 — 1)?)
+i=1
+one & (- (Se — &)’ +n(e- “) + 10(u — w))
+x exp (-5 (nr(z — w)” + T(u- w)))
+=_ e0( s1 (nr-+-7) (1 NTnXT ++ TToo M o ) 2 + oNTaT n,_ Ho)2
+xe Lin +79) ri+r Teoo \"
+xp P | ——2( n7r+7o J \# — —_NT_ _+ —T_o.
+In the above derivation, we used the formula above for the sum of two quadratics and eliminated all constant factors not involving wu. The result is
+NTZ+TM)y
+the kernel of a normal distribution, with mean ah and precision nt + 79, i.e.
+pu | x) ~~ (MEE 1 )
+nT+TM] 'nr+7)
+This can be written as a set of Bayesian update equations for the posterior parameters in terms of the prior parameters:
+T) =T +nT
+NTZ + To Mo
+My =
+NT + To
+1 n
+nH
+That is, to combine data points with total precision of nt (or equivalently, total variance of nlo’) and mean of values z, derive a new total
+precision simply by adding the total precision of the data to the prior total precision, and form a new mean through a precision-weighted
+average, i.e. a weighted average of the data mean and the prior mean, each weighted by the associated total precision. This makes logical sense if
+the precision is thought of as indicating the certainty of the observations: In the distribution of the posterior mean, each of the input components
+is weighted by its certainty, and the certainty of this distribution is the sum of the individual certainties. (For the intuition of this, compare the
+expression "the whole is (or is not) greater than the sum of its parts". In addition, consider that the knowledge of the posterior comes from a
+combination of the knowledge of the prior and likelihood, so it makes sense that we are more certain of it than of either of its components.)
+IR II
+The above formula reveals why it is more convenient to do Bayesian analysis of conjugate priors for the normal distribution in terms of the
+precision. The posterior precision is simply the sum of the prior and likelihood precisions, and the posterior mean is computed through a
+precision-weighted average, as described above. The same formulas can be written in terms of variance by reciprocating all the precisions,
+yielding the more ugly formulas
+1
+eas
+aL
+=)
++
+4
+]+
+ho
+F|ho
+H|ko
+ne
+o
+ae
+oe
+8 |
+rla Mi
+&
+With known mean
+For a set of i.i.d. normally distributed data points X of size n where each individual point x follows 2 ~ N(p, 07) with known mean yu, the
+conjugate prior of the variance has an inverse gamma distribution or a scaled inverse chi-squared distribution. The two are equivalent except for
+having different parameterizations. Although the inverse gamma is more commonly used, we use the scaled inverse chi-squared for the sake of
+https://en.wikipedia.org/wiki/Normal_distribution Page 17 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+convenience. The prior for o” is as follows:
+—1y0% —1ya%
+(co? +l? &xp 202 €xp 202
+P(o 2 | ¥,05) =
+7 y o Y
+The likelihood function from above, written in terms of the variance, is:
+HX | w,04) = (5 ) ex|- : Sea
+2r02 202
+Come
+= 270 x Pl e2e0?
+where
+n
+S= So (zi _ p)?.
+i=1
+Then:
+p(o” | X) « p(X | o”)p(o’)
+n/2 | 7(93%) ? exp|o
+2
+—
+0
+g
+8
+~
+(
+270 2 2o7 2 | T (V+p ) (02)19
+( 1 " 1 S 95
+x | —o2 (2) exp P | —20° 202
+1 yor +S
+— min ©XP|— 2
+(2) 7
+The above is also a scaled inverse chi-squared distribution where
+y=uy+n
+n
+NPoeont = Yoo2 + y (a;. — 2)2
+i=1
+or equivalently
+y=Mwyt_n
+a) 0%2 + Dni a(es #)2
+0 yrn
+Reparameterizing in terms of an inverse gamma distribution, the result is:
+a =at n
+7 2
+2
+With unknown mean and unknown variance
+For a set of i.i.d. normally distributed data points X of size n where each individual point x follows 2 ~ N(y, 07) with unknown mean w and
+unknown variance o°, a combined (multivariate) conjugate prior is placed over the mean and variance, consisting of a normal-inverse-gamma
+distribution. Logically, this originates as follows:
+1. From the analysis of the case with unknown mean but known variance, we see that the update equations involve sufficient statistics computed
+from the data consisting of the mean of the data points and the total variance of the data points, computed in turn from the known variance
+divided by the number of data points.
+2. From the analysis of the case with unknown variance but known mean, we see that the update equations involve sufficient statistics over the
+https://en.wikipedia.org/wiki/Normal_distribution Page 18 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+data consisting of the number of data points and sum of squared deviations.
+3. Keep in mind that the posterior update values serve as the prior distribution when further data is handled. Thus, we should logically think of
+our priors in terms of the sufficient statistics just described, with the same semantics kept in mind as much as possible.
+4. To handle the case where both mean and variance are unknown, we could place independent priors over the mean and variance, with fixed
+estimates of the average mean, total variance, number of data points used to compute the variance prior, and sum of squared deviations.
+Note however that in reality, the total variance of the mean depends on the unknown variance, and the sum of squared deviations that goes
+into the variance prior (appears to) depend on the unknown mean. In practice, the latter dependence is relatively unimportant: Shifting the
+actual mean shifts the generated points by an equal amount, and on average the squared deviations will remain the same. This is not the
+case, however, with the total variance of the mean: As the unknown variance increases, the total variance of the mean will increase
+proportionately, and we would like to capture this dependence.
+5. This suggests that we create a conditional prior of the mean on the unknown variance, with a hyperparameter specifying the mean of the
+pseudo-observations associated with the prior, and another parameter specifying the number of pSeudo-observations. This number serves as
+a scaling parameter on the variance, making it possible to control the overall variance of the mean relative to the actual variance parameter.
+The prior for the variance also has two hyperparameters, one specifying the sum of squared deviations of the pseudo-observations
+associated with the prior, and another specifying once again the number of pseudo-observations. Each of the priors has a hyperparameter
+specifying the number of pseudo-observations, and in each case this controls the relative variance of that prior. These are given as two
+separate hyperparameters so that the variance (aka the confidence) of the two priors can be controlled separately.
+6. This leads immediately to the normal-inverse-gamma distribution, which is the product of the two distributions just defined, with conjugate
+priors used (an inverse gamma distribution over the variance, and a normal distribution over the mean, conditional on the variance) and with
+the same four parameters just defined.
+The priors are normally defined as follows:
+P(p | o”; 140, 20) ~ N (uo, 07 /n0)
+p(o?; 4, 02) ~ Ix? (vp, 02) = IG(1/9022 /,2)
+The update equations can be derived, and look as follows:
+1
+t= — Li
+Va
+, _ Mo+o Nz
+Ho=
+no +n
+vi0o0? ! = w0o%r t+ » u;i —Z)° —\ ) 2 + mn+onn (Ho —£ -\)2
+The respective numbers of pseudo-observations add the number of actual observations to them. The new mean hyperparameter is once again a
+weighted average, this time weighted by the relative numbers of observations. Finally, the update for vio is similar to the case with known
+mean, but in this case the sum of squared deviations is taken with respect to the observed data mean rather than the true mean, and as a result a
+new interaction term needs to be added to take care of the additional error source stemming from the deviation between prior and data mean.
+Occurrence and applications
+The occurrence of normal distribution in practical problems can be loosely classified into four categories:
+1. Exactly normal distributions;
+2. Approximately normal laws, for example when such approximation is justified by the central limit theorem; and
+3. Distributions modeled as normal — the normal distribution being the distribution with maximum entropy for a given mean and variance.
+4. Regression problems — the normal distribution being found after systematic effects have been modeled sufficiently well.
+Exact normality
+A normal distribution occurs in some physical theories:
+» The velocity distribution of independently moving and perfectly elastic spheres, which is a consequence of Maxwell's Dynamical Theory of
+Gases, Part | (1860) .}56ll57]
+» The ground state wave function in position space of the quantum harmonic oscillator./8!
+» The position of a particle that experiences diffusion. If initially the particle is located at a specific point (that is its probability distribution is the
+Dirac delta function), then after time ¢ its location is described by a normal distribution with variance f, which satisfies the diffusion equation
+https://en.wikipedia.org/wiki/Normal_distribution Page 19 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+a x,t) = 1a”2 x,t). If the initial location is given by a certain density function g(z), then the density at time ¢
+at 2 Oat g E,=hw (n +4)
+is the convolution of g and the normal probability density function.
+Approximate normality
+Approximately normal distributions occur in many situations, as explained by the central limit theorem. When the
+outcome is produced by many small effects acting additively and independently, its distribution will be close to —_
+normal. The normal approximation will not be valid if the effects act multiplicatively (instead of additively), or if there — "© ground state of a
+is a single external influence that has a considerably larger magnitude than the rest of the effects. soso ae
+Gaussian distribution.
+# In counting problems, where the central limit theorem includes a discrete-to-continuum approximation and where
+infinitely divisible and decomposable distributions are involved, such as
+» Binomial random variables, associated with binary response variables;
+» Poisson random variables, associated with rare events;
+» Thermal radiation has a Bose-Einstein distribution on very short time scales, and a normal distribution on longer timescales due to the central
+limit theorem.
+Assumed normality
+I can only recognize the occurrence of the normal curve — the Laplacian curve of errors — as a
+very abnormal phenomenon. It is roughly approximated to in certain distributions; for this
+reason, and on account for its beautiful simplicity, we may, perhaps, use it as a first
+approximation, particularly in theoretical investigations.
+— Pearson (1901)
+There are statistical methods to empirically test that assumption; see the above Normality tests section. Histogram of sepal widths for /ris
+versicolor from Fisher's Iris flower data
+# In biology, the /ogarithm of various variables tend to have a normal distribution, that is, they tend to set, with superimposed best-titting
+have a log-normal distribution (after separation on male/female subpopulations), with examples normal distribution
+including:
+= Measures of size of living tissue (length, height, skin area, weight);°!
+» The length of inert appendages (hair, claws, nails, teeth) of biological specimens, in the direction of growth; presumably the thickness of
+tree bark also falls under this category;
+» Certain physiological measurements, such as blood pressure of adult humans.
+» In finance, in particular the Black-Scholes model, changes in the /ogarithm of exchange rates, price indices, and stock market indices are
+assumed normal (these variables behave like compound interest, not like simple interest, and so are multiplicative). Some mathematicians
+such as Benoit Mandelbrot have argued that log-Levy distributions, which possess heavy tails, would be a more appropriate model, in
+particular for the analysis for stock market crashes. The use of the assumption of normal distribution occurring in financial models has also
+been criticized by Nassim Nicholas Taleb in his works.
+=» Measurement errors in physical experiments are often modeled by a normal distribution. This use of a normal distribution does not imply that
+one is assuming the measurement errors are normally distributed, rather using the normal distribution produces the most conservative
+predictions possible given only knowledge about the mean and variance of the errors. [62]
+» In standardized testing, results can be made to have a normal distribution by either selecting the number and difficulty of questions (as in the
+IQ test) or transforming the raw test scores into output scores by fitting them to the normal distribution. For example, the SAT's traditional
+range of 200-800 is based on a normal distribution with a mean of 500 and a standard deviation of 100.
+=» Many scores are derived from the normal distribution, including percentile ranks (percentiles or quantiles), normal curve equivalents, stanines,
+z-scores, and T-scores. Additionally, some behavioral statistical procedures assume that scores are normally distributed; for example, t-tests
+and ANOVAs. Bell curve grading assigns relative grades based on a normal distribution of scores.
+» In hydrology the distribution of long duration river discharge or rainfall, e.g. monthly and yearly totals, is often thought to be practically normal
+according to the central limit theorem.&'l The plot on the right illustrates an example of fitting the normal distribution to ranked October
+rainfalls showing the 90% confidence belt based on the binomial distribution. The rainfall data are represented by plotting positions as part of
+the cumulative frequency analysis.
+Methodological problems and peer review
+https://en.wikipedia.org/wiki/Normal_distribution Page 20 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+John Ioannidis argued that using normally distributed standard deviations as standards for validating
+research findings leave falsifiable predictions about phenomena that are not normally distributed untested.
+This includes, for example, phenomena that only appear when all necessary conditions are present and one
+cannot be a substitute for another in an addition-like way and phenomena that are not randomly distributed.
+Ioannidis argues that standard deviation-centered validation gives a false appearance of validity to hypotheses
+and theories where some but not all falsifiable predictions are normally distributed since the portion of
+falsifiable predictions that there is evidence against may and in some cases are in the non-normally distributed
+parts of the range of falsifiable predictions, as well as baselessly dismissing hypotheses for which none of the
+falsifiable predictions are normally distributed as if they were unfalsifiable when in fact they do make Cumfreq prograamt www wateriog nfo/cumtreg htm «ths. a
+. . . - 4: . . . Fitted cumulative normal distribution
+falsifiable predictions. It is argued by Ioannidis that many cases of mutually exclusive theories being accepted 4g October rainfalls, see distribution
+as validated by research journals are caused by failure of the journals to take in empirical falsifications of non- _ fitting
+normally distributed predictions, and not because mutually exclusive theories are true, which they cannot be,
+although two mutually exclusive theories can both be wrong and a third one correct.!©?!
+Computational methods
+Generating values from normal distribution
+In computer simulations, especially in applications of the Monte-Carlo method, it is often desirable to
+generate values that are normally distributed. The algorithms listed below all generate the standard
+normal deviates, since a N(u, 0°) can be generated as XY = uw + oZ, where Z is standard normal. All these
+algorithms rely on the availability of a random number generator U capable of producing uniform random
+variates.
+» The most straightforward method is based on the probability integral transform property: if U is
+distriobuted uniformly on (0,1), then @ \(U) will have the standard normal distribution. The drawback
+of this method is that it relies on calculation of the probit function ®-', which cannot be done
+analytically. Some approximate methods are described in Hart (1968) and in the erf article. Wichura
+gives a fast algorithm for computing this function to 16 decimal places,'6!! which is used by R to
+The bean machine, a device invented by
+compute random variates of the normal distribution.
+Francis Galton, can be called the first
+= An easy-to-program approximate approach that relies on the central limit theorem is as follows: generator of normal random variables.
+generate 12 uniform U(0,1) deviates, add them all up, and subtract 6 — the resulting random variable This machine consists of a vertical board
+will have approximately standard normal distribution. In truth, the distribution will be Irwin—Hall, which with interleaved rows of pins. Small balls
+is a 12-section eleventh-order polynomial approximation to the normal distribution. This random are dropped from the top and then
+deviate will have a limited range of (—6, 6).!64! Note that in a true normal distribution, only 0.00034% bounce randomly left or right as they hit
+of all samples will fall outside +60. the pins. The balls are collected into bins
+=» The Box—Muller method uses two independent random numbers U and Vdistributed uniformly on at the bottom and settle down into a
+(0,1). Then the two random variab_Yl eansd Y pattern resembling the Gaussian curve.
+X = V¥-21nU cos(2rV), Y = V-2InU sin(2zV).
+will both have the standard normal distribution, and will be independent. This formulation arises because for a bivariate normal random vector
+(X, Y) the squared norm X? + Y* will have the chi-squared distribution with two degrees of freedom, which is an easily generated exponential
+random variable corresponding to the quantity —2 In(U/) in these equations; and the angle is distributed uniformly around the circle, chosen by
+the random variable V.
+» The Marsaglia polar method is a modification of the Box—Muller method which does not require computation of the sine and cosine functions.
+In this method, U and V are drawn from the uniform (-1,1) distribution, and then S'= U2 + Vis computed. If Sis greater or equal to 1, then
+the method starts over, otherwise the two quantities
+—2lnS —2InS
+X =U,/——; Y = V4/— ~—
+S Ss
+are returned. Again, X and Y are independent, standard normal random variables.
+= The Ratio method!®! is a rejection method. The algorithm proceeds as follows:
+» Generate two independent uniform deviates U and V;
+= ComputYe= V8/e (V—0.5VU;
+# Optional: if X2 <5 —4e!4U/ then accepta_nXd terminate algorithm;
+= Optional: if X? > 4e7!39/U+ 1.4 then reject_Y and start over from step 1;
+= |f_X¥2<—4 In U then accept_X, otherwise start over the algorithm.
+https://en.wikipedia.org/wiki/Normal_distribution Page 21 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+The two optional steps allow the evaluation of the logarithm in the last step to be avoided in most cases. These steps can be greatly
+improved! so that the logarithm is rarely evaluated.
+» The ziggurat algorithm] is faster than the Box—Muller transform and still exact. In about 97% of all cases it uses only two random numbers,
+one random integer and one random uniform, one multiplication and an if-test. Only in 3% of the cases, where the combination of those two
+falls outside the "core of the ziggurat" (a kind of rejection sampling using logarithms), do exponentials and more uniform random numbers
+have to be employed.
+= Integer arithmetic can be used to sample from the standard normal distribution. [§8IIS°! This method is exact in the sense that it satisfies the
+conditions of ideal approximation i.e., it is equivalent to sampling a real number from the standard normal distribution and rounding this to
+the nearest representable floating point number.
+» There is also some investigation!”] into the connection between the fast Hadamard transform and the normal distribution, since the transform
+employs just addition and subtraction and by the central limit theorem random numbers from almost any distribution will be transformed into
+the normal distribution. In this regard a series of Hadamard transforms can be combined with random permutations to turn arbitrary data sets
+into a normally distributed data.
+Numerical approximations for the normal cumulative distribution function and normal quantile function
+The standard normal cumulative distribution function is widely used in scientific and statistical computing.
+The values @(x) may be approximated very accurately by a variety of methods, such as numerical integration, Taylor series, asymptotic series and
+continued fractions. Different approximations are used depending on the desired level of accuracy.
+= Zelen & Severo (1964) give the approximation for D(x) for x > 0 with the absolute error |e(x)| < 7.5-107® (algorithm 26.2.17 (https://secure.m
+ath.ubc.ca/~cbm/aands/page_932.htm)):
+®(x) = 1 — y(z) (bt + bot? + bgt? + dt* + dst?) +e(x), it _ 1
+7 1+boz’
+where ¢(x) is the standard normal probability density function, and by = 0.2316419, b; = 0.319381530, by = —0.356563782,
+b3 = 1.781477937, bg = —1.821255978, bs = 1.330274429.
+» Hart (1968) lists some dozens of approximations — by means of rational functions, with or without exponentials — for the erfc() function. His
+algorithms vary in the degree of complexity and the resulting precision, with maximum absolute precision of 24 digits. An algorithm by West
+(2009) combines Hart's algorithm 5666 with a continued fraction approximation in the tail to provide a fast computation algorithm with a 16-
+digit precision.
+= Cody (1969) after recalling Hart68 solution is not suited for erf, gives a solution for both erf and erfc, with maximal relative error bound, via
+Rational Chebyshev Approximation.
+» Marsaglia (2004) suggested a simple algorithmlnote ‘] based on the Taylor series expansion
+8(2= )4 9(e) (04 + 44+
+~~? 3° 3-5 3-5-7 3-5-7-9
+for calculating ®(x) with arbitrary precision. The drawback of this algorithm is comparatively slow calculation time (for example it takes over
+300 iterations to calculate the function with 16 digits of precision when x = 10).
+» The GNU Scientific Library calculates values of the standard normal cumulative distribution function using Hart's algorithms and
+approximations with Chebyshev polynomials.
+» Dia (2023) proposes the following approximation of 1 — ® with a maximum relative error less than 2-583 (= 1.1 x 107"°) in absolute value:
+forz >0
+1—6(2) = ( 0.39894228040143268 ) (= + 8.427423004580432402 + 18.38871225773938487 )
+x + 2.92678600515804815 x? + 5.815825189335273912 + 8.97280659046817350
+(a3? ++ 75..730037457692355885958306571345347122 ++ 1S8.25323235D347346525 (z3* ++ 55..56168467294581380827587407709766352z ++ 1S8.61a1933a1897r1775795
+(x5” ++ 45,.9216319864029389859759264004027057x2 ++ 2a4a.s1s4o8s0e40a7n2o8T1a2s76e2s8o2s1 (x5” ++ 43..982303861239446768302081842601373922 ++ c11a.s6s15e1r12r2a6s26r0a6a03r2e4a7 )\ a_ =
+and for x < 0,
+1—6(z2) =1—-(1—4(-2))
+Shore (1982) introduced simple approximations that may be incorporated in stochastic optimization models of engineering and operations
+research, like reliability engineering and inventory analysis. Denoting p = &(z), the simplest approximation for the quantile function is:
+1 p\ 01186
+z= @'(= p5.5)556 [1— (——® , p>1/2
+p
+https://en.wikipedia.org/wiki/Normal_distribution Page 22 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+This approximation delivers for z a maximum absolute error of 0.026 (for 0.5 < p < 0.9999, corresponding to 0 < z < 3.719). For p < 1/2
+replace p by 1 — p and change sign. Another approximation, somewhat less accurate, is the single-parameter approximation:
+z= 0.4115 | 1=—— ? + 10g| 1—2] -1}, p>1/2
+p Dp
+The latter had served to derive a simple approximation for the loss integral of the normal distribution, defined by
+L(z) = [iw — z)p(u) du = fu — &(u)| du
+z
+( p
+0.4115 | ——— } -— 1/2
+L(z) & ¢
+0.4115 (1 =_) , p>1/2.
+p
+or, equivalently,
+0.4115 {1 - log| =| \ , p<1/2,
+0.4111—5, p> 1/2.
+P
+This approximation is particularly accurate for the right far-tail (maximum error of 107? for z > 1.4). Highly accurate approximations for the
+cumulative distribution function, based on Response Modeling Methodology (RMM, Shore, 2011, 2012), are shown in Shore (2005).
+Some more approximations can be found at: Error function#Approximation with elementary functions. In particular, small relative error on the
+whole domain for the cumulative distribution function ® and the quantile function ®~! as well, is achieved via an explicitly invertible formula by
+Sergei Winitzki in 2008.
+History
+Development
+Some authors!721!731 attribute the discovery of the normal distribution to de Moivre, who in 173g note 2] published in the second edition of his The
+Doctrine of Chances the study of the coefficients in the binomial expansion of (a + 5)”. De Moivre proved that the middle term in this expansion
+has the approximate magnitude of 2” /./27n, and that "If m or in be a Quantity infinitely great, then the Logarithm of the Ratio, which a Term
+distant from the middle by the Interval f, has to the middle Term, is — 2 [74] Although this theorem can be interpreted as the first obscure
+expression for the normal probability law, Stigler points out that de Moivre himself did not interpret his results as anything more than the
+approximate rule for the binomial coefficients, and in particular de Moivre lacked the concept of the probability density function.!Z5!
+In 1823 Gauss published his monograph "Theoria combinationis observationum erroribus minimis obnoxiae" where among other things he
+introduces several important statistical concepts, such as the method of least squares, the method of maximum likelihood, and the normal
+distribution. Gauss used M, M', M", ... to denote the measurements of some unknown quantity V, and sought the most probable estimator of that
+quantity: the one that maximizes the probability p(M/ — V) - o(M'— V)- o(M" — V) - ... of obtaining the observed experimental results. In his
+notation @A is the probability density function of the measurement errors of magnitude A. Not knowing what the function @ is, Gauss requires
+that his method should reduce to the well-known answer: the arithmetic mean of the measured values./TM°te 3] Starting from these principles,
+Gauss demonstrates that the only law that rationalizes the choice of arithmetic mean as an estimator of the location parameter, is the normal law
+of errors:!7
+yA _ AL -maa
+JT
+where / is "the measure of the precision of the observations”. Using this normal law as a generic model for errors in the experiments, Gauss
+formulates what is now known as the non-linear weighted least squares method.!7Z!
+https://en.wikipedia.org/wiki/Normal_distribution Page 23 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Although Gauss was the first to suggest the normal distribution law, Laplace made
+significant contributions.TM°e_4] It was Laplace who first posed the problem of
+aggregating several observations in 1774,!78! although his own solution led to the
+Laplacian distribution. It was Laplace who first calculated the value of the integral
+) et dt = Vx in 1782, providing the normalization constant for the normal
+distribution.'29! For this accomplishment, Gauss acknowledged the priority of
+Laplace.!8°] Finally, it was Laplace who in 1810 proved and presented to the academy
+the fundamental central limit theorem, which emphasized the theoretical importance
+of the normal distribution.84
+It is of interest to note that in 1809 an Irish-American mathematician Robert Adrain Pierre-Simon Laplace proved
+the central limit theorem in
+published two insightful but flawed derivations of the normal probability law,
+In 1809, Carl Friedrich Gauss 1810, consolidating the
+simultaneously and independently from Gauss.!82! His works remained largely
+showed that the normal importance of the normal
+unnoticed by the scientific community, until in 1871 they were exhumed by Abbe./83]
+distribution provides a way to distribution in statistics.
+rationalize the method of
+least squares. In the middle of the 19th century Maxwell demonstrated that the normal distribution
+is not just a convenient mathematical tool, but may also occur in natural phenomena:!5°! The number of particles
+whose velocity, resolved in a certain direction, lies between x and x + dx is
+Naming
+Today, the concept is usually known in English as the normal distribution or Gaussian distribution. Other less common names include
+Gauss distribution, Laplace—Gauss distribution, the law of error, the law of facility of errors, Laplace's second law, and Gaussian law.
+Gauss himself apparently coined the term with reference to the "normal equations" involved in its applications, with normal having its technical
+meaning of orthogonal rather than usual.[841 However, by the end of the 19th century some authors!TM°* 5] had started using the name normal
+distribution, where the word "normal" was used as an adjective — the term now being seen as a reflection of this distribution being seen as typical,
+common — and thus normal. Peirce (one of those authors) once defined "normal" thus: "... the 'normal' is not the average (or any other kind of
+mean) of what actually occurs, but of what would, in the long run, occur under certain circumstances."[85] Around the turn of the 20th century
+Pearson popularized the term normal as a designation for this distribution.!8©!
+Many years ago I called the Laplace—Gaussian curve the normal curve, which name, while it avoids an international question of priority,
+has the disadvantage of leading people to believe that all other distributions of frequency are in one sense or another ‘abnormal’.
+— Pearson (1920)
+Also, it was Pearson who first wrote the distribution in terms of the standard deviation o as in modern notation. Soon after this, in year 1915,
+Fisher added the location parameter to the formula for normal distribution, expressing it in the way it is written nowadays:
+df = —bee-@m)"/20") gp,
+V/ 2077
+The term standard normal distribution, which denotes the normal distribution with zero mean and unit variance came into general use around
+the 1950s, appearing in the popular textbooks by P. G. Hoel (1947) Introduction to Mathematical Statistics and Alexander M. Mood (1950)
+Introduction to the Theory of Statistics. [871[881I891
+See also
+» Bates distribution — similar to the Irwin—Hall distribution, but rescaled back into the 0 to 1 range
+fx Mathematics portal
+» Behrens—Fisher problem — the long-standing problem of testing whether two normal samples with different
+variances have same means;
+» Bhattacharyya distance — method used to separate mixtures of normal distributions
+» Erdés—Kac theorem — on the occurrence of the normal distribution in number theory
+= Full width at half maximum
+https://en.wikipedia.org/wiki/Normal_distribution Page 24 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Gaussian blur — convolution, which uses the normal distribution as a kernel
+Gaussian function
+Modified half-normal distribution! with the pdf on (0, co) is given as f(x) = aprPat e(—f0+79) Where V(a,z) = 14; (“ 21) .)
+denotes the Fox—Wright Psi function.
+Normally distributed and uncorrelated does not imply independent
+Ratio normal distribution
+Reciprocal normal distribution
+Standard normal table
+Stein's lemma
+Sub-Gaussian distribution
+Sum of normally distributed random variables
+Tweedie distribution — The normal distribution is a member of the family of Tweedie exponential dispersion models.
+Wrapped normal distribution — the normal distribution applied to a circular domain
+Z-test — using the normal distribution
+Notes
+. For example, this algorithm is given in the article Bc programming language.
+De Moivre first published his findings in 1733, in a pamphlet Approximatio ad Summam Terminorum Binomii (a+ by" in Seriem Expansi that
+was designated for private circulation only. But it was not until the year 1738 that he made his results publicly available. The original pamphlet
+was reprinted several times, see for example Walker (1985).
+"It has been customary certainly to regard as an axiom the hypothesis that if any quantity has been determined by several direct observations,
+made under the same circumstances and with equal care, the arithmetical mean of the observed values affords the most probable value, if
+not rigorously, yet very nearly at least, so that it is always most safe to adhere to it." — Gauss (1809, section 177)
+"My custom of terming the curve the Gauss—Laplacian or normal curve saves us from proportioning the merit of discovery between the two
+great astronomer mathematicians." quote from Pearson (1905, p. 189)
+Besides those specifically referenced here, such use is encountered in the works of Peirce, Galton (Galton (1889, chapter V)) and Lexis
+(Lexis (1878), Rohrbasser & Véron (2003)) c. 1875.
+References
+Citations
+1. Norton, Matthew; Khokhlov, Valentyn; Uryasev, Stan (2019). "Calculating CVaR and bPOE for common probability distributions with
+application to portfolio optimization and density estimation" (https://web.arch1i23v082e1 ./hottrp:/g/u/rywaseevb.am/s.2st0on2ybr3oo0k.3ed3u/
+wp-content/uploads/2019/10/Norton2019_CVaR_bPOE.pdf) (PDF). Annals of Operations Research. 299 (1-2). Springer: 1281-1315.
+arXiv:1811.11301 (https://arxiv.org/abs/1811.11301). doi:10.1007/s10479-019-03373-1 (https://doi.org/10.1007%2F s10479-019-03373-1).
+S2CID 254231768 (https://api.semanticscholar.org/CorpusID:254231768). Archived from the original (http ://uryasev.ams. stonybrook.edu/wp-c
+ontent/uploads/201 9/10/Norton2019_CVaR_bPOE.pdf) (PDF) on March 31, 2023. Retrieved February 27, 2023.
+Tsokos, Chris; Wooten, Rebecca (January 1, 2016). Tsokos, Chris; Wooten, Rebecca (eds.). The Joy of Finite Mathematics (https:/Minkinghub.
+elsevier.com/retrieve2/80p2i96i7/ 1B0907008703)1. Boston: Academic Press. pp. 231-263. doi:10.1016/0978-0-12-802967-1.00007-3 (https://
+doi.org/10.1016%2Fb978-0-12-802967-1.00007-3). ISBN 978-0-12-802967-1.
+Harris, Frank E. (January 1, 2014). Harris, Frank E. (ed.). Mathematics for Physical Science and Engineering (https:/Ninkinghub.elsevier.com/r
+etrieve/pii/B9780128010006000183). Boston: Academic Press. pp. 663-709. doi:10.10162-/800 190070-86.-00001-8-13 (https://doi.org/10.10
+16%2Fb978-0-12-801000-6.00018-3). ISBN 978-0-12-801000-6.
+Hoel (1947, p. 31 (https://archive.org/details/in.ernet.dli.2015.263186/page/n39/mode/2up ?q=%22normal+distribution%22)) and Mood (1950,
+p. 109 (https://archive.org/details/introductiontothO000alex/page/1 08/mode/2up?q=%22normal+distribution%22)) give this definition with
+slightly different notation.
+Normal! Distribution (http:/Awww.encyclopedia.com/topic/Normal_Distribution.aspx#3), Gale Encyclopedia of Psychology
+Casella & Berger (2001, p. 102)
+Lyon, A. (2014). Why are Normal Distributions Normal? (https://aidanlyon.com/normal_distributions.pdf), The British Journal for the
+Philosophy of Science.
+Jorge, Nocedal; Stephan, J. Wright (2006). Numerical Optimization (2nd ed.). Springer. p. 249. ISBN 978-0387-30303-1.
+"Normal Distribution" (https:/Avww.mathsisfun.com/data/standard-normal-distribution.html). www.mathsisfun.com. Retrieved August 15, 2020.
+10. "bell curve" (https:/Awww.merriam-webster.com/dictionary/bell%20curve). Merriam-Webster.com Dictionary. Retrieved May 25, 2025.
+11. Mood (1950, p. 112 (https://archive.org/details/nt1 2r/mooddeu/2cupt?iq=o%2n2sttoantdahrdO+0no0rm0aal+ldiestxr/ibputaiogne%2/2)1)
+explicitly defines the standard normal distribution. \n contrast, Hoel (1947) explicitly defines the standard normal curve (p. 33) (httos://archive.
+https://en.wikipedia.org/wiki/Normal_distribution Page 25 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+org/details/in.ernet.dli.2015.263186/page/n41/mode/2up ?q=%22standard+normal+curve%22) and introduces the term standard normal
+distribution (p. 69) (https://archive.org/details/n.ernet.dli.2015.263 186/page/n77/mode/2up?q=%22standard+normal+distribution%22).
+12. Stigler (1982)
+13. Halperin, Hartley & Hoel (1965, item 7)
+14. McPherson (1990, p. 110)
+15. Bernardo & Smith (2000, p. 121)
+16. Scott, Clayton; Nowak, Robert (August 7, 2003). "The Q-function" (http://cnx.org/content/m11537/1.2/). Connexions.
+17. Barak, Ohad (April 6, 2006). "Q Function and Error Function" (https:/Aweb.archive60.01o 2r/ntgtp/ :/wAwewwb.e/ng2.t0au0.ac9.i0l/3~j2o/5ac1ad
+emic/Q.pdf) (PDF). Tel Aviv University. Archived from the original (http:/Avww.eng.tau.ac. il/~jo/academic/Q. pdf) (PDF) on March 25, 2009.
+18. Weisstein, Eric W. "Normal Distribution Function" (https://mathworld.wolfram.com/Norma|DistributionFunction.html). MathWorld.
+19. Abramowitz, Milton; Stegun, Irene Ann, eds. (1983) [June 1964]. "Chapter 26, eqn 26.2.12" (http:/Avww.math.ubc.ca/~cbm/aands/page_932.ht
+m). Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables. Applied Mathematics Series. Vol. 55 (Ninth
+reprint with additional corrections of tenth original printing with corrections (December 1972); first ed.). Washington D.C.; New York: United
+States Department of Commerce, National Bureau of Standards; Dover Publications. p. 932. ISBN 978-0-486-61272-0. LCCN 64-60036 (http
+s:/Niccn.loc.gov/64-60036). MR 0167642 (https://mathscinet.ams.org/mathscinet-getitem?mr=0167642). LCCN 65-12253 (https:/Avww.loc.gov/i
+tem/65012253).
+20. Vaart, A. W. van der (October 13, 1998). Asymptotic Statistics (https://dx.doi.org/10.1017/cbo9780511802256). Cambridge University Press.
+doi:10.1017/cbo0978051 1802256 (https://doi.org/10.1017%2Fcb09780511 802256). ISBN 978-0-511-80225-6.
+21. Cover & Thomas (2006), p. 254.
+22. Park, Sung Y.; Bera, Anil K. (2009). "Maximum Entropy Autoregressive Conditional Heteroskedasticity Model" (https:/Aveb. archive.org/web/20
+16030714451 5/nttp:/Awise.xmu.edu.cn/uploadfiles/paper-masterdownload/200951 9932327055475115776.pdf) (PDF). Journal of
+Econometrics. 150 (2): 219-230. Bibcode:2009JEcon.150..219P (https://ui.adsabs.harvard.edu/abs/2009JEcon.150..219P).
+CiteSeerX 10.1.1.511.9750 (https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.511.9750). doi:10.1016/.jeconom.2008.12.014 (https://
+doi.org/10.1016%2Fj.jeconom.122.000184).. Archived from the original (http:/Awww.wise.xmu.edu.cn/Master/Download/..%5C..%5CUploFaidl
+es%5Cpaper-mas2t00e95r1 9d93o23w27n05l54o751a15d77%6.5pdCf) (PDF) on March 7, 2016. Retrieved June 2, 2011.
+23. Geary RC(1936) The distribution of the "Student's ratio for the non-normal samples". Supplement to the Journal of the Royal Statistical
+Society 3 (2): 178-184
+24. Lukacs, Eugene (March 1942). "A Characterization of the Normal Distribution". Annals of Mathematical Statistics. 13 (1): 91-93.
+doi:10.1214/AOMS/1177731647 (https://doi.org/10.1214%2FAOMS%2F 1177731647). ISSN 0003-4851 (https://search.worldcat.org/issn/0003
+-4851). JSTOR 2236166 (https:/Awww.jstor.org/stable/2236166). MR 0006626 (https://mathscinet.ams.org/mathscin?emrt=-0g0e0t66i2t6e)m.
+Zbl 0060.28509 (https://zbmath.org/?format=complete&q=an:0060.28509). Wikidata Q5589761/7.
+25. Patel & Read (1996, [2.1.4])
+26. Fan (1991, p. 1258)
+27. Patel & Read (1996, [2.1.8])
+28. Papoulis, Athanasios. Probability, Random Variables and Stochastic Processes (4th ed.). p. 148.
+29. Winkelbauer, Andreas (2012). "Moments and Absolute Moments of the Normal Distribution". arXiv:1209.4340 (https://arxiv.org/abs/1 209.434
+0) [math.ST (https://arxiv.org/archive/math.ST)].
+30. Bryc (1995, p. 23)
+31. Bryc (1995, p. 24)
+32. Williams, David (2001). Weighing the odds : a course in probability and statistics (https://archive.org/detailsAveighingoddscour0Owill)
+(Reprinted. ed.). Cambridge [u.a.]: Cambridge Univ. Press. pp. 197 (https://archive.org/details/weighingoddscour00will/page/n219)—199.
+ISBN 978-0-521-00618-7.
+33. José M. Bernardo; Adrian F. M. Smith (2000). Bayesian theory(https://archive.org/details/oayesiantheoryOObern_963) (Reprint ed.).
+Chichester [u.a.]: Wiley. pp. 209 (https://archive.org/details/oayesiantheoryOObern_963/page/n224), 366. ISBN 978-0-471-49464-5.
+34. O'Hagan, A. (1994) Kendall's Advanced Theory of statistics, Vol 2B, Bayesian Inference, Edward Arnold. ISBN 0-340-52922-9 (Section 5.40)
+35. Bryc (1995, p. 35)
+36. UIUC, Lecture 21. The Multivariate Normal Distribution (nttp:/Awww.math.uiuc.edu/~r-ash/Stat/StatLec21-25.pdf), 21.6:"Individually Gaussian
+Versus Jointly Gaussian".
+37. Edward L. Melnick and Aaron Tenenbein, "Misspecifications of the Normal Distribution", The American Statistician, volume 36, number 4
+November 1982, pages 372-373
+38. "Kullback Leibler (KL) Distance of Two Normal (Gaussian) Probability Distributions" (http:/Avww.allisons.org/II/MML/KL/Normal/). Allisons.org.
+December 5, 2007. Retrieved March 3, 2017.
+39. Jordan, Michael |. (February 8, 2010). "Stat260: Bayesian Modeling and Inference: The Conjugate Prior for the Normal Distribution" (http:/Avw
+w.cs. berkeley.edu/~jordan/courses/260-spring1O/ectures/ecture5.pdf) (PDF).
+40. Amari & Nagaoka (2000)
+41. "Expectation of the maximum of gaussian random variables" (https://math.stackexchange.com/a/89147). Mathematics Stack Exchange.
+Retrieved April 7, 2024.
+42. "Normal Approximation to Poisson Distribution" (http:/Avww.stat.ucla.edu/~dinov/courses_students.dir/Applets.dir/NormalApprox2PoissonAppl
+et.himl). Stat.ucla.edu. Retrieved March 3, 2017.
+43. Bryc (1995, p. 27)
+44. Weisstein, Eric W. "Normal Product Distribution" (http://mathworld.wolfram.com/NormalProductDistribution.html). MathWorld. wolfram.com.
+45. Lukacs. Euaene (1942). "A Characterization of the Normal Distribution" (httos://doi.ora/10.1214%2Faoms%2F 1177731647). The Annals of
+https://en.wikipedia.org/wiki/Normal_distribution Page 26 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+Mathematical Statistics. 13 (1): 91-8. doi:10.1214/aoms/1177731647 (https://doi.org/10.1214%2Faoms%2F 1177731647). ISSN 0003-4851 (h
+ttps://search.worldcat.org/issn/0003-4851). JSTOR 2236166 (https:/Awww.jstor.org/stable/22361 66).
+46. Basu, D.; Laha, R. G. (1954). "On Some Characterizations of the Normal Distribution". Sankhyda. 13 (4): 359-62. ISSN 0036-4452 (https://sea
+rch.worldcat.org/issn/0036-4452). JSTOR 25048183 (https:/Avww.jstor.org/stable/2508438)1.
+47. Lehmann, E. L. (1997). Testing Statistical Hypotheses (2nd ed.). Springer. p. 199. ISBN 978-0-387-94919-2.
+48. Patel & Read (1996, [2.3.6])
+49. Galambos & Simonelli (2004, Theorem 3.5)
+50. Lukacs & King (1954)
+51. Quine, M.P. (1993). "On three characterisations of the normal distribution" (http:/Avww.math.uni.wroc. pl/~pms/publicationsArticle. php ?nr=1 4.
+2&nrA=8&ppB=257&ppE=263). Probability and Mathematical Statistics. 14 (2): 257-263.
+52. John, S (1982). "The three parameter two-piece normal family of distributions and its fitting". Communications in Statistics — Theory and
+Methods. 11 (8): 879-885. doi:10.1080/03610928208828279 (https://doi.org/10.1080%2F03610928208828279).
+53. Krishnamoorthy (2006, p. 127)
+54. Krishnamoorthy (2006, p. 130)
+55. Krishnamoorthy (2006, p. 133)
+56. Maxwell (1860), p. 23.
+57. Bryc (1995), p. 1.
+58. Larkoski, Andrew J. (2023). Quantum Mechanics:A Mathematical Introduction (https://oooks.google.com/books?id=ikKmnEAAAQBAJ&dq=nor
+mal%20distribution&pg=P20A)1. United Kingdom: Cambridge University Press. pp. 120-121. ISBN 978-1-009-12222-1. Retrieved May 30,
+2025.
+59. Huxley (1932)
+60. Jaynes, Edwin T. (2003). Probability Theory: The Logic of Science (https://oooks.google.cNo4HmU/UNbXojogCk &sp?g=iPdA5=9t2)T.
+Cambridge University Press. pp. 592-593. ISBN 9780521592710.
+61. Oosterbaan, Roland J. (1994). "Chapter 6: Frequency and Regression Analysis of Hydrologic Data" (http:/Avwww.waterlog.info/pdfAreqtpxdtf.)
+(PDF). In Ritzema, Henk P. (ed.). Drainage Principles and Applications, Publication 16 (second revised ed.). Wageningen, The Netherlands:
+International Institute for Land Reclamation and Improvement (ILRI). pp. 175-224. ISBN 978-90-70754-33-4.
+62. Why Most Published Research Findings Are False, John P. A. loannidis, 2005
+63. Wichura, Michael J. (1988). "Algorithm AS241: The Percentage Points of the Normal Distribution". Applied Statistics. 37 (3): 477-84.
+doi:10.2307/2347330 (https://doi.org/10.2307%2F 2347330). JSTOR 2347330 (https:/Awww.jstor.org/stable/2347330).
+64. Johnson, Kotz & Balakrishnan (1995, Equation (26.48))
+65. Kinderman & Monahan (1977)
+66. Leva (1992)
+67. Marsaglia & Tsang (2000)
+68. Karney (2016)
+69. Du, Fan & Wei (2022)
+70. Monahan (1985, section 2)
+71. Wallace (1996)
+72. Johnson, Kotz & Balakrishnan (1994, p. 85)
+73. Le Cam & Lo Yang (2000, p. 74)
+74. De Moivre, Abraham (1733), Corollary | — see Walker (1985, p. 77)
+75. Stigler (1986, p. 76 (https://archive.org/details/historyofstatistO0stig/page/76/mode/2up ?q=%22de+moivre%22))
+76. Gauss (1809, section 177)
+77. Gauss (1809, section 179)
+78. Laplace (1774, Problem III)
+79. Pearson (1905, p. 189)
+80. Gauss (1809, section 177)
+81. Stigler (1986, p. 144)
+82. Stigler (1978, p. 243)
+83. Stigler (1978, p. 244)
+84. Jaynes, Edwin J.; Probability Theory: The Logic of Science, Ch. 7 (http:/Awww-biba.inrialpes.fr/Jaynes/cc07s.pdf).
+85. Peirce, Charles S. (c. 1909 MS), Collected Papers v. 6, paragraph 327.
+86. Kruskal & Stigler (1997).
+87. "Earliest Uses... (Entry Standard Normal Curve)" (http://jeff560.tripod.cohmtm/ls)..
+88. Hoel (1947) introduces the terms standard normal curve (p. 33) (https://archive.org/details/in.ernet.dli.2015.263 186/page/n41/mode/2up?q=%
+22standard+normal+curve%22) and standard normal distribution (p. 69) (https://archive.org/details/in.ernet.dli.2015.2631 86/page/n77/mode/2
+up?q=%22standard+normal+distribution%22).
+89. Mood (1950) explicitly defines the standard normal distribution (p. 112) (https://archive.org/details/introductiontothOO000al1e2x//mpoadgee//21u
+p?q=%22standard+normal+distribution%22).
+90. Sun, Jingchao; Kong, Maiying; Pal, Subhadip (June 22, 2021). "The Modified-Half-Normal distribution: Properties and an efficient sampling
+https://en.wikipedia.org/wiki/Normal_distribution Page 27 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+scheme" (nttps://www.tandtonline.com/dol/abs/1 U. 1080/0361 0926.2021.1934 /UU’7journalCode=|sta2U). Communications in Statistics —
+Theory and Methods. 52 (5): 1591-1613. doi:10.1080/03610926.2021.1934700 (https://doi.org/10. 1080%2F03610926.2021.1934700).
+ISSN 0361-0926 (https://search.worldcat.org/issn/0361-0926). S2CID 237919587 (https://api.semanticscholar.org/Corpus|D:92538779)1.
+Sources
+# Aldrich, John; Miller, Jeff. "Earliest Uses of Symbols in Probability and Statistics" (http://jeff560.tripod.com/stat.html).
+# Aldrich, John; Miller, Jeff. "Earliest Known Uses of Some of the Words of Mathematics" (http://jeff560.tripod.com/mathword.html). In particular,
+the entries for "bell-shaped and bell curve" (http://jeff560.tripod.cohmtm/lb)., "normal (distribution)" (http://eff560.tripod.com/n.html),
+"Gaussian" (http://eff560.tripod.com/g.html), and "Error, law of error, theory of errors, etc." (http://jeff560.tripod.com/e.html).
+» Amari, Shun'ichi; Nagaoka, Hiroshi (2000). Methods of Information Geometry. Oxford University Press. ISBN 978-0-8218-0531-2.
+» Bernardo, José M.; Smith, Adrian F. M. (2000). Bayesian Theory. Wiley. ISBN 978-0-471-49464-5.
+» Bryc, Wlodzimierz (1995). The Normal Distribution: Characterizations with Applications (https://b0oks.google.com/books?id=tyXjBwAAQBAJ).
+Springer-Verlag. ISBN 978-0-387-97990-8.
+» Casella, George; Berger, Roger L. (2001). Statistical Inference (2nd ed.). Duxbury. ISBN 978-0-534-242-381.
+= Cody, William J. (1969). "Rational Chebyshev Approximations for the Error Function". Mathematics of Computation. 23 (107): 631-638.
+Bibcode:1969MaCom..23..631C (https://ul.adsabs.harvard.edu/abs/1969MaCom..23..631C). doi:10.1090/S0025-5718-1969-0247736-4 (http
+s://doi.org/10.1090%2FS0025-5718-1969-0247736-4).
+=» Cover, Thomas M.; Thomas, Joy A. (2006). Elements of Information Theory(https://oooks.google.com/books?id=VWq5GG6ycxMC). John
+Wiley and Sons. ISBN 9780471241959.
+» Dia, Yaya D. (2023). "Approximate Incomplete Integrals, Application to Complementary Error Function" (https://ssrn.com/abstract=4487559).
+SSRN. doi:10.2139/ssrn.4487559 (https://doi.org/10.2139%2F ssrn.4487559). S2CID 259689086 (https ://api.semanticscholar.org/CorpusID:25
+9689086).
+= de Moivre, Abraham (2000) [First published 1738]. The Doctrine of Chances. American Mathematical Society. ISBN 978-0-8218-2103-9.
+» Du, Y.; Fan, B.; Wei, B. (2022). "An improved exact sampling algorithm for the standard normal distribution". Computational Statistics. 37 (2):
+721-737. arXiv:2008.03855 (https://arxiv.org/abs/2008.03855). doi:10.1007/s00180-021-01136-w (https://doi.org/10.1007%2Fs00180-021-011
+36-w).
+» Fan, Jianging (1991). "On the optimal rates of convergence for nonparametric deconvolution problems" (https://doi.org/10.1214%2Faos%2F1
+176348248). The Annals of Statistics. 19 (3): 1257-1272. doi:10.1214/aos/1176348248 (https://doi.org/10.1214%2Faos%2F 1176348248).
+JSTOR 2241949 (https:/Awww.jstor.org/stable/224 1949).
+» Galton, Francis (1889). Natural Inheritance (http://galton.org/books/natural-inheritance/pdf/galton-nat-inh-1up-clean.pdf) (PDF). London, UK:
+Richard Clay and Sons.
+» Galambos, Janos; Simonelli, Italo (2004). Products of Random Variables: Applications to Problems of Physics and to Arithmetical Functions (
+https://archive.org/details/productsofrandom00gala). Marcel Dekker, Inc. ISBN 978-0-8247-5402-0.
+» Gauss, Carolo Friderico (1809). Theoria motvs corporvm coelestivm in sectionibvs conicis Solem ambientivm (https://archive.org/details/theori
+amotuscor00gausgoog) [Theory of the Motion of the Heavenly Bodies Moving about the Sun in Conic Sections] (in Latin). Hambvrgi, Svmtibvs
+F. Perthes et I. H. Besser. English translation (https ://oooks.google.com/books?id=1 TIAAAAAQAAJ).
+=» Gould, Stephen Jay (1981). The Mismeasure of Man (first ed.). W. W. Norton. ISBN 978-0-393-01489-1.
+= Halperin, Max; Hartley, Herman O.; Hoel, Paul G. (1965). "Recommended Standards for Statistical Symbols and Notation. COPSS Committee
+on Symbols and Notation". The American Statistician. 19 (3): 12-14. doi:10.2307/2681417 (https://doi.org/10.2307%2F4216/87)1.
+JSTOR 2681417 (https:/Awww.jstor.org/stable/268 1417).
+# Hart, John F.; et al. (1968). Computer Approximations. New York, NY: John Wiley & Sons, Inc. ISBN 978-0-88275-642-4.
+» "Normal Distribution" (https:/Awww.encyclopediapohpf ?mtiattleh=N.oromarl_gDi/sitrnibduteioxn)., Encyclopedia of Mathematics, EMS Press,
+2001 [1994]
+» Herrnstein, Richard J.; Murray, Charles (1994). The Bell Curve: Intelligence and Class Structure in American Life. Free Press. ISBN 978-0-02-
+914673-6.
+= Hoel, Paul G. (1947). Introduction To Mathematical Statistics (ttps://archive.org/details/in.ernet.dli.2015.26318/6m/opdea/g2eu/pn)1. New
+York: Wiley.
+» Huxley, Julian S. (1972) [First published 1932]. Problems of Relative Growth. London. ISBN 978-0-486-61114-3. OCLC 476909537 (https://se
+arch.worldcat.org/oclc/476909537).
+» Johnson, Norman L.; Kotz, Samuel; Balakrishnan, Narayanaswamy (1994). Continuous Univariate Distributions, Volume 1. Wiley. ISBN 978-
+0-471-58495-7.
+» Johnson, Norman L.; Kotz, Samuel; Balakrishnan, Narayanaswamy (1995). Continuous Univariate Distributions, Volume 2. Wiley. ISBN 978-
+0-471-58494-0.
+» Karney, C. F. F. (2016). "Sampling exactly from the normal distribution". ACM Transactions on Mathematical Software. 42 (1): 3:1-14.
+arXiv:1303.6257 (https://arxiv.org/abs/1303.6257). doi:10.1145/2710016 (https://doi.org/10.1145%2F2710016). S2CID 14252035 (https://api.s
+emanticscholar.org/CorpusID:14252035).
+» Kinderman, Albert J.; Monahan, John F. (1977). "Computer Generation of Random Variables Using the Ratio of Uniform Deviates" (https://doi.
+org/10.1145%2F355744.355750). ACM Transactions on Mathematical Software. 3 (3): 257-260. doi:10.1145/355744.355750 (https://doi.org/1
+0.1145%2F355744.355750). S2CID 12884505 (https://api.semanticscholar.org/CorpusID:12884505).
+» Krishnamoorthy, Kalimuthu (2006). Handbook of Statistical Distributions with Applications. Chapman & Hall/CRC. ISBN 978-1-58488-635-8.
+» Kruskal, William H.; Stigler, Stephen M. (1997). Spencer, Bruce D. (ed.). Normative Terminology: 'Normali'n Statistics and Elsewhere.
+Statistics and Public Policy. Oxford University Press. ISBN 978-0-19-852341-3.
+https://en.wikipedia.org/wiki/Normal_distribution Page 28 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+» Laplace, Pierre-Simon de (1774). "Mémoire sur la probabilite des causes par les évéenements" (http://gallica. bnf.fr/ark:/1 21 48/bpt6k77596b/f3
+2). Mémoires de l'Académie Royale des Sciences de Paris (Savants étrangers), Tome 6: 621-656. Translated by Stephen M. Stigler in
+Statistical Science 1 (3), 1986: JSTOR 2245476 (https:/Avww.jstor.org/stable/2245476).
+» Laplace, Pierre-Simon (1812). Théorie analytique des probabilités (https://archive.org/detailsAhorieanalytiqu00laplgoog) [Analytical theory of
+probabilities]. Paris, Ve. Courcier.
+» Le Cam, Lucien; Lo Yang, Grace (2000). Asymptotics in Statistics: Some Basic Concepts (second ed.). Springer. ISBN 978-0-387-95036-5.
+» Leva, Joseph L. (1992). "A fast normal random number generator" (https://web.archive.org/web/20100716035328/http ://saluc.engr.uconn.edu/
+refs/crypto/rng/leva92afast.pdf) (PDF). ACM Transactions on Mathematical Software. 18 (4): 449-453. CiteSeerX 10.1.1.544.5806 (https://cite
+seerx.ist.psu.edu/viewdoc/summary ?doi=10.1.1.544.5806). doi:10.1145/138351.138364 (https://doi.org/10.1145%2F 138351. 138364).
+S2CID 15802663 (https://api.semanticscholar.org/CorpusID:15802663). Archived from the original (http://saluc.engr.uconn.edu/refs/crypto/rn
+g/leva92afast.pdf) (PDF) on July 16, 2010.
+» Lexis, Wilhelm (1878). "Sur la durée normale de la vie humaine et sur la théorie de la stabilité des rapports statistiques". Annales de
+Démographie Internationale. ll. Paris: 447-462.
+» Lukacs, Eugene; King, Edgar P. (1954). "A Property of Normal Distribution" (https://doi.org/10.1214%2Faoms%2F 1177728796). The Annals of
+Mathematical Statistics. 25 (2): 389-394. doi:10.1214/aoms/1177728796 (https://doi.org/10.1214%2Faoms%2F 1177728796).
+JSTOR 2236741 (https:/Awww.jstor.org/stable/2236741).
+» McPherson, Glen (1990). Statistics in Scientific Investigation: Its Basis, Application and Interpretation (https://archive.org/details/statisticsinsci
+e0000mcph). Springer-Verlag. ISBN 978-0-387-97137-7.
+» Marsaglia, George; Tsang, Wai Wan (2000). "The Ziggurat Method for Generating Random Variables" (https://doi.org/10.18637%2Fijss.v005.i0
+8). Journal of Statistical Software. 5 (8). doi:10.18637/ss.v005.i08 (https://doi.org/10.18637%2Fjss.v005.i08).
+» Marsaglia, George (2004). "Evaluating the Normal Distribution" (https://doi.org/10.18637%2Fjss.v011.104). Journal of Statistical Software. 11
+(4). doi:10.18637/jss.v011.i04 (https://doi.org/10.18637%2Fjss.v011.i04).
+=» Maxwell, James Clerk (1860). "V. Illustrations of the dynamical theory of gases. — Part I: On the motions and collisions of perfectly elastic
+spheres" (https://oooks.g?iod=o- gYUl7eAQ.AAcMoAAmJ&/pbg=oPAo1k9)s. Philosophical Magazine. Series 4. 19 (124): 19-32.
+Bibcode:1860LEDPM..19...19M (https://ui.adsabs.harvard.edu/abs/1860LEDPM..19...19M). doi:10.1080/14786446008642818 (https://doi.org/
+10.1080%2F 1478644600864 2818).
+=» Monahan, J. F. (1985). "Accuracy in random number generation" (https://doi.org/10.1090%2FS0025-5718-1985-0804945-X). Mathematics of
+Computation. 45 (172): 559-568. doi:10.1090/S0025-5718-1985-0804945-X (https ://doi.org/10.1090%2FS0025-5718-1985-0804945-x).
+= Mood, Alexander McFarlane (1950). Introduction to the Theory of Statistics (https://archive.org/details/introductiontothO000alex/page/n5/mod
+e/2up). New York: McGraw-Hill.
+» Patel, Jagdish K.; Read, Campbell B. (1996). Handbook of the Normal Distribution (2nd ed.). CRC Press. ISBN 978-0-8247-9342-5.
+» Pearson, Karl (1901). "On Lines and Planes of Closest Fit to Systems of Points in Space" (http://stat.smmu.edu.cn/history/pearso9n011 . pdf)
+(PDF). Philosophical Magazine. 6. 2 (11): 559-572. doi:10.1080/1 47864401 09462720 (https://doi.org14/7186044.011 00984602%7220)F.
+S2CID 125037489 (https://api.semanticscholar.org/CorpusID:125037489).
+» Pearson, Karl (1905). "'Das Fehlergesetz und seine Verallgemeinerungen durch Fechner und Pearson’. A rejoinder" (https://zenodo.org/recor
+d/1449456). Biometrika. 4 (1): 169-212. doi:10.2307/2331536 (https://doi.org/10.2307%2F 2331536). JSTOR 2331536 (https:/Avww.jstor.org/s
+table/233 1536).
+» Pearson, Karl (1920). "Notes on the History of Correlation" (https://zenodo.org/record/1431597). Biometrika. 13 (1): 25-45.
+doi:10.1093/biomet/13.1.25 (https://doi.org/10.1093%2Fbiomet%2F13.1.25). JSTOR 2331722 (https:/Awww.jstor.org/stable/2331 722).
+» Rohrbasser, Jean-Marc; Véron, Jacques (2003). "Wilhelm Lexis: The Normal Length of Life as an Expression of the "Nature of Things"" (htt
+p:/Avww. persee.fr/web/revues/home/prescript/article/pop_1634-2941 _2003_num_58_3_18444). Population. 58 (3): 303-322.
+doi:10.3917/pope.303.0303 (https://doi.org/10.3917%2Fpope.303.0303).
+» Shore, H (1982). "Simple Approximations for the Inverse Cumulative Function, the Density Function and the Loss Integral of the Normal
+Distribution". Journal of the Royal Statistical Society. Series C (Applied Statistics). 31 (2): 108-114. doi:10.2307/2347972 (https://doi.org/10.23
+07%2F 2347972). JSTOR 2347972 (https:/Awww.jstor.org/stable/234729)7.
+# Shore, H (2005). "Accurate RMM-Based Approximations for the CDF of the Normal Distribution". Communications in Statistics — Theory and
+Methods. 34 (3): 507-513. doi:10.1081/sta-2000521 02 (https://doi.org/10.1081%2F sta-200052102). S2CID 122148043 (https://api.semantics
+cholar.org/CorpusID: 122148043).
+» Shore, H (2011). "Response Modeling Methodology". WIREs Comput Stat. 3 (4): 357-372. doi:10.1002/wics.151 (https://doi.org/10.1002%2F
+wics.151). S2CID 62021374 (https://api.semanticscholar.org/CorpusID:62021374).
+# Shore, H (2012). "Estimating Response Modeling Methodology Models". WiREs Comput Stat. 4 (3): 323-333. doi:10.1002/wics.1199 (https://
+doi.org/10.1002%2Fwics. 1199). S2CID 122366147 (https://api.semanticscholar.org/CorpusID: 122366147).
+» Stigler, Stephen M. (1978). "Mathematical Statistics in the Early States" (https://doi.org/10.1214%2Faos%2F 1176344123). The Annals of
+Statistics. 6 (2): 239-265. doi:10.1214/aos/11 76344123 (https://doi.org/10.1214%2Faos%2F 1176344123). JSTOR 2958876 (https:/Avww.jstor.
+org/stable/2958876).
+» Stigler, Stephen M. (1982). "A Modest Proposal: A New Standard for the Normal". The American Statistician. 36 (2): 137-138.
+doi:10.2307/2684031 (https://doi.org/10.2307%2F 2684031). JSTOR 2684031 (https:/Avww.jstor.org/stable/2684031).
+» Stigler, Stephen M. (1986). The History of Statistics: The Measurement of Uncertainty before 1900 (https://archive.org/details/historyofstatistO
+Ostig). Harvard University Press. ISBN 978-0-674-40340-6.
+= Stigler, Stephen M. (1999). Statistics on the Table. Harvard University Press. ISBN 978-0-674-83601-3.
+» Walker, Helen M. (1985). "De Moivre on the Law of Normal Probability" (http:/Avww. york.ac.uk/depts/maths/histstat/demoivprdef.) (PDF). In
+Smith, David Eugene (ed.). A Source Book in Mathematics. Dover. ISBN 978-0-486-64690-9.
+» Wallace, C. S. (1996). "Fast pseudo-random generators for normal and exponential variates" (https://doi.org/10.1145%2F222255555445)..
+ACKA Trancan HARA AN NhAnthamatinnl Onfhararn 99 /4\: 440 497 Ani-1N 44 ARIOOREAR OOLELA (htne:- HANI ArnlAN 144 ARO,ODOOREAR OOLERA\N
+https://en.wikipedia.org/wiki/Normal_distribution Page 29 of 30
+Normal distribution - Wikipedia 12/7/25, 3:34 AM
+IAWIVE PICQAMOAUUUEIIO UIT VICGAGUICIHIaAUULaG WVUIlLYaIU. &a& \lp- Piw 'oeé. UVILIV. Pb PV Oo IS TS COIS IT \l LLP FFU. YT IV. Pitty /Oocl LOI TY COV TT).
+S2CID 18514848 (https://api.semanticscholar.org/CorpusID: 18514848).
+» Weisstein, Eric W. "Normal Distribution" (http://mathworld.wolfram.com/Norma|Distribution.html). MathWorld.
+» West, Graeme (2009). "Better Approximations to Cumulative Normal Functions" (https:/Aweb.archi20v22e9.20o20r5g1 //nwtteps:b///wi2lm0ot1t.
+com/pdfs/090721_west.pdf) (PDF). Wilmott Magazine: 70-76. Archived from the original (https:/Awilmott.com/pdfs/090721_west.pdf) (PDF) on
+February 29, 2012.
+» Zelen, Marvin; Severo, Norman C. (1972) [First published 1964]. Probability Functions (chapter 26) (http:/Avww.math.sfu.ca/~cbm/aands/page
+_931.htm). Handbook of mathematical functions with formulas, graphs, and mathematical tables, by Abramowitz, M.; and Stegun, I. A.:
+National Bureau of Standards. New York, NY: Dover. ISBN 978-0-486-61272-0.
+External links
+» "Normal distribution" (https:/Avwww.encyclopediaofmath.org/index.php7?title=Normal_distribution), Encyclopedia of Mathematics, EMS Press,
+2001 [1994]
+» Normal distribution calculator (https:/Avww.hackmath.net/en/calculator/normal-distribution)
+Retrieved from "https://en.wikipedia.org/w/index. php?title=Normal_distribution&oldid=1325573313"
+https://en.wikipedia.org/wiki/Normal_distribution Page 30 of 30

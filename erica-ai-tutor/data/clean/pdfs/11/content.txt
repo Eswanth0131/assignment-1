@@ -1,0 +1,131 @@
+Maximum a posteriori estimation - Wikipedia 12/7/25, 3:34 AM
+“<4 WIKIPEDIA
+‘« 7 The Free Encyclopedia
+Maximuma posteriori estimation
+An estimation procedure that is often claimed to be part of Bayesian statistics is the maximum a
+posteriori (MAP) estimate of an unknown quantity, that equals the mode of the posterior density with
+respect to some reference measure, typically the Lebesgue measure. The MAP can be used to obtain a point
+estimate of an unobserved quantity on the basis of empirical data. It is closely related to the method of
+maximum likelihood (ML) estimation, but employs an augmented optimization objective which
+incorporates a prior density over the quantity one wants to estimate. MAP estimation is therefore a
+regularization of maximum likelihood estimation, so is not a well-defined statistic of the Bayesian posterior
+distribution.
+Description
+Assume that we want to estimate an unobserved population parameter 8 on the basis of observations z. Let
+f be the sampling distribution of x, so that f(z | 6) is the probability of x when the underlying population
+parameter is 9. Then the function:
+O++ f(z | 8)
+is known as the likelihood function and the estimate:
+Ouix (x) = arg . f(x | 6)
+is the maximum likelihood estimate of @.
+Now assume that a prior distribution g over @ exists. This allows us to treat @ as a random variable as in
+Bayesian statistics. We can calculate the posterior density of 0 using Bayes' theorem:
+_ Fle] 6) 98)
+AOf(O|x)
+[ f(| a8) g(8) do
+where g is density function of 8, © is the domain of g.
+The method of maximum a posteriori estimation then estimates @ as the mode of the posterior density of
+this random variable:
+https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation Page 1 of 4
+Maximum a posteriori estimation - Wikipedia 12/7/25, 3:34 AM
+Oyrap (x) = arg max f(@| x)
+7 f(x | 8) 9(9)
+= arg max
+[ #1 8) 90) a9
+= arg max f(z | 9) 9(9).
+The denominator of the posterior density (the marginal likelihood of the model) is always positive and does
+not depend on @ and therefore plays no role in the optimization. Observe that the MAP estimate of 0
+coincides with the ML estimate when the prior g is uniform (..e., g is a constant function), which occurs
+whenever the prior distribution is taken as the reference measure, as is typical in function-space
+applications.
+When the loss function is of the form
+(9,4) { 01,, iotfhlear—wiOs|e<,ec
+L — y) y]
+as c goes to O, the Bayes estimator approaches the MAP estimator, provided that the distribution of 0 is
+quasi-concave. But generally a MAP estimator is not a Bayes estimator unless 0@ is discrete.
+Computation
+MAP estimates can be computed in several ways:
+1. Analytically, when the mode(s) of the posterior density can be given in closed form. This is the case
+when conjugate priors are used.
+2. Via numerical optimization such as the conjugate gradient method or Newton's method. This usually
+requires first or second derivatives, which have to be evaluated analytically or numerically.
+3. Via a modification of an expectation-maximization algorithm. This does not require derivatives of the
+posterior density.
+4. Via a Monte Carlo method using simulated annealing
+Limitations
+While only mild conditions are required for MAP estimation to be a limiting case of Bayes estimation
+(under the 0-1 loss function),!#! it is not representative of Bayesian methods in general. This is because
+MAP estimates are point estimates, and depend on the arbitrary choice of reference measure, whereas
+Bayesian methods are characterized by the use of distributions to summarize data and draw inferences:
+thus, Bayesian methods tend to report the posterior mean or median instead, together with credible
+intervals. This is both because these estimators are optimal under squared-error and linear-error loss
+respectively—which are more representative of typical loss functions—and for a continuous posterior
+https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation Page 2 of 4
+Maximum a posteriori estimation - Wikipedia 12/7/25, 3:34 AM
+distribution there is no loss function which suggests the MAP is the optimal point estimator. In addition,
+the posterior density may often not have a simple analytic form: in this case, the distribution can be
+simulated using Markov chain Monte Carlo techniques, while optimization to find the mode(s) of the
+density may be difficult or impossible.
+In many types of models, such as mixture models, the posterior may be
+multi-modal. In such a case, the usual recommendation is that one should os
+choose the highest mode: this is not always feasible (global optimization is
+a difficult problem), nor in some cases even possible (such as when
+identifiability issues arise). Furthermore, the highest mode may be
+uncharacteristic of the majority of the posterior, especially in many
+dimensions. 3 “1 , ;
+An example of a density of a
+Finally, unlike ML estimators, the MAP estimate is not invariant under _ bimodal distribution in which the
+reparameterization. Switching from one parameterization to another highest mode is uncharacteristic
+involves introducing a Jacobian that impacts on the location of the % he Majority of the distribution
+maximum.!2! In contrast, Bayesian posterior expectations are invariant
+under reparameterization.
+As an example of the difference between Bayes estimators mentioned above (mean and median estimators)
+and using a MAP estimate, consider the case where there is a need to classify inputs z as either positive or
+negative (for example, loans as risky or safe). Suppose there are just three possible hypotheses about the
+correct method of classification h1, hz and hg with posteriors 0.4, 0.3 and 0.3 respectively. Suppose given
+a new instance, 2, h, classifies it as positive, whereas the other two classify it as negative. Using the MAP
+estimate for the correct classifier h1, x is classified as positive, whereas the Bayes estimators would average
+over all hypotheses and classify x as negative.
+Example
+Suppose that we are given a sequence (21,...,2n) of IID N(u,o2%) random variables and a prior
+distribution of pz is given by N(po,02,). We wish to find the MAP estimate of jy. Note that the normal
+distribution is its own conjugate prior, so we will be able to find a closed-form solution analytically.
+The function to be maximized is then given by!!
+atu) fle | a) = m(u)b(u) = —1— exp(-51 (/u 4 -m ) o\ ) * \ T ] e 1 x —5 1 (@j;-—pwY? ,
+V2 2 Om II V/ 200y 2 Ov
+which is equivalent to minimizing the following function of p:
+j=l
+https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation Page 3 of 4
+Maximum a posteriori estimation - Wikipedia 12/7/25, 3:34 AM
+Thus, we see that the MAP estimator for p is given by!3!
+unm
+Sa; 4 oy
+om (Spas x;) + Fy Ho
+2 n . 2
+1 = 0 =
+UMAP n 9 td
+o2,n+o2 y 02n+o2 o2,n+o2
+j=l
+which turns out to be a linear interpolation between the prior mean and the sample mean weighted by their
+respective covariances.
+The case of o,, — 00 is called a non-informative prior and leads to an improper probability distribution; in
+this case iim AP — ote:
+References
+1. Bassett, Robert; Deride, Julio (2018-01-30). "Maximum a posteriori estimators as a limit of Bayes
+estimators". Mathematical Programming: 1-16. arXiv:1611.05917 (https://arxiv.org/abs/1611.05917).
+doi:10.1007/s10107-018-1241 -0 (https://doi.org/10.1007%2Fs10107-018-1241-0). ISSN 0025-5610 (hit
+ps://search.worldcat.org/issn/0025-5610).
+2. Murphy, Kevin P. (2012). Machine learning : a probabilistic perspective. Cambridge, Massachusetts:
+MIT Press. pp. 151-152. ISBN 978-0-262-01802-9.
+3. Young, G. A.; Smith, R. L. (2005). Essentials of Statistical Inference (https://www.cambridge.org/core/b
+ooks/essentials-of-statistical-inference/7/CDE4BO8DD68DE7EEOBOOF778FC29CCD). Cambridge
+Series in Statistical and Probabilistic Mathematics. Cambridge: Cambridge University Press. ISBN 978-
+0-521-83971-6.
+=» DeGroot, M. (1970). Optimal Statistical Decisions. McGraw-Hill. ISBN 0-07-016242-5.
+=» Sorenson, Harold W. (1980). Parameter Estimation: Principles and Problems. Marcel Dekker. ISBN 0-
+8247-6987-2.
+=» Hald, Anders (2007). "Gauss's Derivation of the Normal Distribution and the Method of Least Squares,
+1809". A History of Parametric Statistical Inference from Bernoulli to Fisher, 1713-1935. New York:
+Springer. pp. 55-61. ISBN 978-0-387-46409-1.
+Retrieved from "https://en.wikipedia.org/w/index.php ?title=[Maximum_a_posteriori_estimation&oldid=1 263884525"
+https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation Page 4 of 4

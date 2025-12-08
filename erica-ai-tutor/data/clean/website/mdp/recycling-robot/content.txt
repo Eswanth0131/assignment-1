@@ -1,0 +1,57 @@
+Applying the Bellman Optimality Backup – Engineering AI Agents
+Engineering AI Agents
+BOOK
+Foundations
+Training Deep Networks
+Perception
+Kinematics
+State Estimation
+Large Language Models
+Multimodal Reasoning
+Task Planning
+Global Planning
+Local Planning
+Markov Decision Processes
+Reinforcement Learning
+VLA Agents
+COURSES
+Introduction to AI
+AI for Robotics
+Deep Learning for Computer Vision
+DATA MINING - BEING PORTED
+MEDIA
+AI for Robotics
+ABOUT ME
+Bellman Equations
+Applying the Bellman Optimality Backup
+Bellman Equations
+Markov Decision Processes
+Introduction to MDP
+Bellman Expectation Backup
+Policy Evaluation (Prediction)
+Bellman Optimality Backup
+Applying the Bellman Optimality Backup
+Policy Improvement (Control)
+Dynamic Programming Algorithms
+Policy Iteration
+Policy Iteration Gridworld
+Value Iteration
+Value Iteration Gridworld
+On this page
+Problem statement
+Solution
+Edit this page
+View source
+Report an issue
+Bellman Equations
+Applying the Bellman Optimality Backup
+Applying the Bellman Optimality Backup
+Problem statement
+Finite State Machine of a a recycling robot and MDP dynamics LUT
+Solution
+solution
+Bellman Optimality Backup
+Policy Improvement (Control)
+Edit this page
+View source
+Report an issue

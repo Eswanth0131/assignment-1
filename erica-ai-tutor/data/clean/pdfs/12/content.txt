@@ -1,0 +1,166 @@
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+“<\ WIKIPEDIA
+‘a ';/ TheFree Encyclopedia
+~
+Discriminative model
+Discriminative models, also referred to as conditional models, are a class of models
+frequently used for classification. They are typically used to solve binary classification problems,
+i.e. assign labels, such as pass/fail, win/lose, alive/dead or healthy/sick, to existing datapoints.
+Types of discriminative models include logistic regression (LR), conditional random fields (CRFs),
+decision trees among many others. Generative model approaches which uses a joint probability
+distribution instead, include naive Bayes classifiers, Gaussian mixture models, variational
+autoencoders, generative adversarial networks and others.
+Definition
+Unlike generative modelling, which studies the joint probability P(a, y), discriminative modeling
+studies the P(y|x) or maps the given unobserved variable (target) x to a class label y dependent on
+the observed variables (training samples). For example, in object recognition, z is likely to be a
+vector of raw pixels (or features extracted from the raw pixels of the image). Within a probabilistic
+framework, this is done by modeling the conditional probability distribution P(y|x), which can be
+used for predicting y from z. Note that there is still distinction between the conditional model and
+the discriminative model, though more often they are simply categorised as discriminative model.
+Pure discriminative model vs. conditional model
+A conditional model models the conditional probability distribution, while the traditional
+discriminative model aims to optimize on mapping the input around the most similar trained
+samples.!4!
+Typical discriminative modelling approaches
+The following approach is based on the assumption that it is given the training data-set
+D = {(2i;y;)|i < N € Z}, where y; is the corresponding output for the input 2;.!2!
+Linear classifier
+https://en.wikipedia.org/wiki/Discriminative_model Page 1 of 6
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+We intend to use the function f(z) to simulate the behavior of what we observed from the training
+data-set by the linear classifier method. Using the joint feature vector ¢(2, y), the decision function
+is defined as:
+f(x; w) = arg max w' (2, y)
+According to Memisevic's interpretation,!2! w’ ¢(x, y), which is also c(z, y; w), computes a score
+which measures the compatibility of the input z with the potential output y. Then the arg max
+determines the class with the highest score.
+Logistic regression (LR)
+Since the o-1 loss function is a commonly used one in the decision theory, the conditional
+probability distribution P(y|x; w), where w is a parameter vector for optimizing the training data,
+could be reconsidered as following for the logistics regression model:
+1 .
+P(y|a; w) = ———~ exp¢((zw, y”)), with
+Z(x;w)
+Z(a;w) = do, exp(w* 6(z, y))
+The equation above represents logistic regression. Notice that a major distinction between models
+is their way of introducing posterior probability. Posterior probability is inferred from the
+parametric model. We then can maximize the parameter by following equation:
+L(w) = 3; log p(y" |2"; w)
+It could also be replaced by the log-loss equation below:
+1° (a*4,’, c(a*; w)) = — log p(y‘ |x; w) = log Z(a*; w) — w’o(2"y,')
+Since the log-loss is differentiable, a gradient-based method can be used to optimize the model. A
+global optimum is guaranteed because the objective function is convex. The gradient of log
+likelihood is represented by:
+where E,(4)zi.) is the expectation of p(y|z"; w).
+The above method will provide efficient computation for the relative small number of
+classification.
+https://en.wikipedia.org/wiki/Discriminative_model Page 2 of 6
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+Contrast with generative model
+Contrast in approaches
+Let's say we are given the m class labels (classification) and mn feature variables,
+Y : {y1,Yo,--->Ym},X : {%1,22,...,2n} , as the training samples.
+A generative model takes the joint probability P(«, y), where z is the input and y is the label, and
+predicts the most possible known label y € Y for the unknown variable % using Bayes' theorem.|3!
+Discriminative models, as opposed to generative models, do not allow one to generate samples
+from the joint distribution of observed and target variables. However, for tasks such as
+classification and regression that do not require the joint distribution, discriminative models can
+yield superior performance (in part because they have fewer variables to compute).!4/[51[3] On the
+other hand, generative models are typically more flexible than discriminative models in expressing
+dependencies in complex learning tasks. In addition, most discriminative models are inherently
+supervised and cannot easily support unsupervised learning. Application-specific details ultimately
+dictate the suitability of selecting a discriminative versus generative model.
+Discriminative models and generative models also differ in introducing the posterior possibility. ©!
+To maintain the least expected loss, the minimization of result’s misclassification should be
+acquired. In the discriminative model, the posterior probabilities, P(y|x), is inferred from a
+parametric model, where the parameters come from the training data. Points of estimation of the
+parameters are obtained from the maximization of likelihood or distribution computation over the
+parameters. On the other hand, considering that the generative models focus on the joint
+probability, the class posterior possibility P(k) is considered in Bayes’ theorem, which is
+P(zly)p(y) —_—-p(zly)p(y) iS
+P(y|x) =
+3S, p(alijp() pa)
+Advantages and disadvantages in application
+In the repeated experiments, logistic regression and naive Bayes are applied here for different
+models on binary classification task, discriminative learning results in lower asymptotic errors,
+while generative one results in higher asymptotic errors faster.'3! However, in Ulusoy and Bishop's
+joint work, Comparison of Generative and Discriminative Techniques for Object Detection and
+Classification, they state that the above statement is true only when the model is the appropriate
+one for data (i.e.the data distribution is correctly modeled by the generative model).
+https://en.wikipedia.org/wiki/Discriminative_model Page 3 of 6
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+Advantages
+Significant advantages of using discriminative modeling are:
+= Higher accuracy, which mostly leads to better learning result.
+= Allows simplification of the input and provides a direct approach to P(y|zx)
+= Saves calculation resource
+=» Generates lower asymptotic errors
+Compared with the advantages of using generative modeling:
+= Takes all data into consideration, which could result in slower processing as a disadvantage
+=» Requires fewer training samples
+= A flexible framework that could easily cooperate with other needs of the application
+Disadvantages
+= Training method usually requires multiple numerical optimization techniques!!!
+= Similarly by the definition, the discriminative model will need the combination of multiple
+subtasks for solving a complex real-world problem!!
+Optimizations in applications
+Since both advantages and disadvantages present on the two way of modeling, combining both
+approaches will be a good modeling in practice. For example, in Marras' article A Joint
+Discriminative Generative Model for Deformable Model Construction and Classification,!7! he
+and his coauthors apply the combination of two modelings on face classification of the models, and
+receive a higher accuracy than the traditional approach.
+Similarly, Kelm!®! also proposed the combination of two modelings for pixel classification in his
+article Combining Generative and Discriminative Methods for Pixel Classification with Multi-
+Conditional Learning.
+During the process of extracting the discriminative features prior to the clustering, Principal
+component analysis (PCA), though commonly used, is not a necessarily discriminative approach.
+In contrast, LDA is a discriminative one.l9! Linear discriminant analysis (LDA), provides an
+efficient way of eliminating the disadvantage we list above. As we know, the discriminative model
+needs a combination of multiple subtasks before classification, and LDA provides appropriate
+solution towards this problem by reducing dimension.
+Types
+https://en.wikipedia.org/wiki/Discriminative_model Page 4 of 6
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+Examples of discriminative models include:
+Logistic regression, a type of generalized linear regression used for predicting binary or
+categorical outputs (also known as maximum entropy classifiers)
+Boosting (meta-algorithm)
+Conditional random fields
+Linear regression
+Random forests
+See also
+Generative model
+fx Mathematics portal
+References
+1. Ballesteros, Miguel. "Discriminative Models" (http://demo.clab.cs.cmu.edu/fa2015-11711/image
+s/e/e5/DiscriminativeModels.pdf) (PDF). Retrieved October 28, 2018.
+2. Memisevic, Roland (December 21, 2006). "An introduction to structured discriminative learning"
+(http://www.cs.toronto.edu/~rfm/pubs/sdl.ps). Retrieved October 29, 2018.
+Ng, Andrew Y.; Jordan, Michael I. (2001). On Discriminative vs. Generative classifiers:A
+comparison of logistic regression and naive Bayes (https://ail.stanford.edu/~ang/papers/nips01 -
+discriminativegenerative.pdf) (PDF).
+Singla, Parag; Domingos, Pedro (2005). "Discriminative Training of Markov Logic Networks" (ht
+tp://dl.acm.org/citation.cfm?id=1619410.1619472). Proceedings of the 20th National
+Conference on Artificial Intelligence - Volume 2. AAAI'05. Pittsburgh, Pennsylvania: AAAI
+Press: 868-873. ISBN 978-1577352365.
+J. Lafferty, A.McCallum, and F. Pereira. Conditional Random Fields: Probabilistic Models for
+segmenting and Labeling Sequence Data. In ICML, 2001.
+Ulusoy, Ilkay (May 2016). "Comparison of Generative and Discriminative Techniques for Object
+Detection and Classification" (https://www.microsoft.com/en-us/research/wp-content/uploads/2
+016/05/Bishop-Sicily-05.pdf) (PDF). Microsoft. Retrieved October 30, 2018.
+Marras, loannis (2017). "A Joint Discriminative Generative Model for Deformable Model
+Construction and Classification" (https://ibug.doc.ic.ac.uk/media/uploads/documents/pid466664
+7.pdf) (PDF). Retrieved 5 November 2018.
+Kelm, B. Michael. "Combining Generative and Discriminative Methods for Pixel Classification
+with Multi-Conditional Learning" (https://web.arc1h90i71v 7e18.50o33r/ght/tpw:/e/wbww/. 2pr0of
+esseurs.polymtl.ca/christopher.pal/icpr06/icprO6_combining.pdf) (PDF). Archived from the
+original (http://www. professeurs.polymtl.ca/christopher.pal/icpr06/icpr06_combining.pdf) (PDF)
+on 17 July 2019. Retrieved 5 November 2018.
+Wang, Zhangyang (2015). "A Joint Optimization Framework of Sparse Coding and
+Discriminative Clustering" (https://www.ijcai.org/Proceedings/15/Papers/5p5d2f.) (PDF).
+Retrieved 5 November 2018.
+https://en.wikipedia.org/wiki/Discriminative_model Page 5o0f 6
+Discriminative model - Wikipedia 12/7/25, 3:34 AM
+Retrieved from "https://en. wikipedia.org/w/index.php ?title=Discriminative_model&oldid=1297978379"
+https://en.wikipedia.org/wiki/Discriminative_model Page 6 of 6

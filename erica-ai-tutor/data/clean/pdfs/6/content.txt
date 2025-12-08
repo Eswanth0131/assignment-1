@@ -1,0 +1,499 @@
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+“<\ WIKIPEDIA
+‘ « ‘7 TheFree Encyclopedia
+1
+~
+Regression analysis
+In statistical modeling, regression analysis is a statistical
+method for estimating the relationship between a dependent 3
+variable (often called the outcome or response variable, or a label
+in machine learning parlance) and one or more independent
+variables (often called regressors, predictors, covariates,
+explanatory variables or features) H#Il2!
+N
+a
+o
+-
+w
+~
+=
+o
+The most common form of regression analysis is linear regression,
+in which one finds the line (or a more complex linear
+Regression line for 50 random
+combination) that most closely fits the data according to a specific
+points in a Gaussian distribution
+mathematical criterion. For example, the method of ordinary least
+around the line y=1.5x+2
+squares computes the unique line (or hyperplane) that minimizes
+the sum of squared differences between the true data and that line
+(or hyperplane). For specific mathematical reasons (see linear regression), this allows the
+researcher to estimate the conditional expectation (or population average value) of the dependent
+variable when the independent variables take on a given set of values. Less common forms of
+regression use slightly different procedures to estimate alternative location parameters (e.g.,
+quantile regression or Necessary Condition Analysis!3!) or estimate the conditional expectation
+across a broader collection of non-linear models (e.g., nonparametric regression).
+Regression analysis is primarily used for two conceptually distinct purposes. First, regression
+analysis is widely used for prediction and forecasting, where its use has substantial overlap with
+the field of machine learning. Second, in some situations regression analysis can be used to infer
+causal relationships between the independent and dependent variables. Importantly, regressions
+by themselves only reveal relationships between a dependent variable and a collection of
+independent variables in a fixed dataset. To use regressions for prediction or to infer causal
+relationships, respectively, a researcher must carefully justify why existing relationships have
+predictive power for a new context or why a relationship between two variables has a causal
+interpretation. The latter is especially important when researchers hope to estimate causal
+relationships using observational data,|4l5]
+History
+https://en.wikipedia.org/wiki/Regression_analysis Page 1 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+The earliest regression form was seen in Isaac Newton's work in 1700 while studying equinoxes,
+being credited with introducing "an embryonic linear regression analysis" as "Not only did he
+perform the averaging of a set of data, 50 years before Tobias Mayer, but by summing the residuals
+to zero he forced the regression line to pass through the average point. He also distinguished
+between two inhomogeneous sets of data and might have thought of an optimal solution in terms
+of bias, though not in terms of effectiveness." He previously used an averaging method in his 1671
+work on Newton's rings, which was unprecedented at the time.|6ll71
+The method of least squares was published by Legendre in 1805,!8! and by Gauss in 1809.|9!
+Legendre and Gauss both applied the method to the problem of determining, from astronomical
+observations, the orbits of bodies about the Sun (mostly comets, but also later the then newly
+discovered minor planets). Gauss published a further development of the theory of least squares in
+1821,4°! including a version of the Gauss—Markov theorem.
+The term "regression" was coined by Francis Galton in the 19th century to describe a biological
+phenomenon. The phenomenon was that the heights of descendants of tall ancestors tend to
+regress down towards a normal average (a phenomenon also known as regression toward the
+mean).J2! For Galton, regression had only this biological meaning,!23!44! but his work was later
+extended by Udny Yule and Karl Pearson to a more general statistical context.445//6] In the work of
+Yule and Pearson, the joint distribution of the response and explanatory variables is assumed to be
+Gaussian. This assumption was weakened by R.A. Fisher in his works of 1922 and 1925.HZ/L8!L91
+Fisher assumed that the conditional distribution of the response variable is Gaussian, but the joint
+distribution need not be. In this respect, Fisher's assumption is closer to Gauss's formulation of
+1821.
+In the 1950s and 1960s, economists used electromechanical desk calculators to calculate
+regressions. Before 1970, it sometimes took up to 24 hours to receive the result from one
+regressio|n20.1
+Regression methods continue to be an area of active research. In recent decades, new methods
+have been developed for robust regression, regression involving correlated responses such as time
+series and growth curves, regression in which the predictor (independent variable) or response
+variables are curves, images, graphs, or other complex data objects, regression methods
+accommodating various types of missing data, nonparametric regression, Bayesian methods for
+regression, regression in which the predictor variables are measured with error, regression with
+more predictor variables than observations, and causal inference with regression. Modern
+regression analysis is typically done with statistical and spreadsheet software packages on
+computers as well as on handheld scientific and graphing calculators.
+Regression model
+https://en.wikipedia.org/wiki/Regression_analysis Page 2 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+In practice, researchers first select a model they would like to estimate and then use their chosen
+method (e.g., ordinary least squares) to estimate the parameters of that model. Regression models
+involve the following components:
+=» The unknown parameters, often denoted as a scalar or vector £.
+» The independent variables, which are observed in data and are often denoted as a vector X;
+(where 2 denotes a row of data).
+=» The dependent variable, which are observed in data and often denoted using the scalar Y;.
+=» The error terms, which are not directly observed in data and are often denoted using the
+scalar e;.
+In various fields of application, different terminologies are used in place of dependent and
+independent variables.
+Most regression models propose that Y; is a function (regression function) of X; and £, with e;
+representing an additive error term that may stand in for un-modeled determinants of Y; or
+random statistical noise:
+In the standard regression model, the independent variables X; are assumed to be free of error.
+The errors-in-variables model can be used if the independent variables are assumed to contain
+errors. Other modifications to the standard regression model can be made to account for various
+scenarios, such as situations involving omitted variables, confounding variables or endogeneity.
+The researchers’ goal is to estimate the function f(X;, @) that most closely fits the data. To carry
+out regression analysis, the form of the function f must be specified. Sometimes the form of this
+function is based on knowledge about the relationship between Y; and X; that does not rely on the
+data. If no such knowledge is available, a flexible or convenient form for f is chosen. For example,
+a simple univariate regression may propose f(X;, 8) = 8p + 61-X; , suggesting that the researcher
+believes Y; = 8p + 6:X; +e; to be a reasonable approximation for the statistical process
+generating the data.
+Once researchers determine their preferred statistical model, different forms of regression analysis
+provide tools to estimate the parameters (. For example, least squares (including its most common
+variant, ordinary least squares) finds the value of 6 that minimizes the sum of squared errors
+SOY; — f(X;, B))*. A given regression method will ultimately provide an estimate of 8, usually
+4
+denoted B to distinguish the estimate from the true (unknown) parameter value that generated the
+data. Using this estimate, the researcher can then use the fitted value Y; = F(X, B ) for prediction
+or to assess the accuracy of the model in explaining the data. Whether the researcher is intrinsically
+https://en.wikipedia.org/wiki/Regression_analysis Page 3 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+interested in the estimate # or the predicted value Y; will depend on context and their goals. As
+described in ordinary least squares, least squares is widely used because the estimated function
+f(X;, 8) approximates the conditional expectation E(Y;|X;).'9! However, alternative variants
+(e.g., least absolute deviations or quantile regression) are useful when researchers want to model
+other functions f(X;, 8).
+It is important to note that there must be sufficient data to estimate a regression model. For
+example, suppose that a researcher has access to N rows of data with one dependent and two
+independent variables: (Y;,X1;,X2;). Suppose further that the researcher wants to estimate a
+bivariate linear model via least squares: Y; = Bo + 61X1; + B2Xo; + e;. If the researcher only
+has access to N = 2 data points, then they could find infinitely many combinations (By, B Ls By)
+that explain the data equally well: any combination can be chosen that satisfies
+Y; = By + By Xu + By Xai, all of which lead to
+S> é? — So(¥i — (By + By Xu; + Bp Xai))? = 0 and are therefore valid solutions that minimize
+the sum of squared residuals. To understand why there are infinitely many options, note that the
+system of N=2 equations is to be solved for 3 unknowns, which makes the system
+underdetermined. Alternatively, one can visualize infinitely many 3-dimensional planes that go
+through N = 2 fixed points.
+More generally, to estimate a least squares model with k distinct parameters, one must have
+N > k distinct data points. If N > k, then there does not generally exist a set of parameters that
+will perfectly fit the data. The quantity N — k appears often in regression analysis, and is referred
+to as the degrees of freedom in the model. Moreover, to estimate a least squares model, the
+independent variables (X1;, Xo;,..., Xj) must be linearly independent: one must not be able to
+reconstruct any of the independent variables by adding and multiplying the remaining
+independent variables. As discussed in ordinary least squares, this condition ensures that X? X is
+an invertible matrix and therefore that a unique solution # exists.
+Underlying assumptions
+By itself, a regression is just a computation performed on a set of data. In order to interpret the
+resultant regression as a meaningful statistical model that quantifies real-world relationships,
+researchers often rely on a number of classical assumptions. These assumptions often include:
+=» The sample is representative of the population at large.
+=» The independent variables are measured without error.
+=» Deviations from the model have an expected value of zero, conditional on covariates:
+https://en.wikipedia.org/wiki/Regression_analysis Page 4 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+=» The variance of the residuals e; is constant across observations (homoscedasticity).
+=» The residuals e; are uncorrelated with one another. Mathematically, the variance—covariance
+matrix of the errors is diagonal.
+A handful of conditions are sufficient for the least-squares estimator to possess desirable
+properties: in particular, the Gauss—Markov assumptions imply that the parameter estimates will
+be unbiased, consistent, and efficient in the class of linear unbiased estimators. Practitioners have
+developed a variety of methods to maintain some or all of these desirable properties in real-world
+settings, because these classical assumptions are unlikely to hold exactly. For example, modeling
+errors-in-variables can lead to reasonable estimates independent variables are measured with
+errors. Heteroscedasticity-consistent standard errors allow the variance of e; to change across
+values of X;. Correlated errors that exist within subsets of the data or follow specific patterns can
+be handled using clustered standard errors, geographic weighted regression, or Newey—West
+standard errors, among other techniques. When rows of data correspond to locations in space, the
+choice of how to model e; within geographic units can have important consequences.!22/l22] The
+subfield of econometrics is largely focused on developing techniques that allow researchers to
+make reasonable real-world conclusions in real-world settings, where classical assumptions do not
+hold exactly.
+Linear regression
+In linear regression, the model specification is that the dependent variable, y; is a linear
+combination of the parameters (but need not be linear in the independent variables). For
+example, in simple linear regression for modeling n data points there is one independent variable:
+x;, and two parameters, 89 and (1:
+straight line: y,; = Bb + Bia; te;, t= 1,...,n.
+In multiple linear regression, there are several independent variables or functions of independent
+variables.
+Adding a term in x? to the preceding regression gives:
+parabola: y; = Bo + Bia; + Bot? +e;, i =1,...,n.
+This is still linear regression; although the expression on the right hand side is quadratic in the
+independent variable 7;, it is linear in the parameters §p, @; and Bo.
+In both cases, €; is an error term and the subscript 7 indexes a particular observation.
+https://en.wikipedia.org/wiki/Regression_analysis Page 5 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+Returning our attention to the straight line case: Given a random sample from the population, we
+estimate the population parameters and obtain the sample linear regression model:
+Yi; = Po + Bi %-
+The residual, e; = y; — y;, is the difference between the value of the dependent variable predicted
+by the model, y;, and the true value of the dependent variable, y;. One method of estimation is
+ordinary least squares. This method obtains parameter estimates that minimize the sum of squared
+residuals, SSR:
+nr
+SSR=) e
+i=1
+Minimization of this function results in a set of normal equations, a set of simultaneous linear
+equations in the parameters, which are solved to yield the parameter estimators, 6, 8.
+In the case of simple regression, the formulas
+for the least squares estimates are
+) )
+where Z is the mean (average) of the z values
+and y is the mean of the y values.
+Under the assumption that the population error 26 ~-10 ' 10 20 #2430 40 «50 60
+term has a constant variance, the estimate of __ ilustration of linear regression on a data set
+that variance is given by:
+2 SSR
+CG. =
+“ n-2
+This is called the mean square error (MSE) of the regression. The denominator is the sample size
+reduced by the number of model parameters estimated from the same data, (n—p) for p
+regressors or (n — p—1) if an intercept is used.!23! In this case, p= 1 so the denominator is
+n— 2.
+The standard errors of the parameter estimates are given by
+https://en.wikipedia.org/wiki/Regression_analysis Page 6 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+Under the further assumption that the population error term is normally distributed, the
+researcher can use these estimated standard errors to create confidence intervals and conduct
+hypothesis tests about the population parameters.
+General linear model
+In the more general multiple regression model, there are p independent variables:
+Yi = Bi ti + Potig +-+++ Botip + &:,
+where 2;; is the 2-th observation on the j-th independent variable. If the first independent variable
+takes the value 1 for all 7, x;1 = 1, then {, is called the regression intercept.
+The least squares parameter estimates are obtained from p normal equations. The residual can be
+written as
+a
+Ej = Yi — By Lin — +++ — By Lip.
+The normal equations are
+n ?p n
+S vig tinB = S > xij, j=1,...5p.
+i=1 k=1 i=1
+In matrix notation, the normal equations are written as
+(X'X)6=X'Y,
+where the 77 element of X is x;;, the 1 element of the column vector Y is y;, and the j element of B
+is B,.Thus X isn xX p,Yisn x 1, and B isp X 1. The solution is
+B = (X'X)'X'yY.
+Diagnostics
+https://en.wikipedia.org/wiki/Regression_analysis Page 7 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+Once a regression model has been constructed, it may be important to confirm the goodness of fit
+of the model and the statistical significance of the estimated parameters. Commonly used checks of
+goodness of fit include the R-squared, analyses of the pattern of residuals and hypothesis testing.
+Statistical significance can be checked by an F-test of the overall fit, followed by t-tests of
+individual parameters.
+Interpretations of these diagnostic tests rest heavily on the model's assumptions. Although
+examination of the residuals can be used to invalidate a model, the results of a t-test or F-test are
+sometimes more difficult to interpret if the model's assumptions are violated. For example, if the
+error term does not have a normal distribution, in small samples the estimated parameters will not
+follow normal distributions and complicate inference. With relatively large samples, however, a
+central limit theorem can be invoked such that hypothesis testing may proceed using asymptotic
+approximations.
+Limited dependent variables
+Limited dependent variables, which are response variables that are categorical or constrained to
+fall only in a certain range, often arise in econometrics.
+The response variable may be non-continuous ("limited" to lie on some subset of the real line). For
+binary (zero or one) variables, if analysis proceeds with least-squares linear regression, the model
+is called the linear probability model. Nonlinear models for binary dependent variables include the
+probit and logit model. The multivariate probit model is a standard method of estimating a joint
+relationship between several binary dependent variables and some independent variables. For
+categorical variables with more than two values there is the multinomial logit. For ordinal variables
+with more than two values, there are the ordered logit and ordered probit models. Censored
+regression models may be used when the dependent variable is only sometimes observed, and
+Heckman correction type models may be used when the sample is not randomly selected from the
+population of interest.
+An alternative to such procedures is linear regression based on polychoric correlation (or polyserial
+correlations) between the categorical variables. Such procedures differ in the assumptions made
+about the distribution of the variables in the population. If the variable is positive with low values
+and represents the repetition of the occurrence of an event, then count models like the Poisson
+regression or the negative binomial model may be used.
+Nonlinear regression
+https://en.wikipedia.org/wiki/Regression_analysis Page 8 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+When the model function is not linear in the parameters, the sum of squares must be minimized by
+an iterative procedure. This introduces many complications which are summarized in Differences
+between linear and non-linear least squares.
+Prediction (interpolation and extrapolation)
+Regression models predict a value of
+the Y variable given known values of the
+X variables. Prediction within the range
+of values in the dataset used for model-
+fitting is known informally as
+interpolation. Prediction outside this
+range of the data is known as
+extrapolation. Performing extrapolation
+relies strongly on _ the regression
+y
+thgieW
+assumptions. The further the
+extrapolation goes outside the data, the 155 160 165 170 175 180 185 190 195
+more room there is for the model to fail Height _x
+due to differences between the In the middle, the fitted straight line represents the best balance
+between the points above and below this line. The dotted
+assumptions and the sample data or the
+straight lines represent the two extreme lines, considering only
+true values.
+the variation in the slope. The inner curves represent the
+tok estimated range of values considering the variation in both
+A prediction interval that represents the slope and intercept. The outer curves represent a prediction for
+uncertainty may accompany the point — 3 pew measuremen[2t4!
+prediction. Such intervals tend to
+expand rapidly as the values of the
+independent variable(s) moved outside the range covered by the observed data.
+For such reasons and others, some tend to say that it might be unwise to undertake extrapolation.
+[25]
+Model selection
+The assumption of a particular form for the relation between Y and X is another source of
+uncertainty. A properly conducted regression analysis will include an assessment of how well the
+assumed form is matched by the observed data, but it can only do so within the range of values of
+the independent variables actually available. This means that any extrapolation is particularly
+reliant on the assumptions being made about the structural form of the regression relationship. If
+this knowledge includes the fact that the dependent variable cannot go outside a certain range of
+values, this can be made use of in selecting the model — even if the observed dataset has no values
+https://en.wikipedia.org/wiki/Regression_analysis Page 9 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+particularly near such bounds. The implications of this step of choosing an appropriate functional
+form for the regression can be great when extrapolation is considered. At a minimum, it can ensure
+that any extrapolation arising from a fitted model is "realistic" (or in accord with what is known).
+Power and sample size calculations
+There are no generally agreed methods for relating the number of observations versus the number
+of independent variables in the model. One method conjectured by Good and Hardin is N = m",
+where NN is the sample size, n is the number of independent variables and m is the number of
+observations needed to reach the desired precision if the model had only one independent variable.
+[26] For example, a researcher is building a linear regression model using a dataset that contains
+1000 patients (JV). If the researcher decides that five observations are needed to precisely define a
+straight line (m), then the maximum number of independent variables (n) the model can support
+is 4, because
+log 1000
+~ 4.29.
+log 5
+Other methods
+Although the parameters of a regression model are usually estimated using the method of least
+squares, other methods which have been used include:
+=» Bayesian methods, e.g. Bayesian linear regression
+=» Percentage regression, for situations where reducing percentage errors is deemed more
+appropriat|e27.]
+=» Least absolute deviations, which is more robust in the presence of outliers, leading to quantile
+regression
+=» Nonparametric regression, requires a large number of observations and is computationally
+intensive
+=» Scenario optimization, leading to interval predictor models
+Software
+All major statistical software packages perform least squares regression analysis and inference.
+Simple linear regression and multiple regression using least squares can be done in some
+spreadsheet applications and on some calculators. While many statistical software packages can
+perform various types of nonparametric and robust regression, these methods are less
+https://en.wikipedia.org/wiki/Regression_analysis Page 10 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+standardized. Different software packages implement different methods, and a method with a
+given name may be implemented differently in different packages. Specialized regression software
+has been developed for use in fields such as survey analysis and neuroimaging.
+See also
+=» Anscombe's quartet
+= Curve fitting fx Mathematics portal
+=» Estimation theory
+=» Forecasting
+= Fraction of variance unexplained
+=» Function approximation
+=» Generalized linear model
+= Kriging (a linear least squares estimation algorithm)
+=» Local regression
+= Modifiable areal unit problem
+= Multivariate adaptive regression spline
+= Multivariate normal distribution
+=» Pearson correlation coefficient
+= Quasi-variance
+= Prediction interval
+=» Regression validation
+=» Robust regression
+=» Segmented regression
+= Signal processing
+= Stepwise regression
+=» Taxicab geometry
+= Linear trend estimation
+References
+1. Yan, Xin; Su, Xiaogang (2009). Linear Regression Analysis: Theory and Computing (https://b0o
+ks.google.com/books?id=5pdpDQAAQBAv). World Scientific Publishing. pp. 2-3.
+ISBN 9789812834102.
+2. Freund, Rudolf J.; Mohr, Donna L.; Wilson, William J. (2010). Statistical Methods (https://books.
+google.com/books?id=12LPWI6QxrsC). Elsevier Science. p. 323. ISBN 9780080961033.
+3. Necessary Condition Analysis (http://www.erim.eur.nl/centres/necessary-condition-analysis/)
+4. David A. Freedman (27 April 2009). Statistical Models: Theory and Practice (https://oooks.goog
+le.com/books?id=fW_9BV5Wpf8C&q=%22regression+analysis%22). Cambridge University
+https://en.wikipedia.org/wiki/Regression_analysis Page 11 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+Press. ISBN 978-1-139-47731-4.
+R. Dennis Cook; Sanford Weisberg Criticism and Influence Analysis in Regression (https://ww
+w.jstor.org/stable/270724), Sociological Methodology, Vol. 13. (1982), pp. 313-361
+Belenkiy, Ari; Echague, Eduardo Vila (2008). "Groping Toward Linear Regression Analysis:
+Newton's Analysis of Hipparchus' Equinox Observations". arXiv:0810.4948 (https://arxiv.org/ab
+s/0810.4948) [physics.hist-ph (https://arxiv.org/archive/phhiysst-ipch)s]..
+Buchwald, Jed Z.; Feingold, Mordechai (2013). Newton and the Origin of Civilization. Princeton
+University Press. pp. 90-93, 101-103. ISBN 978-0-691-15478-7.
+. A.M. Legendre. Nouvelles méthodes pour la détermination des orbites des cométes (https://bo
+oks.google.com/books?id=-FRCOAAAAQAAY), Firmin Didot, Paris, 1805. "Sur la Méthode des
+moindres quarrés" appears as an appendix.
+Chapter 1 of: Angrist, J. D., & Pischke, J. S. (2008). Mostly Harmless Econometrics: An
+Empiricist's Companion. Princeton University Press.
+10. Gauss, C.F. (1821-1823). Theoria combinationis observationum erroribus minimis obnoxiae (ht
+tps://book?ids=Z .QOAgAAAoQAAoJ&gq=Tlheoeria.+cocmboinamtio/nisb+oobseorvaktiosnu
+m+erroribus+minimis+obnoxiae) — via Google Books.
+11. Mogull, Robert G. (2004). Second-Semester Applied Statistics. Kendall/Hunt Publishing
+Company. p. 59. ISBN 978-0-7575-1181-3.
+12. Galton, Francis (1989). "Kinship and Correlation (reprinted 1989)" (https://doi.org/10.1214%2Fs
+$%2F 1177012581). Statistical Science. 4 (2): 80-86. doi:10.1214/ss/1177012581 (https://doi.or
+g/10.1214%2Fss%2F 1177012581). JSTOR 2245330 (https://www.jstor.org/stable/2245330).
+13. Francis Galton. "Typical laws of heredity", Nature 15 (1877), 492-495, 512-514, 532-533.
+(Galton uses the term "reversion" in this paper, which discusses the size of peas.)
+14. Francis Galton. Presidential address, Section H, Anthropology. (1885) (Galton uses the term
+"regression" in this paper, which discusses the height of humans.)
+15. Yule, G. Udny (1897). "On the Theory of Correlation" (https://zenodo.org/record/1449703).
+Journal of the Royal Statistical Society. 60 (4): 812—54. doi:10.2307/2979746 (https://doi.org/1
+0.2307%2F2979746). JSTOR 2979746 (https://www.jstor.org/stable/2979746).
+16. Pearson, Karl; Yule, G.U.; Blanchard, Norman; Lee, Alice (1903). "The Law of Ancestral
+Heredity" (https://zenodo.org/record/1431601). Biometrika. 2 (2): 211-236.
+doi:10.1093/biomet/2.2.211 (https://doi.org/10.10938%2Fbiomet%2F2.2.211). JSTOR 2331683 (
+https://www.jstor.org/stable/233 1683).
+17. Fisher, R.A. (1922). "The goodness of fit of regression formulae, and the distribution of
+regression coefficients" (https://www.ncbi.nim.nih.gov/omc/artic1l08e4s8/0P1M)C. Journal of
+the Royal Statistical Society. 85 (4): 597-612. doi:10.2307/2341124 (https://doi.org/10.2307%2
+F2341124). JSTOR 2341124 (https://Awww.jstor.org/stable/2341124). PMC 1084801 (https://ww
+w.ncbi.nim.nih.gov/pmc/articles/PMC 1084801).
+18. Ronald A. Fisher (1970). Statistical Methods for Research Workers (https://archive.org/details/d
+li.scoerat.2986statisticalmethodsforresearchworkers/page/n7/mode/2up) (Twelfth ed.).
+Edinburgh: Oliver and Boyd. ISBN 978-0-05-0021 70-5.
+19. Aldrich, John (2005). "Fisher and Regression" (https://eprints.soton.ac.uk/3487 1/1/0883423050
+00000331.pdf) (PDF). Statistical Science. 20 (4): 401-417. doi:10.1214/088342305000000331
+(https ://doi.org/10.1214%2F088342305000000331). JSTOR 20061201 (https://www.jstor.org/st
+able/20061 201).
+https://en.wikipedia.org/wiki/Regression_analysis Page 12 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+20. Rodney Ramcharan. Regressions: Why Are Economists Obessessed with Them? (http://www.
+mf.org/external/pubs/ft/fandd/2006/03/basics.htm) March 2006. Accessed 2011-12-03.
+21. Fotheringham, A. Stewart; Brunsdon, Chris; Charlton, Martin (2002). Geographically weighted
+regression: the analysis of spatially varying relationships (Reprint ed.). Chichester, England:
+John Wiley. ISBN 978-0-471-49616-8.
+22. Fotheringham, AS; Wong, DWS (1 January 1991). "The modifiable areal unit problem in
+multivariate statistical analysis". Environment and Planning A. 23 (7): 1025-1044.
+Bibcode:1991EnPIA..23.1025F (https://ui.adsabs.harvard.edu/abs/1991EnPIA..23.1025F).
+doi:10.1068/a231025 (https://doi.org/10.1068%2Fa231025). S2CID 153979055 (https://api.sem
+anticscholar.org/CorpusID:153979055).
+23. Steel, R.G.D, and Torrie, J. H., Principles and Procedures of Statistics with Special Reference
+to the Biological Sciences., McGraw Hill, 1960, page 288.
+24. Rouaud, Mathieu (2013). Probability, Statistics and Estimation (http://www. incertitudes.fr/book.
+pdf) (PDF). p. 60.
+25. Chiang, C.L, (2003) Statistical methods of analysis, World Scientific. ISBN 981-238-310-7 -
+page 274 section 9.7.4 "interpolation vs extrapolation" (https://oooks.google.com/books?id=Bu
+PNibaN5v4C&dq=regression+extrapolation&pg=PA274)
+26. Good, P. I.; Hardin, J. W. (2009). Common Errors in Statistics (And How to Avoid Them)
+(8rd ed.). Hoboken, New Jersey: Wiley. p. 211. ISBN 978-0-470-45798-6.
+27. Tofallis, C. (2009). "Least Squares Percentage Regression" (https://digitalcommons.wayne.ed
+u/cgi/viewcontent.cgi?article=1 466&context=jmasm). Journal of Modern Applied Statistical
+Methods. 7: 526-534. doi:10.2139/ssrn. 1406472 (https://doi.org/10.2139%124F0s64s7r2n)..
+hdl:2299/965 (https://ndl.handle.net/2299%2F965). SSRN 1406472 (https://papers.ssrn.com/so
+I3/papers.cfm?abstract_id=1406472).
+Further reading
+William H. Kruskal and Judith M. Tanur, ed. (1978), "Linear Hypotheses," /nternational
+Encyclopedia of Statistics. Free Press, v. 1,
+Evan J. Williams, "Il. Regression," pp. 523-41.
+Julian C. Stanley, "Il. Analysis of Variance," pp. 541-554.
+Lindley, D.V. (1987). "Regression and correlation analysis," New Palgrave: A Dictionary of
+Economics, v. 4, pp. 120-23.
+Birkes, David and Dodge, Y., Alternative Methods of Regression. ISBN 0-471-56881-3
+Chatfield, C. (1993) "Calculating Interval Forecasts (https://amstat.tandfonline.com/doi/abs/01.
+1080/07350015.1993.10509938)," Journal of Business and Economic Statistics, 11. pp. 121-
+135.
+Draper, N.R.; Smith, H. (1998). Applied Regression Analysis (8rd ed.). John Wiley. ISBN 978-0-
+471-17082-2.
+Fox, J. (1997). Applied Regression Analysis, Linear Models and Related Methods. Sage
+Hardle, W., Applied Nonparametric Regression (1990), ISBN 0-521-42950-1
+https://en.wikipedia.org/wiki/Regression_analysis Page 13 of 14
+Regression analysis - Wikipedia 12/7/25, 3:34 AM
+=» Meade, Nigel; Islam, Towhidul (1995). "Prediction intervals for growth curve forecasts". Journal
+of Forecasting. 14 (5): 413-480. doi:10.1002/for.3980140502 (https://doi.org/10.100f2or%.23F9
+80140502).
+» A. Sen, M. Srivastava, Regression Analysis — Theory, Methods, and Applications, Springer-
+Verlag, Berlin, 2011 (4th printing).
+» T. Strutz: Data Fitting and Uncertainty (A practical introduction to weighted least squares and
+beyond). Vieweg+Teubner, ISBN 978-3-8348-1022-9.
+= Stulp, Freek, and Olivier Sigaud. Many Regression Algorithms, One Unified Model: A Review.
+Neural Networks, vol. 69, Sept. 2015, pp. 60-79. https://doi.org/10.1016/j.neunet.2015.05.005.
+=» Malakooti, B. (2013). Operations and Production Systems with Multiple Objectives (https://book
+s.google.com/books ?id=tvc8BAgAAQBAJ&q=%22regression+analysis%22). John Wiley & Sons.
+=» Chicco, Davide; Warrens, Matthijs J.; Jurman, Giuseppe (2021). "The coefficient of
+determination R-squared is more informative than SMAPE, MAE, MAPE, MSE and RMSE in
+regression analysis evaluation" (https://www.ncbi.nim.nih.gov/pmc/articles/PMC8279135).
+PeerJ Computer Science. 7 (e623): e623. doi:10.7717/peerj-cs.623 (https://doi.org/10.7717%2
+Fpeerj-cs.623). PMC 8279135 (https://www.ncbi.nim.nih.gov/pmc/articles/PMC823759)1.
+PMID 34307865 (https://oubmed.ncbi.nim.nih.gov/34307865).
+External links
+» "Regression analysis" (https://www.encyclopediaofmath.org/index.php ?title=Regression_analys
+is), Encyclopedia of Mathematics, EMS Press, 2001 [1994]
+» Earliest Uses: Regression (http://jeff560.tripod.com/r.html) — basic history and references
+= What is multiple regression used for? (https://spss-tutor.com/multiple-regressions.php) —
+Multiple regression
+=» Regression of Weakly Correlated Data (http://www. vias.org/simulations/simusoft_regrot.html) —
+how linear regression mistakes can appear when Y-range is much smaller than X-range
+Retrieved from "https://en. wikipedia.org/w/index.php ?titte=Regression_analysis&oldid=1316447303"
+https://en.wikipedia.org/wiki/Regression_analysis Page 14 of 14

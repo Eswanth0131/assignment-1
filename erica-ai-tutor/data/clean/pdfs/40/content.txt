@@ -1,0 +1,540 @@
+7102
+guA
+8
+]VC.sc[
+2v30540.4071
+viXra
+Improving Object Detection With One Line of Code
+Navaneeth Bodla* Bharat Singh* Rama Chellappa Larry S. Davis
+Center For Automation Research, University of Maryland, College Park
+{nbodla, bharat, rama, lsd}@umiacs.umd.edu
+Abstract
+Non-maximum suppression is an integral part of the ob-
+ject detection pipeline. First, it sorts all detection boxes on
+the basis of their scores. The detection box M _ with the
+maximum score is selected and all other detection boxes
+with a significant overlap (using a pre-defined threshold)
+with M are suppressed. This process is recursively applied
+on the remaining boxes. As per the design of the algorithm,
+if an object lies within the predefined overlap threshold, it
+leads to a miss. To this end, we propose Soft-NMS, an algo-
+rithm which decays the detection scores of all other objects
+as a continuous function of their overlap with M. Hence,
+Figure 1. This image has two confident horse detections (shown
+no object is eliminated in this process. Soft-NMS obtains in red and green) which have a score of 0.95 and 0.8 respectively.
+consistent improvements for the coco-style mAP metric on The green detection box has a significant overlap with the red one.
+standard datasets like PASCAL VOC 2007 (1.7% for both R- Is it better to suppress the green box altogether and assign it a score
+FCN and Faster-RCNN) and MS-COCO (1.3% for R-FCN of 0 ora slightly lower score of 0.4?
+and 1.1% for Faster-RCNN) by just changing the NMS al-
+gorithm without any additional hyper-parameters. Using
+bottleneck, otherwise it will be conveniently “ignored’ in
+Deformable-RFCN, Soft-NMS improves state-of-the-art in
+practical implementations. Moreover, if a complex module
+object detection from 39.8% to 40.9% with a single model.
+is introduced which requires re-training of models which
+Further, the computational complexity of Soft-NMS is the
+leads to a little improvement in performance, it will also be
+same as traditional NMS and hence it can be efficiently
+ignored. However, if a simple module can improve perfor-
+implemented. Since Soft-NMS does not require any extra
+mance without requiring any re-training of existing models,
+training and is simple to implement, it can be easily inte-
+it would be widely adopted. To this end, we present a soft
+grated into any object detection pipeline. Code for Soft-
+non-maximum suppression algorithm, as an alternative to
+NMS is publicly available on GitHub http: //bit.ly/
+the traditional NMS algorithm in the current object detec-
+Z2NTLNMu.
+tion pipeline.
+Traditional object detection pipelines [4, 8] employ a
+multi-scale sliding window based approach which assigns
+1. Introduction
+foreground/background scores for each class on the basis
+Object detection is a fundamental problem in computer of features computed in each window. However, neighbor-
+vision in which an algorithm generates bounding boxes for ing windows often have correlated scores (which increases
+specified object categories and assigns them classification false positives), so non-maximum suppression is used as
+scores. It has many practical applications in autonomous a post-processing step to obtain final detections. With the
+driving [6, 9], video/image indexing [28, 22], surveillance advent of deep learning, the sliding window approach was
+[2, 11] etc. Hence, any new component proposed for the replaced with category independent region proposals gen-
+object detection pipeline should not create a computational erated using a convolutional neural network. In state-of-
+the-art detectors, these proposals are input to a classifica-
+*The first two authors contributed equally to this paper. tion sub-network which assigns them class specific scores
+overlap instead of setting the score to zero as in NMS. Intu-
+Input :6 = {b,..,bn},S = {51,..,5nw}, M
+itively, if a bounding box has a very high overlap with M,
+B is the list of initial detection boxes
+it should be assigned a very low score, while if it has a low
+S contains corresponding detection scores
+overlap, it can maintain its original detection score. This
+N; is the NMS threshold
+Soft-NMS algorithm is shown in Figure 2. Soft-NMS leads
+begin
+to noticeable improvements in average precision measured
+De
+over multiple overlap thresholds for state-of-the-object de-
+while 6 + empty do
+tectors on standard datasets like PASCAL VOC and MS-
+m < argmax S
+COCO. Since Soft-NMS does not require any extra-training
+M <— bm
+and is simple to implement, it can be easily integrated in the
+DH+DUM;BHB-M
+object detection pipeline.
+for b; in Bb do
+2. Related Work
+if iou(Mb,;) > N; then
+NMS has been an integral part of many detection algo-
+rithms in computer vision for almost 50 years. It was first
+end NMS
+employed in edge detection techniques [25]. Subsequently,
+8; — 8; If (to( u(Mb,;)) Soft-NMS it has been applied to multiple tasks like feature point de-
+tection [19, 12, 20], face detection [29] and object detection
+[4, 8, 10]. In edge detection, NMS performs edge thinning
+end
+to remove spurious responses [25, |, 31]. In feature point
+end
+detectors [12], NMS is effective in performing local thresh-
+return D,S
+olding to obtain unique feature point detections. In face de-
+end
+tection [29], NMS is performed by partitioning bounding-
+boxes into disjoint subsets using an overlap criterion. The
+Figure 2. The pseudo code in red is replaced with the one in green
+in Soft-NMS. We propose to revise the detection scores by scaling final detections are obtained by averaging the co-ordinates
+them as a linear or Gaussian function of overlap. of the detection boxes in the set. For human detection, Dalal
+and Triggs [4] demonstrated that a greedy NMS algorithm,
+where a bounding box with the maximum detection score
+[16, 24]. Another parallel regression sub-network refines is selected and its neighboring boxes are suppressed us-
+the position of these proposals. This refinement process im- ing a pre-defined overlap threshold improves performance
+proves localization for objects, but also leads to cluttered over the approach used for face detection [29]. Since then,
+detections as multiple proposals often get regressed to the greedy NMS has been the de-facto algorithm used in object
+same region of interest (RoI). Hence, even in state-of-the-art detection [8, 10, 24, 16].
+detectors, non-maximum suppression is used to obtain the It is surprising that this component of the detection
+final set of detections as it significantly reduces the number pipeline has remained untouched for more than a decade.
+of false positives. Greedy NMS still obtains the best performance when av-
+Non-maximum suppression starts with a list of detection erage precision (AP) is used as an evaluation metric and is
+boxes B with scores S. After selecting the detection with therefore employed in state-of-the-art detectors [24, 16]. A
+the maximum score M, it removes it from the set 6 and few learning-based methods have been proposed as an alter-
+appends it to the set of final detections D. It also removes native to greedy NMS which obtain good performance for
+any box which has an overlap greater than a threshold N; object class detection [5, 26, 21]. For example, [26] first
+with M in the set 6. This process is repeated for remain- computes overlap between each pair of detection boxes. It
+ing boxes 6. A major issue with non-maximum suppres- then performs affinity propagation clustering to select ex-
+sion is that it sets the score for neighboring detections to emplars for each cluster which represent the final detection
+zero. Thus, if an object was actually present in that overlap boxes. A multi-class version of this algorithm is proposed in
+threshold, it would be missed and this would lead to a drop [21]. However, object class detection is a different problem,
+in average precision. However, if we lower the detection where object instances of all classes are evaluated simulta-
+scores as a function of its overlap with M, it would still neously per image. Hence, we need to select a threshold for
+be in the ranked list, although with a lower confidence. We all classes and generate a fixed set of boxes. Since differ-
+show an illustration of the problem in Fig 1. ent thresholds may be suitable for different applications, in
+Using this intuition, we propose a single line modifica- generic object detection, average precision is computed us-
+tion to the traditional greedy NMS algorithm in which we ing a ranked list of all object instances in a particular class.
+decrease the detection scores as an increasing function of Therefore, greedy NMS performs favourably to these algo-
+into two branches at a layer L — one branch generates re-
+gion proposals while the other performs classification and
+regression by pooling convolutional features inside Rols
+generated by the proposal network. The proposal network
+generates classification scores and regression offsets for an-
+chor boxes of multiple scales and aspect ratios placed at
+each pixel in the convolutional feature map [24]. It then
+ranks these anchor boxes and selects the top K (= 6000)
+anchors to which the bounding box regression offsets are
+added to obtain image level co-ordinates for each anchor.
+Greedy non-maximum suppression is applied to top K an-
+chors which eventually generates region proposals !.
+The classification network generates classification and
+regression scores for each proposal generated by the pro-
+posal network. Since there is no constraint in the network
+Figure 3. In object detection, first category independent region which forces it to generate a unique Rol for an object, mul-
+proposals are generated. These region proposals are then assigned tiple proposals may correspond to the same object. Hence,
+a score for each class label using a classification network and their other than the first correct bounding-box, all other boxes on
+positions are updated slightly using a regression network. Finally, the same object would generate false positives. To alleviate
+non-maximum-suppression is applied to obtain detections. this problem, non-maximum-suppression is performed on
+detection boxes of each class independently, with a spec-
+ified overlap threshold. Since the number of detections is
+rithms on generic object detection metrics.
+typically small and can be further reduced by pruning de-
+In another line of work, for detecting salient objects, a
+tections which fall below a very small threshold, applying
+proposal subset optimization algorithm was proposed [30]
+non-maximum suppression at this stage is not computation-
+as an alternative to greedy NMS. It performs a MAP-based
+ally expensive. We present an alternative approach to this
+subset optimization to jointly optimize the number and loca-
+non-maximum suppression algorithm in the object detec-
+tions of detection windows. In salient object detection, the
+tion pipeline. An overview of the object detection pipeline
+algorithm is expected to only find salient objects and not all
+is shown in Fig 3.
+objects. So, this problem is also different from generic ob-
+ject detection and again greedy NMS performs favourably
+4. Soft-NMS
+when performance on object detection metrics is measured.
+For special cases like pedestrian detection, a quadratic un- Current detection evaluation criteria emphasise precise
+constrained binary optimization (QUBO) solution was pro- localization and measure average precision of detection
+posed which uses detection scores as a unary potential and boxes at multiple overlap thresholds (ranging from 0.5 to
+overlap between detections as a pairwise potential to ob- 0.95). Therefore, applying NMS with a low threshold like
+tain the optimal subset of detection boxes [27]. Like greedy 0.3 could lead to a drop in average precision when the over-
+NMS, QUBO also applies a hard threshold to suppress de- lap criterion during evaluation for a true positive is 0.7 (we
+tection boxes, which is different from Soft-NMS. In an- refer to the detection evaluation threshold as O; from here
+other learning-based framework for pedestrian detection, a on). This is because, there could be a detection box 0;
+determinantal point process was combined with individu- which is very close to an object (within 0.7 overlap), but
+alness prediction scores to optimally select final detections had a slightly lower score than M (M did not cover the
+[15]. To the best of our knowledge, for generic object de- object), thus 6; gets suppressed by a low N;. The likeli-
+tection, greedy NMSis still the strongest baseline on chal- hood of such a case would increase as the overlap threshold
+lenging object detection datasets like PASCAL VOC and criterion is increased. Therefore, suppressing all nearby de-
+MS-COCO. tection boxes with a low N; would increase the miss-rate.
+Also, using a high N; like 0.7 would increase false posi-
+3. Background tives when QO, is lower and would hence drop precision av-
+eraged over multiple thresholds. The increase in false pos-
+We briefly describe the object-detection pipeline used in
+itives would be much higher than the increase in true posi-
+state-of-the-art object detectors in this section. During in-
+tives for this case because the number of objects is typically
+ference, an object detection network performs a sequence
+of convolution operations on an image using a deep con- 'We do not replace this non-maximum suppression in the object detec-
+volutional neural network (CNN). The network bifurcates tion pipeline.
+much smaller than the number of Rols generated by a de- However, it is not continuous in terms of overlap and
+tector. Therefore, using a high NMS threshold is also not a sudden penalty is applied when a NMS threshold of N;
+optimal. is reached. It would be ideal if the penalty function was
+To overcome these difficulties, we revisit the NMS algo- continuous, otherwise it could lead to abrupt changes to
+rithm in greater detail. The pruning step in the NMS algo- the ranked list of detections. A continuous penalty func-
+rithm can be written as a re-scoring function as follows, tion should have no penalty when there is no overlap and
+very high penalty at a high overlap. Also, when the over-
+= Si, iou(M, b;) < N; lap is low, it should increase the penalty gradually, as M
+‘V0, iou(M,b;) > Nz” should not affect the scores of boxes which have a very low
+overlap with it. However, when overlap of a box b; with
+Hence, NMS sets a hard threshold while deciding what
+M becomes close to one, b; should be significantly penal-
+should be kept or removed from the neighborhood of M.
+ized. Taking this into consideration, we propose to update
+Suppose, instead, we decay the classification score of a box
+the pruning step with a Gaussian penalty function as fol-
+b; which has a high overlap with M, rather than suppress-
+lows,
+ing it altogether. If b; contains an object not covered by
+M, it won’t lead to a miss at a lower detection threshold. __ iow(M,b;)?
+7 — Vb; ED
+However, if b; does not cover any other object (while M Si, = SIE
+covers an object), and even after decaying its score it ranks This update rule is applied in each iteration and scores of
+above true detections, it would still generate a false positive. all remaining detection boxes are updated.
+Therefore, NMS should take the following conditions into The Soft-NMS algorithm is formally described in Fig-
+account, ure 2, where f(iou(M, b;))) is the overlap based weight-
+ing function. The computational complexity of each step
+e Score of neighboring detections should be decreased to
+in Soft-NMS is O(N), where N is the number of detec-
+an extent that they have a smaller likelihood of increas-
+tion boxes. This is because scores for all detection boxes
+ing the false positive rate, while being above obvious
+which have an overlap with M are updated. So, for N de-
+false positives in the ranked list of detections.
+tection boxes, the computational complexity for Soft-NMS
+is O(N”), which is the same as traditional greedy-NMS.
+e Removing neighboring detections altogether with a
+Since NMS is not applied on all detection boxes (boxes with
+low NMS threshold would be sub-optimal and would
+a minimum threshold are pruned in each iteration), this step
+increase the miss-rate when evaluation is performed at
+is not computationally expensive and hence does not affect
+high overlap thresholds.
+the running time of current detectors.
+e Average precision measured over a range of overlap Note that Soft-NMS is also a greedy algorithm and does
+thresholds would drop when a high NMS threshold is not find the globally optimal re-scoring of detection boxes.
+used. Re-scoring of detection boxes is performed in a greedy fash-
+ion and hence those detections which have a high local score
+We evaluate these conditions through experiments in are not suppressed. However, Soft-NMS is a generalized
+Section 6.3. version of non-maximum suppression and traditional NMS
+Rescoring Functions for Soft-NMS: Decaying the is a special case of it with a discontinuous binary weight-
+scores of other detection boxes which have an overlap with ing function. Apart from the two proposed functions, other
+M seems to be a promising approach for improving NMS. functions with more parameters can also be explored with
+It is also clear that scores for detection boxes which have Soft-NMS which take overlap and detection scores into ac-
+a higher overlap with M should be decayed more, as they count. For example, instances of the generalized logistic
+have a higher likelihood of being false positives. Hence, we function like the Gompertz function can be used, but such
+propose to update the pruning step with the following rule, functions would increase the number of hyper-parameters.
+5. Datasets and Evaluation
+ee ea iou(M, bj) < MN;
+‘| s;(1 —iou(M, ;)), iou(M,b;) > Ny’ We perform experiments on two datasets, PASCAL VOC
+[7] and MS-COCO [17]. The Pascal dataset has 20 object
+The above function would decay the scores of detections categories, while the MS-COCO dataset has 80 object cate-
+above a threshold N; as a linear function of overlap with gories. We choose the VOC 2007 test partition to measure
+M. Hence, detection boxes which are far away from M performance. For the MS-COCO dataset, sensitivity analy-
+would not be affected and those which are very close would sis is conducted on a publicly available minival set of 5,000
+be assigned a greater penalty. images. We also show results on the test-dev partition on
+Method Training data | Testing data | AP 0.5:0.95 | AP @ 0.5 | AP small | AP medium | AP large | Recall @ 10 | Recall @ 100 |
+R-FCN [16] train+val35k test-dev 31.1 52.5 14.4 34.9 43.0 42.1 43.6
+R-FCN + S-NMS G traintval35k test-dev 32.4 53.4 15.2 36.1 44,3 46.9 52.0
+R-FCN + S-NMS L train+val35k test-dev 32.2 53.4 15.1 36.0 44.1 46.0 51.0
+F-RCNN [24] train+val35k test-dev 24.4 45.7 19 26.6 37.2 36.1 37.1
+F-RCNN + S-NMS G traintval35k test-dev 25.5 46.6 8.8 27.9 38.5 41,2 45.3
+F-RCNN + S-NMS L train+val35k test-dev 25.5 46.7 8.8 27.9 38.3 40.9 45.5
+D-RFCN [3] trainval test-dev 37.4 59.6 17.8 40.6 51.4 46.9 48.3
+D-RFCN S-NMS G trainval test-dev 38.4 60.1 18.5 41.6 52.5 50.5 53.8
+D-RFCN + MST trainval test-dev 39.8 62.4 22.6 42.3 52.2 50.5 52.9
+D-RFCN + MST + S-NMS G trainval test-dev 40.9 62.8 23.3 43.6 53.3 54.7 60.4
+Table 1. Results on MS-COCO test-dev set for R-FCN, D-RFCN and Faster-RCNN (F-RCNN) which use NMS as baseline and our
+proposed Soft-NMS method. G denotes Gaussian weighting and L denotes linear weighting. MST denotes multi-scale testing.
+| Method | AP | ap@os | areo bike bird boat bottle bus car cat chair cow table dog horse mbike person plant sheep sofa train tv |
+[24]+NMS 37.7 | 70.0 | 37.8 44.6 347 244 234 50.6 50.1 45.1 25.1 42.6 36.5 40.7 46.8 39.8 38.2 17.0 37.8 36.4 43.7 38.9
+[24]+S-NMS G | 39.4 | 71.2 | 40.2 466 36.7 25.9 249 51.9 51.6 48.0 25.3 44.5 37.3 42.6 49.0 42.2 41.6 17.7 39.2 39.3 45.9 37.5
+[24]+S-NMS L | 39.4 | 71.2 | 40.3 46.6 36.3 27.00 24.2 51.2 52.0 47.2 25.3 44.6 37.2 45.1 48.3 42.3 42.3 18.0 39.4 37.1 45.0 38.7
+[16]+NMS 49.38 | 794 | 52.8 544 47.1 37.6 38.1 634 59.4 62.0 35.3 56.0 38.9 59.0 54.5 50.5 47.6 24.8 53.3 52.2 537.4 352.7
+[16]+S-NMS G | 514 | 80.0 | 53.8 560 483 39.9 394 64.7 61.3 64.7 36.3 57.0 40.2 60.6 55.5 52.1 50.7 26.5 53.8 53.5 59.3, 33.8
+[16]+S-NMS L | 51.5 | 80.0 | 53.2 55.8 48.9 40.0 39.6 646 61.5 65.0 36.3 56.5 40.2 61.3 55.6 52.9 50.3 26.2 54.3 53.6 59.5 53.9
+Table 2. Results on Pascal VOC 2007 test set for off-the-shelf standard object detectors which use NMS as baseline and our proposed
+Soft-NMS method. Note that COCO-style evaluation is used.
+the MS-COCO dataset which consists of 20,288 images. 0.1.
+To evaluate our method, we experimented with three
+6. Experiments
+state-of-the-art detectors, namely, Faster-RCNN [24], R-
+FCN [16] and Deformable-RFCN. For the PASCAL
+In this section, we show comparative results and perform
+dataset, we selected publicly available pre-trained mod-
+sensitivity analysis to show robustness of Soft-NMS com-
+els provided by the authors. The Faster-RCNN detec-
+pared to traditional NMS. We also conduct specific exper-
+tor was trained on VOC 2007 train set while the R-FCN
+iments to understand why and where does Soft-NMS per-
+detector was trained on VOC 2007 and 2012. For MS-
+form better compared to traditional NMS.
+COCO also, we use the publicly available model for Faster-
+RCNN. However, since there was no publicly available
+6.1. Results
+model trained on MS-COCO for R-FCN, we trained our
+own model in Caffe [14] starting from a ResNet-101 CNN In Table | we compare R-FCN and Faster-RCNN with
+architecture [13]. Simple modifications like 5 scales for traditional non-maximum suppression and Soft-NMS on
+RPN anchors, a minimum image size of 800, 16 images MS-COCO. We set \V; to 0.3 when using the linear weight-
+per minibatch and 256 ROIs per image were used. Training ing function and o to 0.5 with the Gaussian weighting
+was done on 8 GPUs in parallel. Note that our implementa- function. It is clear that Soft-NMS (using both Gaussian
+tion obtains 1.9% better accuracy than that reported in [16] and linear weighting function) improves performance in all
+without using multi-scale training or testing. Hence, this is cases, especially when AP is computed at multiple over-
+a strong baseline for R-FCN on MS-COCO. Both these de- lap thresholds and averaged. For example, we obtain an
+tectors use a default NMS threshold of 0.3. In the sensitivity improvement of 1.3% and 1.1% respectively for R-FCN
+analysis section, we also vary this parameter and show re- and Faster-RCNN, which is significant for the MS-COCO
+sults. We also trained deformable R-FCN with the same set- dataset. Note that we obtain this improvement by just
+tings. At a threshold of 10e-4, using 4 CPU threads, it takes changing the NMS algorithm and hence it can be applied
+0.01s per image for 80 classes. After each iteration, de- easily on multiple detectors with minimal changes. We per-
+tections which fall below the threshold are discarded. This form the same experiments on the PASCAL VOC 2007 test
+reduces computation time. At 10e-2, run time is 0.005 sec- set, shown in Table 1. We also report average precision
+onds on a single core. We set maximum detections per im- averaged over multiple overlap thresholds like MS-COCO.
+age to 400 on MS-COCO and the evaluation server selects Even on PASCAL VOC 2007, Soft-NMS obtains an im-
+the top 100 detections per class for generating metrics (we provement of 1.7% for both Faster-RCNN and R-FCN. For
+confirmed that the coco evaluation server was not selecting detectors like SSD [18] and YOLOv2 [23] which are not
+top 100 scoring detections per image till June 2017). Set- proposal based, with the linear function, Soft-NMS only
+ting maximum detections to 100 reduces coco-style AP by obtains an improvement of 0.5%. This is because proposal
+Nz | AP @0.5 | AP @ 0.6 | AP @0.7 | AP@0.8 | o | AP@O5 | AP @0.6 | AP @0.7 | AP @ 0.8
+0.3 0.5193 0.4629 0.3823 0.2521 0.1 0.5202 0.4655 0.3846 0.2533
+0.4 0.5238 0.4680 0.3840 0.2524 0.3 0.5293 0.4765 0.3960 0.2619
+0.5 0.5227 0.4708 0.3869 0.2526 0.5 0.5274 0.4777 0.3997 0.2669
+0.6 0.5127 0.4690 0.3895 0.2527 0.7 0.5232 0.4757 0.4001 0.2695
+0.7 0.4894 0.4535 0.3860 0.2535 0.9 0.5186 0.4727 0.3992 0.2710
+0.8 0.4323 0.4048 0.3569 0.2520 1.1 0.5136 0.4691 0.3976 0.2713
+Table 3. Sensitivity Analysis across multiple overlap thresholds N; and parameters o for NMS and Soft-NMS using R-FCN on coco
+minival. Best performance at each O; is marked in bold for each method.
+0.38 Sensitivity to hyper parameter
+— R-FCNo
+0.36} — Faster-RCNNo |}
+— R-FCNN,
+0.347 Faster-RCNN N, |]
+0.32-
+0.30;
+0.28;
+]59.0:50[
+PA
+by us on the coco-minival set. In all our experiments, we set
+o to 0.5, even though a o value of 0.6 seems to give better
+performance on the coco minival set. This is because we
+conducted the sensitivity analysis experiments later on and
+a difference of 0.1% was not significant.
+6.3. When does Soft-NMS work better?
+Localization Performance Average precision alone
+does not explain us clearly when Soft-NMS obtains sig-
+ne a a
+nificant gains in performance. Hence, we present average
+precision of NMS and Soft-NMS when measured at differ-
+ent overlap thresholds. We also vary the NMS and Soft-
+NMS hyper-parameters to understand the characteristics of
+both these algorithms. From Table 3, we can infer that av-
+erage precision decreases as NMS threshold is increased.
+Figure 4. R-FCN Sensitivity to hyper parameters o (Soft-NMS) Although it is the case that for a large O,, a high N; obtains
+and N; (NMS)
+slightly better performance compared to a lower N; — AP
+does not drop significantly when a lower N; is used. On
+the other hand, using a high N; leads to significant drop in
+based detectors have higher recall and hence Soft-NMS has
+AP at lower O; and hence when AP is averaged at multiple
+more potential to improve recall at higher O;.
+thresholds, we observe a performance drop. Therefore, a
+From here on, in all experiments, when we refer to Soft-
+better performance using a higher \; does not generalize to
+NMS, it uses the Gaussian weighting function. In Fig 6,
+lower values of O; for traditional NMS.
+we also show per-class improvement on MS-COCO. It is
+However, when we vary o for Soft-NMS, we observe
+interesting to observe that Soft-NMS when applied on R-
+a different characteristic. Table 3 shows that even when
+FCN improves maximum performance for animals which
+we obtain better performance at higher O;, performance at
+are found in a herd like zebra, giraffe, sheep, elephant, horse
+lower O; does not drop. Further, we observe that Soft-NMS
+by 3-6%, while there is little gain for objects like toaster,
+performs significantly better (~2%) than traditional NMS
+sports ball, hair drier which are less likely to co-occur in
+irrespective of the value of the selected N; at higher O;.
+the same image.
+Also, the best AP for any hyper-parameter (V; or o) for a
+selected O; is always better for Soft-NMS. This compari-
+6.2. Sensitivity Analysis
+son makes it very clear that across all parameter settings,
+Soft-NMS has a o parameter and traditional NMS has the best o parameter for Soft-NMS performs better than
+an overlap threshold parameter N;. We vary these param- a hard threshold NN; selected in traditional NMS. Further,
+eters and measure average precision on the minival set of when performance across all thresholds is averaged, since a
+MS-COCO set for each detector, see Fig 4. Note that AP is single parameter setting in Soft-NMS works well at multi-
+stable between 0.3 to 0.6 and drops significantly outside this ple values of O;, overall performance gain is amplified. As
+range for both detectors. The variation in AP in this range is expected, low values of o perform better at lower O, and
+around 0.25% for traditional NMS. Soft-NMS obtains bet- higher values of sigma perform better at higher O;. Unlike
+ter performance than NMS from a range between 0.1 to 0.7. NMS, where higher values of NV; lead to very little improve-
+Its performance is stable from 0.4 to 0.7 and better by ~1% ment in AP, higher values of o lead to significant improve-
+for each detector even on the best NMS threshold selected ment in AP at a higher O;. Therefore, a larger o can be used
+Precision vs Recall at O, = 0.6 of recision vs Recall at O, = 0.7 _ Precision vs Recall at O, = 0.8
+eo. — NMS BO — NMS co \ — NMS
+c TM~ — Soft-NMS|| ¢ 76,0 ‘\ — Soft-NMS||- ¢ so--\ — Soft-NMS|!
+© 60 2 IN 2 a0 IN
+a a 50 \ a N
+Y 40 S 7) ~ @ 30 S
+a ON a 30 ~ 7 WN
+20 IN 20 Ss Re ao 20 a.N
+~~ 1 aN 1 >
+0 SS SS
+lo 20 30 40 50 60 70 80 90 Yo 20 30 40 50 60 70 80 90 qo 20 30 40 50 60 70 80 90
+Recall Recall Recall
+Figure 5. R-FCN : Precision vs Recall at multiple overlap thresholds O;
+to improve performance of the detector for better localiza- _ ' ; , ; ; ; ;
+tion which is not the case with NMS, as a larger NV; obtains oot sera
+very little improvement. horse “ale
+Precision vs Recall Finally, we would like to also know “oe se
+at what recall values is Soft-NMS performing better than ern ice —
+N sc M or S es a a t n d d i f a f s e s re i n g t n O t ; h . e m N o lo t w e e r th a s t c o w re e s , r e s - o s c w o e re d t o h e n o d t e t e e x c p t e i c o t n u s m u b i r t e c c b l a o e l s d w a e s b u r i s o h t h c o c e c a e o s s : l e e p i
+dog bed
+precision to improve at a lower recall. However, as O; and teddy bear teddy beat
+cat Oe
+recall is increased, Soft-NMS obtains significant gains in baseb b a r l o l c c b o a li t bic b yd e e
+precision. This is because, traditional NMS assigns a zero airp t l r a a n in e Unbr 2 els 220
+wine glass Cok
+score to all boxes which have an overlap greater than N; pizza keyboard
+couch 0 el
+with M. Hence, many boxes are missed and therefore pre- skateboard dg
+car snowboard
+carrot baad
+cision does not increase at higher values of recall. Soft- banana Sik
+stop sign coh
+NMS re-scores neighboring boxes instead of suppressing bear baseball bat
+keyboard ape
+them altogether which leads to improvement in precision at surfboard sk s a u t b eb c o a a r r d d
+sandwich aot
+higher values of recall. Also, Soft-NMS obtains significant laptop hotdog
+sink wine gass DE
+improvement even for lower values of recall at higher val- donut sandwich
+tie ve,
+kite refrigerator
+ues of O; because near misses are more likely to happen in orange rk
+clock rd
+this setting. fork parking meter
+chair nose
+bird rk
+bus potted lant
+6.4. Qualitative Results a b p o p a l t e do b t s
+remote laptoc:p
+tion W t e h r s e h s o ho w l a d o f f e 0 w . q 4 u 5 a l f i o t r a i t m iv a e g e re s s u f l r t o s m i n t h F e i C g O 7 C O u - s v in a g l i a d d a e t t i e o c n - f t ir o e o t h h y b b d o o r r t v s u a t k e s n l i n h t e s f t re r h a yd f h r b k i a a o i i r o c t r t t e — ——
+i b s s e a t i d . n t T d e e h r t e e e s c R t t i - i n o F g n C s to N ( o f d a b e l s t s e e e r c p v t o e o s r i t t w h i a a t v s e S s u ) o s f h e t a d - v t N e o M a g S e s n h m e e a r l l a p l t s e o i v d n e e c r t a l e s c a t e p i s o w w n i s h t . h e I n a t par d t m k i r n i i a i n c f h n f g r i g o o m c t t t b w e l a r o d a t i b u g o o v e l c h k g e r e k t d n in i i c n t f o g b e r w t i n a e a s c k b b v t t l h e s i e e e e e ————
+bowl
+good detection (true positive) and also when they have a low potted p c l a a k n e t tooth c b r r a u n s e h
+overlap with a good detection. For example, in the street Ww book
+backpack stop sign —
+image (No.8), a large wide bounding box spanning multi- spo c o u n p baseball g b l o o w v ] e = =
+mouse Vv
+ple people is suppressed because it had a small overlap with bench cellphone =
+handbag vase
+multiple detection boxes with a higher score than it. Hence, snowboard scissors
+knife backpack
+its score was reduced multiple times because of which it cell s c p i h s o so n r e s sport a s p b p a l l e l = —— = —
+frisbee knife =
+was suppressed. We observe a similar behaviour in image baseball glove toaster =
+vase cake =
+No.9. In the beach image (No.1), the score for the larger sp h o a r i t r s d r b i al e l r han s d po b o a n g M ma l ll
+toaster hair drier
+bounding box near the woman’s handbag is suppressed be-
+Figure 6. Per class improvement in AP for MS-COCO using Soft-
+low 0.45. We also see that a false positive near the bowl in
+NMS for R-FCN is shown in the left and for Faster-RCNN is
+the kitchen image (No.4) is suppressed. In other cases, like
+shown on the right. Green bars indicate improvements beyond
+for zebra, horse and giraffe images (images 2,5,7 and 13),
+3%
+the detection boxes get suppressed with NMS while Soft-
+NMS assigns a slightly lower score for neighboring boxes
+because of which we are able to detect true positives above References
+a detectiion on tthhrreesshhooldl d of of 0.04.455. [1] J. Canny. A computational approach to edge detection. IEEE
+Transactions on pattern analysis and machine intelligence,
+(6):679-698, 1986.
+[2] R. T. Collins, A. J. Lipton, T. Kanade, H. Fujiyoshi, D. Dug-
+gins, Y. Tsin, D. Tolliver, N. Enomoto, O. Hasegawa, P. Burt,
+Figure 7. Qualitative results: Image pairs are shown in which the left image with blue bounding boxes is for traditional NMS, while the
+right image with red bounding boxes is for Soft-NMS. Examples above the blue line are successful cases and below are failure cases. Even
+in failure cases, Soft-NMS assigns a significantly lower score than the bounding box with a higher score. Note that for image No. 14, the
+classes in consideration are for “person” and not “dog”, similarly in 15 it is “bench” and in 21 it is “potted plant”.
+et al. A system for video surveillance and monitoring. 2000. mon objects in context. In European Conference on Com-
+puter Vision, pages 740-755. Springer, 2014. ¢
+[3] J. Dai, H. Qi, Y. Xiong, Y. Li, G. Zhang, H. Hu, and [18] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-
+Y. Wei. Deformable convolutional networks. arXiv preprint Y. Fu, and A. C. Berg. Ssd: Single shot multibox detector.
+arXiv: 1703.06211, 2017. § In European Conference on Computer Vision, pages 21-37.
+[4] N. Dalal and B. Triggs. Histograms of oriented gradients for Springer, 2016. 5
+human detection. In Computer Vision and Pattern Recogni- [19] D. G. Lowe. Distinctive image features from scale-
+tion, 2005. CVPR 2005. IEEE Computer Society Conference invariant keypoints. International journal of computer vi-
+on, volume 1, pages 886-893. IEEE, 2005. i, 2 sion, 60(2):91—110, 2004. 2
+[5] C. Desai, D. Ramanan, and C. C. Fowlkes. Discriminative [20] K. Mikolajezyk and C. Schmid. Scale & affine invariant in-
+models for multi-class object layout. International journal terest point detectors. International journal of computer vi-
+of computer vision, 95(1):1-12, 2011. 2 sion, 60(1):63—86, 2004. 2
+[6] P. Dollar, C. Wojek, B. Schiele, and P. Perona. Pedestrian [21] D. Mrowca, M. Rohrbach, J. Hoffman, R. Hu, K. Saenko,
+detection: A benchmark. In Computer Vision and Pattern and T. Darrell. Spatial semantic regularisation for large scale
+Recognition, 2009. CVPR 2009. IEEE Conference on, pages object detection. In Proceedings of the IEEE international
+304-311. IEEE, 2009. i conference on computer vision, pages 2003-2011, 2015. 2
+[7] M. Everingham, L. Van Gool, C. K. Williams, J. Winn, and [22] J. Philbin, O. Chum, M. Isard, J. Sivic, and A. Zisser-
+A. Zisserman. The pascal visual object classes (voc) chal- man. Object retrieval with large vocabularies and fast spa-
+lenge. International journal of computer vision, 88(2):303- tial matching. In Computer Vision and Pattern Recogni-
+338, 2010. # tion, 2007. CVPR’07. IEEE Conference on, pages 1-8. IEEE,
+[8] P. F. Felzenszwalb, R. B. Girshick, D. McAllester, and D. Ra- 2007. 3
+manan. Object detection with discriminatively trained part- [23] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi. You
+based models. JEEE transactions on pattern analysis and only look once: Unified, real-time object detection. In Pro-
+machine intelligence, 32(9):1627—1645, 2010. i, 2 ceedings of the IEEE Conference on Computer Vision and
+[9] A. Geiger, P. Lenz, C. Stiller, and R. Urtasun. Vision meets Pattern Recognition, pages 779-788, 2016. >
+robotics: The kitti dataset. The International Journal of [24] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards
+Robotics Research, 32(11):1231—-1237, 2013. : real-time object detection with region proposal networks. In
+[10] R. Girshick, J. Donahue, T. Darrell, and J. Malik. Rich fea- Advances in neural information processing systems, pages
+ture hierarchies for accurate object detection and semantic 91-99, 2015. 2, 3,5
+segmentation. In Proceedings of the IEEE conference on [25] A. Rosenfeld and M. Thurston. Edge and curve detection
+computer vision and pattern recognition, pages 580-587, for visual scene analysis. IEEE Transactions on computers,
+2014. 2 100(5):562—569, 1971. 2
+[11] I. Haritaoglu, D. Harwood, and L. S. Davis. W/sup 4: [26] R. Rothe, M. Guillaumin, and L. Van Gool. Non-maximum
+real-time surveillance of people and their activities. [EEE suppression for object detection by passing messages be-
+Transactions on pattern analysis and machine intelligence, tween windows. In Asian Conference on Computer Vision,
+22(8):809-830, 2000. : pages 290-306. Springer, 2014. 2
+[12] C. Harris and M. Stephens. A combined corner and edge [27] S. Rujikietgumjorn and R. T. Collins. Optimized pedestrian
+detector. In Alvey vision conference, volume 15, pages 10— detection for multiple and occluded people. In Proceedings
+5244. Citeseer, 1988. 2 of the IEEE Conference on Computer Vision and Pattern
+[13] K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learn- Recognition, pages 3690-3697, 2013. 3
+ing for image recognition. In Proceedings of the IEEE Con- [28] J. Sivic, A. Zisserman, et al. Video google: A text retrieval
+ference on Computer Vision and Pattern Recognition, pages approach to object matching in videos. In iccv, volume 2,
+770-778, 2016. § pages 1470-1477, 2003. {
+[14] Y. Jia, E. Shelhamer, J. Donahue, S. Karayev, J. Long, R. Gir- [29] P. Viola and M. Jones. Rapid object detection using a boosted
+shick, S. Guadarrama, and T. Darrell. Caffe: Convolu- cascade of simple features. In Computer Vision and Pattern
+tional architecture for fast feature embedding. In Proceed- Recognition, 2001. CVPR 2001. Proceedings of the 2001
+ings of the 22nd ACM international conference on Multime- IEEE Computer Society Conference on, volume 1, pages [-I.
+dia, pages 675-678. ACM, 2014. § TEEE, 2001. 2
+[15] D. Lee, G. Cha, M.-H. Yang, and S. Oh. Individualness and [30] J. Zhang, S. Sclaroff, Z. Lin, X. Shen, B. Price, and R. Mech.
+determinantal point processes for pedestrian detection. In Unconstrained salient object detection via proposal sub-
+European Conference on Computer Vision, pages 330-346. set optimization. In Proceedings of the IEEE Conference
+Springer, 2016. 3 on Computer Vision and Pattern Recognition, pages 5733-
+[16] Y. Li, K. He, J. Sun, et al. R-fen: Object detection via region- 5742, 2016. 3
+based fully convolutional networks. In Advances in Neural [31] C. L. Zitnick and P. Dollar. Edge boxes: Locating object
+Information Processing Systems, pages 379-387, 2016. 2, 3 proposals from edges. In European Conference on Computer
+[17] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ra- Vision, pages 391-405. Springer, 2014. 2
+manan, P. Dollar, and C. L. Zitnick. Microsoft coco: Com-

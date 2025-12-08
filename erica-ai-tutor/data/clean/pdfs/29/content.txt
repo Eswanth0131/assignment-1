@@ -1,0 +1,60 @@
+Preprocessing for image classification by convolutional neural networks | IEEE Conference Publication | IEEE Xplore 12/7/25, 3:40 AM
+Conferences > 2016 IEEE International Conte... 2)
+Preprocessing for image classification by convolutional neural networks
+Publisher: IEEE Cite This
+Kuntal Kumar Pal; K.S. Sudeep All Authors
+9289 @ < © a
+148 2
+Cites in Cites in Full
+Papers Patents Text Views
+https://ieeexplore.ieee.org/document/7808140 Page 1 of 3
+Preprocessing for image classification by convolutional neural networks | IEEE Conference Publication | IEEE Xplore 12/7/25, 3:40 AM
+Abstract Abstract:
+In recent times, the Convolutional Neural Networks have become the most powerful method for image classification.
+Document Sections Various researchers have shown the importance of network architecture in achieving better performances by making
+changes in different layers of the network. Some have shown the importance of the neuron's activation by using
+I. Introduction
+various types of activation functions. But here we have shown the importance of preprocessing techniques for image
+Classification using the CIFAR10 dataset and three variations of the Convolutional Neural Network. The results that we
+Il. Methodology
+have achieved, clearly shows that the Zero Component Analysis(ZCA) outperforms both the Mean Normalization and
+Ill. Dataset Standardization techniques for all the three networks and thus it is the most important preprocessing technique for
+image classification with Convolutional Neural Networks.
+IV. Preprocessing
+V. Training and Testing
+Published in: 2016 IEEE International Conference on Recent Trends in Electronics, Information & Communication
+Show Full Outline v Technology (RTEICT)
+Authors
+Date of Conference: 20-21 May 2016 DOI: 10.1109/RTEICT.2016.7808140
+Figures Date Added to IEEE Xplore: 09 January 2017 Publisher: IEEE
+> ISBN Information: Conference Location: Bangalore, India
+References
+Citations
+Keywords
+Metrics
+Sign in to Continue Reading
+More Like This
+Authors Vv
+Figures Vv
+References Vv
+Citations Vv
+Keywords Vv
+Metrics Vv
+Need
+Full-Text
+access to IEEE Xp/ore
+https://ieeexplore.ieee.org/document/7808140 Page 2 of 3
+Preprocessing for image classification by convolutional neural networks | IEEE Conference Publication | IEEE Xplore 12/7/25, 3:40 AM
+or your Organization:
+CONTACT IEEE TO SUBSCRIBE >
+IEEE Personal Account Purchase Details Profile Information Need Help? Follow
+CHANGE PAYMENT OPTIONS COMMUNICATIONS US & CANADA: +1 800 f in o
+JS ERNAME/PASSOSWWO RD VIEW PURCHASED PREFERENCEES 07788 41008
+DOCUMENTS PROFESSION AND WORLDWIDE: +1 732
+EDUCATION 981 0060
+TECHNICAL INTERESTS CONTACT & SUPPORT
+This website utilizes technologies such as cookies to enable essential site functionality, as well as for analytics,
+personalization, and targeted advertising. Privacy Policy
+| Accept
+| Deny |
+https://ieeexplore.ieee.org/document/7808140 Page 3 of 3

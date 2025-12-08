@@ -1,0 +1,48 @@
+Math Background
+Math for ML Textbook
+
+
+
+
+Math for ML Textbook
+
+
+We will go through the key points during the lectures but overall you will benefit from reading the intersecting chapters of 
+Mathematics for Machine Learning book
+. Start with Probability.
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Probability Basics
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

@@ -1,0 +1,466 @@
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+Search for publications, researchers, or questions
+Article PDF Available
+Selective Search for Object Recognition
+September 2013 - International Journal of Computer Vision 104(2):154-171
+DOI:10.1007/s11263-013-0620-5
+Authors:
+Jasper R. R. Uijlings [7 K.E. fe yi, T. Gevers [7 A.W.M. [) Read full-text
+(| A. ‘& L] | smeulders
+Sande
+Citations (6,914) References (55) Figures (3)
+Abstract and Figures
+This paper addresses the problem of generating possible object locations for use in object
+recognition. We introduce selective search which combines the strength of both an
+exhaustive search and segmentation. Like segmentation, we use the image structure to
+guide our sampling process. Like exhaustive search, we aim to capture all possible object
+locations. Instead ofa single technique to generate possible object locations, we diversify
+our search and use a variety of complementary image partitionings to deal with as many
+image conditions as possible. Our selective search results in a small set of data-driven,
+class-independent, high quality locations, yielding 99 % recall and a Mean Average Best
+Join for free
+Overlap of 0.879 at 10,097 locations. The reduced number of locations compared to an
+exhaustive search enables the use of stronger machine learning techniques and stronger
+appearance models for object recognition. In this paper we show that our selective search
+enables the use of the powerful Bag-of-Words model for recognition. The selective search
+software is made publicly available (Software:
+http://disi.unitn.it/~uijlings/SelectiveSearch.html).
+Two examples of Our selective The Average Best
+our selective... search method... Overlap scores...
+Figures - uploaded by JasR. Rp. Ueijlirngs Author content
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 1 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+“38 50% UNLIMITED|
+222: f=
+| SALE
+Upfront payment for appl. plan term req'd ($15/mo. equiv.). Taxes & fees extra. .
+Initial plan term only. >35GB may slow when network is busy. See terms. : ‘\s
+@® Public Full-text
+Content uploaded by Jasper R. R. Uijlings Author content
+Selective Search for Object Recognition
+J.R.R. Uijlings*!, K.E.A. van de Sande’”, T. Gevers”, and A.W.M. Smeulders?
+‘University of Trento, Italy
+University of Amsterdam, the Netherlands
+Technical Report 2012, submitted to ICV
+Abstract
+This paper addresses the problem of generating possible object lo-
+cations for use in object recognition. We introduce Selective Search
+which combines the strength of both an exhaustive search and seg-
+mentation. Like segmentation, we use the image structure to guide
+our sampling process. Like exhaustive search, we aim to capture
+all possible object locations. Instead of a single technique to gen- (a) (6)
+erate possible object locations, we diversify our search and use a
+variety of complementary image partitionings to deal with as many
+image conditions as possible. Our Selective Search results in a
+small set of data-driven, class-independent, high quality locations,
+yielding 99% recall and a Mean Average Best Overlap of 0.879 at
+10,097 locations. The reduced number of locations compared to
+an exhaustive search enables the use of stronger machine learning (c) (d)
+techniques and stronger appearance models for object recognition.
+In this paper we show that our selective search enables the use of
+the powerful Bag-of-Words model for recognition. The Selective Figure 1: There is a high variety of reasons that an imas
+Search software is made publicly available !. forms an object. In (b) the cats can be distinguished by cc
+texture. In (c) the chameleon can be distinguished from
+rounding leaves by texture, not colour. In (d) the wheels cz
+1 Introduction [| of the car because they are enclosed, not because they at
+in texture or colour. Therefore, to find objects in a structi
+For a long time, objects were sought to be delineated before their it is necessary to use a variety of diverse strategies. Furt
+identification. This gave rise to segmentation, which aims for an image is intrinsically hierarchical as there is no single
+a unique partitioning of the image through a generic algorithm, which the complete table, salad bowl, and salad spoon can
+where there is one part for all object silhouettes in the image. Re- in (a).
+search on this topic has yielded tremendous progress over the past
+years [3, 6, 13, 26]. But images are intrinsically hierarchical: In
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 2 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+fush staoff nthe dfabsle. Hurthdepeendirng mon tohe rconteext ,the is similar to its surrounding leaves in terms of colour, y«
+ture differs. Finally, in Figure 1d, the wheels are wildly
+term tdble in this picture can refer to only the wood or include ev- from the car in terms of both colour and texture, yet are
+erything on the table. Therefore both the nature of images and the by the car. Individual visual features therefore cannot re
+different uses of an object category are hierarchical. This prohibits ambiguity of segmentation.
+the unique partitioning of objects for all but the most specific pur- And, finally, there is a more fundamental problem. Reg:
+poses. Hence for most tasks multiple scales in a segmentation are a very different characteristics, such as a face over a swe
+necessity. This is most naturally addressed by using a hierarchical only be combined into one object after it has been establi
+partitioning, as done for example by Arbelaez et al. [3]. the object at hand is a human. Hence without prior recogn
+Besides that a segmentation should be hierar¢hical, a generic so- hard to decide that a face and a sweater are part of one ob
+lution for segmentation using a single strategy may not exist at all. This has led to the opposite of the traditional_approac
+There are many conflicting reasons why a region should be grouped localisation through the identification of an object. This r
+together: In Figure 1b the cats can be separated using colour, but proach in object recognition has made enormous progre:
+their texture is tHe! same. Conversely, in Figure lc the chameleon
+tfrhoamn Laletted 1e2,x h1a6u,s t3i5v]e. sWeiatrchh ains paeprpfeoarrmaencde w hmeordee
+*jrr @disi.unitn.it
+*ksande@uva.nl cation within the image is examined as to not miss any
+[ ldyiee t. U1b4 et. ULli+t4e it. ate Ute syr tilyeo VOnetL oee+e4t pfel es H| o. h tmL object toeation) [8,) 12, 16, 35].
+However, the exhaustive search itself has several drawbacks. such as HOG [8, 16, 36]. This method is often used as a
+Searching every possible location is computationally infeasible. tion step in a cascade of classifiers [16, 36].
+The search space has to be reduced by using a regular grid, fixed Related to the sliding window technique is the highly si
+scales, and fixed aspect ratios. In most cases the number of lo- part-based object localisation method of Felzenszwalb e1
+cations to visit remains huge, so much that alternative restrictions Their method also performs an exhaustive search using
+need to be imposed. The classifier is simplified and the appearance SVM and HOG features. However, they search for ob:
+model needs to be fast. Furthermore, a uniform sampling yields object party, whose combination results in an impressive ¢
+many boxes for which it is immediately clear that they are not sup- tection performance. [ || |
+portive of an object. Rather then sampling locations blindly using Lampert et al. [17] proposed using the appearance |
+an exhaustive search, a key question is: Can we steer the sampling guide the search. This both alleviates the constraints of
+by a data-driven analysis? regular grid, fixed scales, and fixed aspect ratio, while at
+In this paper, we aim to combine the best of the intuitions of seg- time reduces the number of locations visited. This is dor
+mentation and exhaustive search and propose a data-driven selec- rectly searching for the optimal window within the imag
+tive search. Inspired by bottom-up segmentation, we aim to exploit branch arte pou technique. While they obtain impressiv
+the structure of the image to generate object locations. Inspired by for linear classifiers, [1] found that for non-linear class
+exhaustive search, we aim to capture all possible object locations. method in practice still visits over a 100,000 windows pei
+Therefore, instead of using a single sampling technique, we aim Instead of a blind exhaustive search or a branch ar
+to diversify the sampling techniques to account for as many image search, we propose selective search. We use the under
+conditions as possible. Specifically, we use a data-driven grouping- age structure to generate object locations. In contrast tc
+cussed methbds, this yields a completely class-independe
+based strategy where we increase diversity by using a variety of
+complementary grouping criteria and a variety of complementary locations. Furthermore, because we do not use a fixed a
+colour spaces with different invariance properties. The set of lo- tio, our method is not limited to objects but should be ab
+cations is obtained by combining the locations of these comple- stuff like “grass” and “sand” as well (this also holds for |
+mentary partitionings. Our goal is to generate a class-independent, nally, we hope to generate fewer locations, which should
+data-driven, selective search strategy that generates a small set of problem easier as the variability of samples becomes lov
+high-quality object locations. more importantly, it frees up computational power whic
+Our application domain of selective search is object recognition. used for stronger machine learning techniques|and more
+We therefore evaluate on the most commonly used dataset for this appearance models.
+purpose, the Pascal VOC detection challenge which consists of 20
+object classes. The size of this dataset yields computational con-
+2.2 Segmentation
+straints for our selective search. Furthermore, the use of this dataset
+means that the quality of locations is mainly evaluated in terms of Both Carreira and Sminchisescu [4] and Endres and Hoien
+bounding boxes. However, our selective search applies to regions pose to generate a set of class independent object hypothe
+as well and is also applicable to concepts such as “grass”. segmentation. Both methods generate multiple foregrou
+In this paper we propose selective search for object recognition. ground segmentatiolneasr,n to predict the likelihood th:
+Our main research questions are: (1) What are good diversification ground segment is a complete object, and use this to rank
+strategies for adapting segmentation as a selective search strategy? ments. Both algorithms show a promising ability to a
+(2) How effective is selective search in creating a small set of high- delineate objects within images, confirmed by [19] whc
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 3 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+quality locations within an image? (3) Can we use selective search state-of-the-art results on pixel-wise image classification 1
+to employ more powerful classifiers and appearance models for ob- As common in segmentation, both Ods rely on a sing
+ject recognition? algorithm for identifying good regions. They obtain a v
+locations by using many randomly initialised foreground ¢
+ground seeds. In contrast, we explicitly deal with a variety
+2 Related Work conditions by using different grouping criteria and differe
+cantatiana Thic maaneo a lawar camnutatianal invactmant
+im ii m B~E Microsoft
+RA Download citation @ Copy link Vv
+me ee tee pe tweet ee wt wey tte:
+As an object can be located at any position and scale in the image, recognizing objects based on their parts. They first gene!
+it is natural to search everywhere [8, 16, 36]. However, the visual of part hypotheses using a grouping method based on Ar
+search space is huge, making a austive search computationall
+al. [3]. Each part hypothesis is described by both appear
+expensive. This imposes constraints on the evaluation cost per lo- shape features. Then, an object is recognized and careful
+cation and/or the number of locations considered. Hence most of eated by using its parts, achieving good results for shape
+these sliding window techniques use a coarse search grid and fixed tion. In their work, the segmentation is hierarchical and yi
+aspect ratios, using weak classifiers and economic image features ments at all scales. However, they use a single grouping
+Figure 2: Two examples of our selective search showing the necessity of different scales. On the left we find many objects at
+scales. On the right we necessarily find the objects at different scales as the girl is contained by the tv.
+3 Selective Search
+whose power of discovering parts or objects is left unevaluated. In
+this work, we use multiple complementary strategies to deal with
+as many image conditions as possible. We include the locations In this section we detail our selective search algorithm f
+generated using [3] in our evaluation. recognition and present a variety of diversification strategi
+with as many image conditions as possible. A selective s
+gorithm is subject to the following design considerations:
+OU Capture All Scales. Objects can occur at any scale withi
+2.3 Other Sampling Strategies age. Furthermore, some objects have less clear bc
+then other objects. Therefore, in selective search <
+scales have to be taken into account, as illustrated -
+Alexe et al. [2] address the problem of the large sampling space
+2. This is most naturally achieved by using an hie
+of an exhaustive search by proposing to search for any object, in-
+algorithm.
+dependent of its class. In their method they train a classifier on the
+mM
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 4 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+object windows of those objects which have a well-defined shape] Diversgiifoincsa ttioogne.t.h eTrh.e rAes iosb.sneor vseindg"leea rolplteirm ailn_ sFtirgatuergey t, rtoe g|
+(as opposed to stuff like “grass” and “sand”). Then instead of a fu
+exhaustive search they randomly sample boxes to which they apply form an object because of only colour, only texture, o
+their classifier. The boxes with the highest “objectness” measure parts are enclosed. Furthermore, lighting condition:
+serve as a set of object hypotheses. This set is then used to greatly shading and the colour of the lightinay influence hov
+reduce the number of windows evaluated by class-specific object form an object. Therefore instead of a single strate;
+detectors. We compare our method with their work. works well in most cases, we want to have a divel
+strategies to deal with all cases.
+Another strategy is to use visual words of the Bag-of-Words
+model to predict the object location. Vedaldi et al. [34] use jumping
+Fast to Compute. The goal of selective search is to yiel«
+windows [5], in which the relation between individual visual words
+possible object locations for use in a practical object
+and the object location is learned to predict|the object location in
+tion framework. The creation of this set should not t
+new images. Maji and Malik [23] combine multiple of these rela-
+computational bottleneck, hence our algorithm shoul
+tions to predict the object location using a Hough-transform, after
+sonably fast.
+which they randomly sample windows close to the Hough maxi-
+mum. In contrast to learning, we use the image structure to sample
+3.1 Selective Search by Hierarchical Group
+a set of class-independent object hypotheses.
+To summarize, our novelty is as follows. Instead of an exhaus- We take a hierarchical grouping algorithm to form the ba:
+tive search [8, 12, 16, 36] we use segmentation as selective search selective search. Bottom-up grouping is a popular approac
+yielding a[sthall_sét_of class independent object locations. In con- mentation [6, 13], hence we adapt it for selective search.
+trast to the segmentation of [4, 9], instead of focusing on the best théprocess of grouping itself is hierarchical, we can natur
+segmentation algorithm [3i]|_Wwe use a variety of strategies to deal erate locations at all scales by continuing the grouping pro:
+with as many image conditions as possible, thereby severely reduc-
+the whole image becomes a single region. This satisfies tl
+ing computational costs while potentially capturing more objects tion of capturing all scales.
+accurately. Instead of learning an objectness measure on randomly As regions can yield richer information than pixels, w
+sampled boxes)[2], we use a bottom-up grouping procedure to gen- use region-based features whenever possible. To get a set
+erate good object locations. starting regions which ideally do not span multiple object
+the fast method of Felzenszwalb and Huttenlocher [13], which [3] colour channels RGBIVUL a ob Sr g
+found well-suited for such purpose. Light Intensity - = ee ee Hf tf +t + +
+Our grouping procedure now works as follows. We first use [13] Shadows/shading - - - - - - +/- +/- + ++
+to create initial regions. Then we use a greedy algorithm to iter- Highlights a a
+atively group regions together: First the similarities between all
+neighbouring regions are calculated. The two most similar regions colour spaces RGB I Lab rgIl HSV rgb |
+are grouped together, and new similarities aré Calculated between Light Intensity - - +- 2/3 3 +
+the resulting region and its neighbours. The process of grouping Shadows/shading - - $f 2/3 Y3 +
+the most similar regions is repeated until the whole image becomes Highlights - = = - 1/3 - -
+a single region. The general method is detailed in Algorithm 1.
+Table 1: The invariance properties of both the individu
+Algorithm 1; Hierarchical Grouping Algorithm channels and the colour spaces used in this paper, sorte
+gree of invariance. A “+/-” means partial invariance. A
+Input: (colour) image
+1/3 means that one of the three colour channels is invaria
+Output: Set of object location hypotheses L
+Obtain initial regions R = {rj,--- ,7,} using [13] a property.
+Initialise similarity set S = 0
+foreach Neighbouring region pair (1;,r;) do these images we rely on the other diversification methoc
+Calculate similarity s(7;,r;) suring good object locations.
+S=SUs(yj(r,ir,7;)) = In this paper we always use a single colour space th
+the algorithm, meaning that both the initial grouping alg«
+while S 4 0 do
+[13] and our subsequent grouping algorithm are perform«
+Get highest similarity s(7;,7;) = max(S)
+colour space.
+Merge corresponding regions r; = 7, Ur; Complementary Similarity Measures. We define fou
+Remove similarities regarding r; : S = S\ s(ri,r«)
+mentary, fast-to-compute similarity measures. These mea
+Remove similarities regarding rj: S = S\s(7,7;) all in range [0, 1] which facilitates combinations of these r
+Calculate similarity set S$; between r; and its neighbours
+S=SUS, Scolour(Vi,j) Measures colour similarity. Specifically, for
+R=RvUr, gion we obtain one-dimensional colour histograms
+mem ae aeo4 n
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 5 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+Extract object location boxes L from all regions in R
+his leads to a;colourhistogram £3_ S—i LGsr l ites Gonls
+For the similarity s(7;,r;) between region r; and r; we want a va- nels are used. The colour histograms are normalised °
+riety of complementary measures under the constraint that they are L, norm. Similarity is measured using the histogram
+fast to compute. In effect, this means that the similarities should be tion:
+based on features that can be propagated through the hierarchy, i.e. = EminCF, ci)
+Scolour (i,7j) =
+when merging region 7; and r; into r;, the features of region 7 need
+to be calculated from the features of r; and r; without accessing the
+The colour histograms can be efficiently propagatec
+image pixels.
+the hierarchy by
+size(r;) x Cj + size(r;) x Cj
+3.2 Diversification Strategies
+C-
+‘ size(rj) + size(r;)
+The second design criterion for selective search is to diversify the
+sampling and create a set of complementary strategies whose loca- The size of a resulting region is simply the sum ol
+tions are combined afterwards. We diversify our selective search stituents: size(r;) = size(7;) + size(r;).
+(1) by using a variety of colour spaces with different invariance
+Stexture(Tis i) measures texture similarity. We represent te
+properties, (2) by using different similarity measures s;;, and (3)
+ing fast SIFT-like measurements as SIFT itself work:
+by varying our starting regions.
+material recognition [20]. We take Gaussian deriv
+Complementary Colour Spaces. We want to account for dif-
+eight orientations using O = 1 for each colour char
+ferent scene and lighting conditions. Therefore we perform our
+each orientatton for each colour channel we extra
+hierarchical grouping algorithm in a variety of colour spaces with
+togram using a bin size of 10. This leads to a tex
+a range of invariance properties. Specifically, we the following
+togram 7; = ft}, --- ,#"} for each region 7; with di
+colour spaces with an increasing degree of invariance: (1) RGB,
+ality n = 240 when three colour channels are used.
+(2) the intensity (grey-scale image) J, (3) Lab, (4) the rg chan-
+histograms are normalised using the LZ; norm. Sim
+nels of normalized RGB plus intensity denoted as rg/, (5) HSV, (6)
+measured using histogram intersection:
+normalized RGB denoted as rgb, (7) C [14] whichis an opponent
+colour space where intensity is divided out, and finally (8) the Hue
+=Y mint(i, r\)
+Stexture( ri,1j)
+channel H from HSV. The specificinvariance properties are listed
+in Tab
+Of course, for images that are black and white a change of colour Texture histograms are efficiently propagated throug
+space has little impact on the final outcome of the algorithm. For erarchy in the same way as the colour histograms.
+Ssize(Ti,7j) encourages small regions to merge early. This forces object hypothesis set, depending on the computational effi
+regions in S, i.e. regions which have not yet been merged, to the subsequent feature extraction and classification metho
+be of similar sizes throughout the algorithm. This is desir- We choose to order the combined object hypotheses :
+able because it ensures that object locations at all scales are on the order in which the hypotheses were generated in
+created at all parts of the image. For example, it prevents a dividual grouping strategy. However, as we combine res!
+single region from gobbling up all other regions one by one, up to 80 different strategies, such order would too heavil
+yielding all scales only at the location of this growing region size large regions. To prevent this, we include some ran
+and nowhere else. ssize(rj,rj) is defined as the fraction of the as follows. Given a grouping strategy j, let r, be the regi
+image that r; and r; jointly occupy: is created at position 7 in the hierarchy, where i = 1 repre
+top of the hierarchy (whose corresponding region covers
+size(r;) + size(1j) plete image). We now calculate the position value v/ as |
+Ssize(Tisj) = size(im) (4) where RND is a random number in range [0,1]. The fina
+is obtained by ordering the regions using vl .
+where size(im) denotes the size of the image in pixels. When we use locations in terms of bounding boxes, we
+all the locations as detailed above. Only afterwards we
+su(vi,rj) Measures how well region 7; and r; fit into each other.
+lower ranked duplicates. This ensures that duplicate box:
+The idea is to fill gaps: if r; is contained in r; it is logical to
+better chance of obtaining a high rank. This is desirable
+merge these first in order to avoid any holes. On the other
+if multiple grouping strategies suggest the same box loca
+hand, if r; and r; are hardly touching each other they will
+likely to come from a visually coherent part of the image.
+likely form a strange region and should not be merged. To
+keep the measure fast, we use only the size of the regions and
+of the containing boxes. Specifically, we define BB;; to be the 4 Object Recognition using Sel
+tight bounding box around r; and rj. Now sgy(rj,rj) 1s the
+Search
+fraction of the image contained in BB;; which is not covered
+re
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 6 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+rj and r;: This paper uses the locations generated by our selective s
+fill(r;,r;) <1 — 8:°2e!( BB;;)7) —s saize(ar;) — sisziez(er(in) (5) object recognition. This section details our framework f
+recognition.
+Two types of features are dominant in object recognit
+We divide by size(im) for consistency with Equation 4. Note tograms of oriented gradients (HOG) [8] and bag-of-word
+that this measure can be efficiently calculated by keeping track HOG has been shown to be successful in combination with
+of the bounding boxes around each region, as the bounding based model by Felzenszwalb et al. [12]. However, as th
+box around two regions can be easily derived frqm these. exhaustive search, HOG features in combinati ith a li
+sifier is the only feasible choice from a computational per
+In this paper, our final similarity measure is a combination of the In contrast, our selective search enables the use of more ¢
+above four: and potentially more powerful features. Therefore we us
+words for object recognition [16, 17, 34]. However, we us
+powerful (and expensive) implementation than [16, 17, 34
+s(%,1;) = 1 Scolour (Tis 1 j) + d2Stexture(Ti,1)) + ploying a variety of colour-SIFT descriptors [32] and a fin
+pyramid division [18]. LJ
+A3Ssize(V1i7 j,) + 4s fil (Tis1j); (6)
+Specifically we sample descri teach pixel on a sir
+where a; € {0,1} denotes if the similarity measure is used or (o =1. sing software from , we extract SIFT [21
+not. As we aim to diversify our strategies, we do not consider any colour SIFTs which were found to be the most sensitiv
+weighted similarities. tecting image structures] Extended OpponentSIFT [31] a
+Complementary Starting Regions. A third diversification SIFT [32]. We use a visual codebook of size 4,000 and
+strategy is varying the complementary starting regions. To the pyramid with 4 levels using a 1x1, 2k2,)3x3. and 4x4
+best of our knowledge, the method of [13] is the fastest, publicly |_This gives a total feature vector length of 360,000. In im
+available algorithm that yields high quality starting locations. We sification, features of this size are already used [25, 37].
+could not find any other algorithm ‘with similar computational effi- cae lslpsa twiahli cphy rmaamkied rueps ulat Hs OinG a dceosacrrsi btdp ; aoyur fseuabtduirveiss icoon1
+ciency so we use only this oversegmentation in this paper. But note
+that different starting regions are (already) obtained by varying the information about the specific spatial layout of the objec
+colour spaces, each which has different invariance properties. Ad- fore, HOG is better suited for rigid objects and our fea
+ditionally, we vary the threshold parameter & in [13]. better suited for deformable object types.
+LJ As classifier we employ a Support Vector Machine w
+togram intersection kernel using the Shogun Toolbox [28
+3.3 Combining Locations
+ply the trained classifier, we use the fast, approximate clas
+In this paper, we combine the object hypotheses of several varia- strategy of [22], which was shown to work well for Bag-:
+tions of our hierarchical grouping algorithm. Ideally, we want in B89].
+order the object hypotheses in such a way that the locations whi Our training procedure is illustrated in Figure 3. The ini
+are most likely to be an object come first. This enables one to find tive examples consist of all ground truth object windows. |
+a good trade-off between the quality and quantity of the resulting negative examples we select from all object locations ¢
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 7 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 8 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 9 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+Citations (6,914) References (55)
+... Real-time vehicle detection is a basis for every current intelligent transport system. Traditional vehicle detection
+techniques include background subtraction, edge detection, and motion tracking, yet they fall short of accuracy because
+of the dynamic conditions induced by occlusion, varying illumination, or high traffic density [14] . Convolutional neural
+networks (CNN) have completely transformed the arena of fast and accurate real-time vehicle detection [15]. ...
+Reai-time vehicle detection and speed estimation system using Raspberry Pi and camera module
+Article — Full-text available
+View Show abstract
+... In [20], Kim and Pavlovic presented a two-branch method using CNN to obtain coarsely and find effective
+representation. In this aforementioned work, Kim et al. utilized the selective search [21] method. Similarly, various other
+deep learning-based methods are available in the literature for saliency estimation in images [23][24][25]. ...
+VS-wISS: Visual saliency-based efficient and secure multi-secret sharing scheme over cloud storage: VS-MSS: Visual
+saliency-based...Rawat et al.
+Article — Full-text available
+Arjun Singh Rawat - Maroti Deshmukh - Maheep Singh - Lalit K. Awasthi
+View Show abstract
+... Object detection is more challenging than image classification because it involves recognising and localising objects
+in an image [10]. Early object detection models, such as region-based CNN (R-CNN) [11] used region proposal
+algorithms such as selective search [45] to propose regions of interest in an image, extract features from these regions
+using a convolutional neural network (CNN) [34], and classify the objects and wrap them in a bounding box. Region
+proposals were identified as a bottleneck, which the successors of R-CNN attempted to improve on [10,36]. ...
+Reat-Time Gun and Person Detection for Smart Surveillance
+Conference Paper | Full-text available
+James Connan - Dane Lesley Brown - Marc Marais - Luke Goodall
+View Show abstract
+... Girshick et al. (2014) introduced the first Region-based CNN (R-CNN) for detecting objects. The R-CNN has three
+main parts: a regional proposal generator that uses the selective search method (Uijlings et al., 2013) to create 2000
+potential regions likely to contain objects; a CNN that extracts features from these regions; and finally, these features
+are input into a set of class-specific linear SVMs. Additionally, the features are processed by a bounding box regressor
+to improve the accuracy of the coordinates and minimize localization errors. ...
+DE. ECTING URBAN SCAPE FEATURES IN HIGH RESOLUTION AIRBORNE IMAGES USING DEEP LEARNING
+Thesis
+Aseel Kareem - Fanar M. Abed
+View Show abstract
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 10 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+... The module uses the raw features generated by the convolutional and pooling layers as input to the class-specific
+storage module to retrieve relevant prototypes. PBR-CNN [29] is an improved version of R-CNN [35], which first detects
+targets and parts, then selects representative [36] regions through re-scoring and non-parametric geometric
+constraints. However, its selective search algorithm generates many irrelevant candidate regions, increasing
+computational cost. ...
+Deep Learning Based Fine-Grained Image Classification: Recent Advances, Applications and Future Outlook
+Article — Full-text available
+Ying Liu - Haibin Zhang - Xin Che - Guojun Lu
+View Show abstract
+Region Proposal Methods for Object Detection in Aerial Image : A Comparative Analysis
+Conference Paper
+Niranjan S. Deokule - Geetanjali V. Kale
+View
+Evaluating Picture Description Speech for Dementia Detection using Image-text Alignment
+Article
+Youxiang Zhu - Nana Lin - Xiaohui Liang - Brian MacWhinney
+View Show abstract
+Initial Proposal Generation Based on Segmentation Masks for Point-Supervised Oriented Object Detection
+Conference Paper
+Yaohui Xu - Shun Zhang - Lutong Jiang
+View
+Experimental investigation on operating conditions for augmented reality utilizing indoor building element’s images
+as markers for construction and facility management
+Article
+Bilawal Mahmood - SangUk Han - Seok Kim
+View
+MS-YOLO: Infrared Object Detection for Edge Deployment via MobileNetV4 and SlideLoss
+Conference Paper
+Jiali Zhang - Thomas S. White - Haoliang Zhang - Jian Liu
+View
+Show more
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 11 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+Recommended publications Discover more
+Article
+Better features for image categorization and segmentation
+Roberto Rigamonti
+Read more
+Conference Paper | Full-text available
+Feasibility analysis of unsupervised industrial activity recognition based on a frequent micro actio...
+Behrooz Azadi - Michael Haslgribler - Georgios Sopidis - [...] -
+... [Show full
+abstract]
+View full-text
+Conference Paper Full-text available
+Comparing Salient Object Detection Results without Ground Truth
+Long Mai - Feng Liu
+... [Show full abstract]
+View full-text
+Conference Paper | Full-text available
+Document Image Segmentation Using K-Means Clustering Technique
+Manish T Wanjari - Vikas K Yeotikar - Keshao Kalaskar- [...] - MAHENDRA P. Dhore
+... [Show full abstract]
+View full-text
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 12 of 13
+(PDF) Selective Search for Object Recognition 12/7/25, 3:46 AM
+@ Download on the GET IT ON
+@ App Store Google Play
+Company Support Business solutions
+About us Help Center Advertising
+News Recruiting
+Careers
+© 2008-2025 ResearchGate GmbH. All rights reserved. Terms - Privacy - Copyright - Imprint - Consent preferences
+https://www.researchgate.net/publication/262270555_Selective_Search_for_Object_Recognition Page 13 of 13

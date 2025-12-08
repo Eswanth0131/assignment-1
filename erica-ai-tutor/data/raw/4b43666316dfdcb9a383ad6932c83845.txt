@@ -1,0 +1,107 @@
+Math Background
+Calculus
+
+
+
+
+Calculus
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tip
+Print this into a pdf so that you can refer to it especially for your exams.
+
+
+
+
+
+
+
+Table of Simple Derivatives
+
+
+
+
+
+
+For this course you need to review some basic calculus. The best resource for it is 
+Khan Academy’s Multivariate Calculus
+. Go through the videos and exercises in Units 1 and 2 only.
+
+
+For more advanced reader, and specifically for fully understanding deep learning that includes 
+matrix calculus
+ there is a very good reference 
+here
+.
+
+
+We have also shot a recitation video for you to review some of the concepts.
+
+
+
+
+Calculus recitation for my classes. Recitation was delivered by my TA Pritam Sen.
+
+
+
+
+References
+
+
+T. Parr and J. Howard, “The Matrix Calculus You Need For Deep Learning,” arXiv [cs.LG], Feb. 05, 2018. Available: http://arxiv.org/abs/1802.01528
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Linear Algebra for Machine Learning
+
+
+
+
+
+
+
+
+
+
+Submitting Your Assignment / Project
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

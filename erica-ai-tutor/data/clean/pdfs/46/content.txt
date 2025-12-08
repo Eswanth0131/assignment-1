@@ -1,0 +1,62 @@
+Error bar - Wikipedia 12/7/25, 3:51AM
+“*<) WIKIPEDIA
+> i 7 The Free Encyclopedia
+Error bar
+Error bars are graphical representations of the variability
+20-
+of data and used on graphs to indicate the error or BA
+16-
+uncertainty in a reported measurement. They give a
+general idea of how precise a measurement is, or 12 - BB
+conversely, how far from the reported value the true (error
+free) value might be. Error bars often represent one 44
+standard deviation of uncertainty, one standard error, or a 0 4
+Ly
+particular confidence interval (e.g., a 95% interval). These = Abar chart with confidence intervals
+quantities are not the same and so the measure selected = (Sn as red lines)
+should be stated explicitly in the graph or supporting text.
+Error bars can be used to compare visually two quantities if various other conditions hold. This can
+determine whether differences are statistically significant. Error bars can also suggest goodness of
+fit of a given function, i.e., how well the function describes the data. Scientific papers in the
+experimental sciences are expected to include error bars on all graphs, though the practice differs
+somewhat between sciences, and each journal will have its own house style. It has also been shown
+that error bars can be used as a direct manipulation interface for controlling probabilistic
+algorithms for approximate computation." Error bars can also be expressed in a plus—minus sign
+(+), plus the upper limit of the error and minus the lower limit of the error.|2!
+A notorious misconception in elementary statistics is that error bars show whether a statistically
+significant difference exists, by checking simply for whether the error bars overlap; this is not the
+[3][4][5]
+case.
+See also
+Box plot
+Information graphics
+Model selection
+Significant figures
+References
+1. Sarkar, Advait; Blackwell, Alan F.; Jamnik, Mateja; Spott, Martin (2015). "Interaction with
+https://en.wikipedia.org/wiki/Error_bar Page 1 of 2
+Error bar - Wikipedia 12/7/25, 3:51AM
+Uncertainty in Visualisations" (https://advait.org/files/sarkar_2015_uncertainty_vis.pdf) (PDF).
+Eurographics Conference on Visualization (Eurovis) - Short Papers.
+doi:10.2312/eurovisshort.20151138 (https://doi.org/10.2312%2Feurovisshort.20151138).
+2. Brown, George W. (1982). "Standard Deviation, Standard Error: Which 'Standard' Should We
+Use?". American Journal of Diseases of Children. 136 (10): 937-941.
+doi:10.1001 /archpedi. 1982.03970460067015 (https://doi.org/10.1001%2Farchpedi. 1982.03970
+460067015). PMID 7124681 (https://oubmed.ncbi.nim.nih.gov/7124681)..
+3. Cumming, Geoff; Fidler, Fiona; Vaux, David L. (9 April 2007). "Error bars in experimental
+biology" (https://www.ncbi.nim.nih.gov/pmc/articles/PMC2064100). The Journal of Cell Biology.
+177 (1): 7-11. doi:10.1083/jcb.200611141 (https://doi.org/10.1083%2Fjcb.200611141).
+PMC 2064100 (hittps://www.ncbi.nim.nih.gov/pmc/articles/PMC2064100). PMID 17420288 (http
+s://oubmed.ncbi.nim.nih.gov/1 7420288).
+4. Knol, Mirjam J.; Pestman, Wiebe R.; Grobbee, Diederick E. (19 March 2011). "The (mis)use of
+overlap of confidence intervals to assess effect modification" (https://www.ncbi.nim.nih.gov/pm
+c/articles/PMC3088813). European Journal of Epidemiology. 26 (4): 253-254.
+doi:10.1007/s10654-011-9563-8 (https://doi.org/10.1007%2Fs10654-011-9563-8).
+PMC 3088813 (https://www.ncbi.nim.nih.gov/pmc/articles/PMC3088813). PMID 21424218 (http
+s://oubmed.ncbi.nim.nih.gov/21424218).
+5. Belia, Sarah; Fidler, Fiona; Williams, Jennifer; Cumming, Geoff (2005). "Researchers
+misunderstand confidence intervals and standard error bars". Psychological Methods. 10 (4):
+389-396. doi:10.1037/1082-989X.10.4.389 (https://doi.org/10.1037%2F 1082-989X.10.4.389).
+PMID 16392994 (https://pubmed.ncbi.nim.nih.gov/1 6392994).
+Retrieved from "https://en. wikipedia.org/w/index.php ?title=Error_bar&oldid=12796681 70"
+https://en.wikipedia.org/wiki/Error_bar Page 2 of 2

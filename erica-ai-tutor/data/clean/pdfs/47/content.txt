@@ -1,0 +1,107 @@
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+Natural Language Processing is
+Fun!
+How computers understand Human Language
+aagie Adam Geitgey 17 minread - Jul18, 2018
+&y) 20k QQ 65 TO
+This article is part of an on-going series on NLP: Part 1, Part 2, Part 3, Part 4, Part
+5. You can also read a reader-translated version of this article in 4uBiz or 4.
+Giant update: I’ve written a new book based on these articles! It not only expands
+and updates all my articles, but it has tons of brand new content and lots of hands-
+on coding projects. Check it out now!
+Computers are great at working with structured data like spreadsheets and
+database tables. But us humans usually communicate in words, not in tables.
+That’s unfortunate for computers.
+XX Micros: xcel - Book!
+(SJE Edt View Insert Format Tools Data Window Help
+BY) MOI Bez hw8) 10%=/0
+0 7/B7 UE EME/%S , 2) L-o-A-
+BE Ce DE Es SE
+Unfortunately we don't live in this alternate version of history where all data is structured.
+A lot of information in the world is unstructured — raw text in English or
+another human language. How can we get a computer to understand
+unstructured text and extract data from it?
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 1 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:57 AM
+is the capital and most populous city
+of England and the United Kingdom. Standing
+on the River Thames in the south east of the
+island of Great Britain, London has been a
+major settlement for two millennia. It was
+founded by the Romans, who named
+it Londinium. London's ancient core, the City
+of London, largely retains its 1.12-square-mile
+(2.9 km2) medieval boundaries.
+Natural Language Processing, or NLP, is the sub-field of AI that is focused on
+enabling computers to understand and process human languages. Let’s
+check out how NLP works and learn how to write programs that can extract
+information out of raw text using Python!
+Note: Ifyou don’t care how NLP works and just want to cut and paste some code,
+skip way down to the section called “Coding the NLP Pipeline in Python”.
+Can Computers Understand Language?
+As long as computers have been around, programmers have been trying to
+write programs that understand languages like English. The reason is pretty
+obvious — humans have been writing things down for thousands of years
+and it would be really helpful if a computer could read and understand all
+that data.
+Computers can’t yet truly understand English in the way that humans do —
+but they can already do a lot! In certain limited areas, what you can do with
+NLP already seems like magic. You might be able to save a lot of time by
+applying NLP techniques to your own projects.
+And even better, the latest advances in NLP are easily accessible through
+open source Python libraries like spaCy, textacy, and neuralcoref. What you
+can do with just a few lines of python is amazing.
+Extracting Meaning from Text is Hard
+The process of reading and understanding English is very complex — and
+that’s not even considering that English doesn’t follow logical and consistent
+rules. For example, what does this news headline mean?
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 2 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:57 AM
+“Environmental regulators grill business owner over illegal coal fires.”
+Are the regulators questioning a business owner about burning coal
+illegally? Or are the regulators literally cooking the business owner? As you Top highlight
+can see, parsing English with a computer is going to be complicated.
+Medium Q. Search [A Write (sion up ) Signin
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 3 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 4 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 5 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 6 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 7 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 8 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 9 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 10 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 11 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 12 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 13 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 14 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 15 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 16 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 17 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 18 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 19 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 20 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 21 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 22 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 23 of 24
+Natural Language Processing is Fun! | by Adam Geitgey | Medium 12/7/25, 3:51AM
+https://medium.com/@ageitgey/natural-language-processing-is-fun-Q9a0bff37854e Page 24 of 24

@@ -1,0 +1,767 @@
+8102
+naJ
+61
+]GL.sc[
+1v43150.1081
+viXra
+Understanding the Disharmony between Dropout and Batch Normalization by
+Variance Shift
+Xiang Li! Shuo Chen! Xiaolin Hu’ Jian Yang !
+| Dropout a~Bernoulli(p) | 1 BN !
+Abstract o X-u
+1 uw = E(X)0,7 = Var(X),X = =
+x-NODP X= are EMoving (x) — E(u) Varrr9(x) — E(02)
+This paper first answers the question “why do
+the two most powerful techniques Dropout and TrainMode Var?r@in¢x) =+ > VarMoving(y) = EC)
+Dp I Dp
+Batch Normalization (BN) often lead to a worse
+v
+performance when they are combined together?” Test Mode VarT@st (X)=1 XN VarTMvingcx) = EG)
+in both theoretical and statistical aspects. The-
+~ X—EMoving (X)
+oretically, we find that Dropout would shift the
+yVarMoving (xX)+e
+variance of a specific neural unit when we transfer
+the state of that network from train to test. How-
+3.5
+— Test Acc 77.42%, No Dropout in each bottleneck
+ever, BN would maintain its statistical variance, os — Test Acc 68.55%, Dropout 0.5 in each bottleneck
+Ss| le3.0
+which is accumulated from the entire learning = 1 | ] . 8
+§ §S 25
+procedure, in the test phase. The inconsistency
+of that variance (we name this scheme as “vari- § 8 2.0
+ie
+E]eas
+ance shift’) causes the unstable numerical behav-
+—a
+ior in inference that leads to more erroneous pre- iS 1
+dictions finally, when applying Dropout before
+0.5 20 40 60 80 100
+BN. Thorough experiments on DenseNet, ResNet, BN layer index on DenseNet trained on CIFAR100
+ResNeXt and Wide ResNet confirm our findings. Figure 1. Up: a simplified mathematical illustration of “variance
+According to the uncovered mechanism, we next shift”. In test mode, the neural variance of X is different from
+that in train mode caused by Dropout, yet BN attempts to regard
+explore several strategies that modifies Dropout
+that variance as the popular statistic accumulated from training.
+and try to overcome the limitations of their com-
+Note that p denotes for the Dropout retain ratio and a comes from
+bination by avoiding the variance shift risks.
+Bernoulli distribution which has probability p of being 1. Down:
+variance shift in experimental statistics on DenseNet trained on
+CIFAR100 dataset. The curves are both calculated from the same
+1. Introduction
+training data. “moving_var,,” is the moving variance (take its mean
+(Srivastava et al., 2014) brought Dropout as a simple way to value instead if it’s a vector) that the 2-th BN layer accumulates dur-
+prevent neural networks from overfitting. It has been proved ing the entire learning, and “real_var;” stands for the real variance
+of neural response before the 2-th BN layer in inference.
+to be significantly effective over a large range of machine
+learning areas, such as image classification (Szegedy et al.,
+tion (BN), a powerful skill that not only speeded up all the
+2015), speech recognition (Hannun et al., 2014) and even
+modern architectures but also improved upon their strong
+natural language processing (Kim et al., 2016). Before
+baselines by acting as regularizers. Therefore, BN has been
+the birth of Batch Normalization, it became a necessity of
+implemented in nearly all the recent network structures
+almost all the state-of-the-art networks and successfully
+(Szegedy et al., 2016; 2017; Howard et al., 2017; Zhang
+boosted their performances against overfitting risks, despite
+et al., 2017) and demonstrates its great practicability and
+its amazing simplicity.
+effectiveness.
+(loffe & Szegedy, 2015) demonstrated Batch Normaliza-
+However, the above two nuclear weapons always fail to
+'DeepInsight@PCALab, Nanjing University of Science and obtain an extra reward when combined together practically.
+Technology, China ?Tsinghua National Laboratory for Informa- In fact, a network even performs worse and unsatisfactorily
+tion Science and Technology (TNList) Department of Computer
+when it is equipped with BN and Dropout simultaneously.
+Science and Technology, Tsinghua University, China. Correspon-
+(Ioffe & Szegedy, 2015) have already realized that BN elim-
+dence to: Xiang Li <xiang.li.implus@njust.edu.cn>.
+inates the need for Dropout in some cases — the authors
+exposed the incompatibility between them, thus conjectured
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+that BN provides similar regularization benefits as Dropout otherwise!. Importantly, the test scheme is quite different
+intuitively. More evidences are provided in the modern ar- from the train. During training, the information flow goes
+chitectures such as ResNet (He et al., 2016a;b), ResNeXt through the dynamic sub-network. At test time, the neural
+(Xie et al., 2017), DenseNet (Huang et al., 2016), where responses are scaled by the Dropout retain ratio, in order
+the best performances are all obtained by BN with the ab- to approximate an equally weighted geometric mean of the
+sence of Dropout. Interestingly, a recent study Wide ResNet predictions of an exponential number of learned models that
+(WRN) (Zagoruyko & Komodakis, 2016) show that it is share parameters. Consider a feature vector x = (x1... 2a)
+positive for Dropout to be applied in the WRN design with with channel dimension d. Note that this vector could be
+a large feature dimension. So far, previous clues leave us a a part (one location) of convolutional feature-map or the
+mystery about the confusing and complicated relationship output of the fully connected layer, 1.e., it doesnot matter
+between Dropout and BN. Why do they conflict in most of which type of network it lies in. If we apply Dropout on x,
+the common architectures? Why do they cooperate friendly for one unit 7,,k = 1...d, in the train phase, it is:
+sometimes as in WRN?
+Lk = AkLk, (1)
+We discover the key to understand the disharmony between
+Dropout and BN is the inconsistent behaviors of neural vari- where a; ~ P that comes from the Bernoulli distribution:
+ance during the switch of networks’ state. Considering one 1—p, ap= 0
+neural response X as illustrated in Figure 1, when the state
+changes from train to test, Dropout would scale the response
+and a = (a,...aq) is a vector of independent Bernoulli
+by its Dropout retain ratio (i.e. p) that actually changes the
+random variables. At test time for Dropout, one should
+neural variance as in learning, yet BN still maintains its
+scale down the weights by multiplying them by a factor
+statistical moving variance of X. This mismatch of variance
+of p. As introduced in (Srivastava et al., 2014), another
+could lead to a numerical instability (see red curve in Fig-
+way to achieve the same effect is to scale up the retained
+ure 1). As the signals go deeper, the numerical deviation on
+activations by multiplying by : at training time and not
+the final predictions may amplify, which drops the system’s
+modifying the weights at test time. It is more popular on
+peformance. We name this scheme as “variance shift” for
+practical implementations, thus we employ this formula of
+simplicity. Instead, without Dropout, the real neural vari-
+Dropout in both analyses and experiments. Therefore, the
+ances in inference would appear very closely to the moving
+hidden activation in the train phase would be:
+ones accumulated by BN (see blue curve in Figure 1), which
+is also preserved with a higher test accuracy. ~ 1
+Lk = Ak—-LXk, (3)
+P
+Theoretically, we deduced the “variance shift” under two
+general conditions, and found a satisfied explanation for the whilst in inference it would be simple like: 7, = xx.
+aforementioned mystery between Dropout and BN. Further,
+Batch Normalization (BN) (Ioffe & Szegedy, 2015) pro-
+a large range of experimental statistics from four modern
+poses a deterministic information flow by normalizing
+networks (i.e., PreResNet (He et al., 2016b), ResNeXt (Xie
+each neuron into zero mean and unit variance. Consid-
+et al., 2017), DenseNet (Huang et al., 2016), Wide ResNet
+ering values of x (for clarity, c = x) over a mini-batch:
+(Zagoruyko & Komodakis, 2016)) on the CIFAR10/100
+B = {2)--0T1M? with m instances, we have the form of
+datasets verified our findings as expected.
+“normalize” part:
+Since the central reason for their performance drop was
+_i — (i) 2 LS (i) 2 a(t) ce =
+discovered, we adopted two strategies that explored the
+possibilities to overcome the limitation of their combination.
+One was to apply Dropout after all BN layers and another (4)
+was to modify the formula of Dropout and made it less where jz and a? would participate in the backpropagation.
+sensitive to variance. By avoiding the variance shift risks, The normalization of activations that depends on the mini-
+most of them worked well and achieved extra improvements. batch allows efficient training, but is neither necessary nor
+desirable during inference. Therefore, BN accumulates
+2. Related Work and Preliminaries the moving averages of neural means and variances during
+learning to track the accuracy of a model as it trains:
+Dropout (Srivastava et al., 2014) can be interpreted as a
+BM9 (x) — Be(u), Var! "'"9 (x) — Bp(o), (5)
+way of regularizing a neural network by adding noise to its
+hidden units. Specifically, it involves multiplying hidden
+‘p denotes for the Dropout retain ratio and (1 — p) denotes for
+activations by Bernoulli distributed random variables which
+the drop ratio in this paper.
+take the value | with probability p (0 < p < 1) and O Note that we donot consider the “scale and shift” part in BN
+because the key of “variance shift” exists in its “normalize” part.
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+where F’g(ju) denotes for the expectation of 4 from multiple In inference, BN keeps the moving average of variance (.e.,
+training mini-batches B and E,(07) denotes for the expec- Ex(4 (c? +v) —c?)) fixed. In another word, BN wishes that
+tation of the unbiased variance estimate (i.e., “~ - Eg(o*)) the variance of neural response X, which comes from the
+over multiple training mini-batches. They are‘all obtained
+input images, is supposed to be close to Ep} (ce? +v)-c’).
+However, Dropout breaks the harmony when it comes to
+by implementations of moving averages (Ioffe & Szegedy,
+2015) and are fixed for linear transform during inference: its test stage by having X = zx; to get Var? ®*(X) =
+Var(x,) = v. If putting Var? °s'(X) into the unbiased
+7 EMoving (x) variance estimate, it would become E,(v) which is obvi-
+r= (6)
+VarMoving (x) + € ously different from the popular statistic E,,(45 (ec? +v)—c?)
+of BN during training when Dropout (p < 1) is applied.
+Therefore, the shift ratio is obtained:
+3. Theoretical Analyses
+— Vartet(x) Vv
+A(p) _ Varlrain( X) _ 1(e 4 v) — ¢2 (8)
+From the preliminaries, one could notice that Dropout only
+ensures an “equally weighted geometric mean of the pre-
+In case (a), the variance shift happens via a coefficient
+dictions of an exponential number of learned models” by
+A(p) < 1. Since modern neural networks carry a deep
+the approximation from its test policy, as introduced in the
+feedforward topologic structure, previous deviate numerical
+original paper (Srivastava et al., 2014). This scheme poses
+manipulations could lead to more uncontrollable numerical
+the variance of the hidden units unexplored in a Dropout
+outputs of subsequent layers (Figure 1). It brings the chain
+model. Therefore, the central idea is to investigate the vari-
+reaction of amplified shift of variances (even affects the
+ance of the neural response before a BN layer, where the
+means further) in every BN layers sequentially as the net-
+Dropout is previously applied. This could be attributed
+works go deeper. We would show that it directly leads to a
+into two cases generally, as shown in Figure 2. In case
+dislocation of final predictions and makes the system suffer
+(a), the BN layer is directly subsequent to the Dropout
+from a performance drop later in the statistical experimental
+layer and we only need to consider one neural response
+part (e.g., Figure 4, 6 in Section 4).
+X= OK Tk, k =1...dintrain phase and X = z, in test
+phase. In case (b), the feature vector x = (x1... xq) would In this design (1.e., BN directly follows Dropout), if we want
+to alleviate the variance shift risks, ie., A(p) — 1, the only
+be passed into a convolutional layer (or a fully connected
+layer) to form the neural response X. We also regard its thing we can do is to eliminate Dropout and set the Dropout
+corresponding weights (the convolutional filter or the fully retain ratio p — 1. Fortunately, the architectures where
+connected weight) to be w = (w1...wa), hence we get Dropout brings benefits (e.g., in Wide ResNet) donot follow
+X= yw Wii Li for learning and X = yw w,x; for this type of arrangement. In fact, they adopt the case (b) in
+Figure 2, which is more common in practice, and we would
+test. For the ease of deduction, we assume that the inputs
+describe it in details next.
+all come from the distribution with c mean and v variance
+(i.e., E(x;) = ¢,Var(x;) =v,i = 1...d,v > 0) and we Figure 2 (b)
+also start by studying the linear regime. We let the a; and
+At this time, X would be obtained by sot1 Wid a Lis where
+x; be mutually independent, considering the property of
+w denotes for the corresponding weights that act on the fea-
+Dropout. Due to the aforementioned definition, a; and a;
+ture vector x, along with the Dropout applied. For the ease
+are mutually independent as well.
+of deduction, we assume that in the very later epoch of train-
+(a) Dropout 1} BN ing, the weights of w remains constant given the gradients
+become significantly close to zero. Similarly, we can write
+Var?TM%"(X) by following the formula of variance:
+Convolutional/
+(b) Dropout BN [>
+Fully Connected d d
+1 1
+Varlran ee = Cov( 2 wid Cir ) wide)
+Figure 2. Two cases for analyzing variance shift.
+Figure 2 (a) 1
+Pe ?Var((a;x;)
+Following the paradigms above, we have Var?"@"(X) as:
+(9)
+= poe .( aK) Elan) - v2 (1 Elan) E(an))° 1= ml + _
+1 1 :
+eo
+oor jwiws V Var(aiai)\/Var(ajx;)
+d
+te +) —°? ut +p SP wie)
+ji
+i=1 71
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+1.0
+PreResNet PreResNet
+ResNext ResNext
+SS 0.8 WRN Pon 0.8} WRN
+= 07 DenseNet = a7 DenseNet
+06 3 0.6
+ZL 2
+5 0.5 5 0.5
+c 0.4} c 0.4}
+& 03 & o3
+= 02 = 02
+AaAAA AAAAAAAAA
+0 20 40 60 80 100 “oO 20 40 60 80 110
+Convolutional Layer Index of Networks Trained on CIFAR10 Convolutional Layer Index of Networks Trained on CIFAR100
+Figure 3. Statistical mean values of (cos 6)° and d(cos 6)”
+?))6(soc(d
+fo
+naeM
+PreResNet PreResNet
+ResNext ResNext
+WRN WRN
+DenseNet DenseNet
+~
+e
+?))@(soc(d
+fo
+naeM
+1000 2000 3000 4000 5000 6000 % 1000 2000 3000 4000 5000 6000
+Weight Dimension d of Convolutional Filter Trained on CIFAR10 Weight Dimension d of Convolutional Filter Trained on CIFAR100
+. These four modern architectures are trained without Dropout on CIFAR10
+and CIFAR100 respectively. We observe that (cos @)? lies in (0.01, 0.10) approximately in every network structure and various datasets.
+Interestingly, the term d(cos 9)? in WRN is significantly bigger than those on other networks mainly due to its larger channel width d.
+where pj} _~ /VarC(oavi( axii)4)i/,V0a;r2(;a)j xr;) € | 11,. | # or hthe Table 1. Statistical means of (cos @)? and d(cos 6)? over all the
+convolutional layers on four representative networks.
+ease of deduction, we simplify all the linear correlation
+CIFARIO CIFAR100
+coefficients to be the same as a constant p** = pi, Vt, 7 = Networks
+(cos6)* d(cos@)*_— (cos@)?_— d(cos 0)?
+..d,i # j. Similarly, Var? °**(X) is obtained:
+PreResNet 0.03546 2.91827 0.03169 2.59925
+d d d ResNeXt 0.02244 14.78266 0.02468 14.72835
+Var? @**(X)= var, Wii) = Cov(>~ WX, S- Wi Xi) WRN 0.02292 52.73550 0.02118 4431261
+DenseNet 0.01538 3.83390 0.01390 3.43325
+i=l i=l
+= 20 PEED piu wiVovu
+where (cos 6)? comes from the expression:
+i=1 i= a (ie wi) Diels wy
+= (ou + p* 57 hie) d- a (we ee Pye “2 = (cos 6)?,
+i=1 jfi (13)
+(10) and @ denotes for the angle between vector w and vector
+where p;; = Cov(a;,2;) € [—1,1], and we also (1... 1). To prove that d(cos 6)? scales approximately lin-
+VV ar(ai))/Var(a;)
+———
+have a constanpt* = p7;,Vi,j =1...d,2 # j. Since a;
+and x;, a; and a; are mutually independent, we can get the m
+ear to d, we made rich calculations w.r.t the term d(cos 0)?
+relationship between p°** and p*: and (cos @)? on four modern architectures> trained on CI-
+FAR10/100 datasets (Table 1 and Figure 3). Based on Table
+Covu(ajx;,a;2;)
+pan iw an __ 1 and Figure 3, we observe that (cos @)? lies in (0.01, 0.10)
+a,j J Var(aJV; axr(aij;x);) stably in every network and various datasets whilst d(cos 0)?
+p°Cov(xi, Xj) tends to increase in parallel when d grows. From Equa-
+(11) tion (12), the inequation Var?°*(X) 4 Vart'%"(X)
+ae a J/Var(x;)./Var(x;)
+holds when p < 1. If we want Var? °**(X) to approach
+Uv xv Nw Uv xv
+Var?"@'"(X), we need this term
+(Ce +v)— ahid (c? +u) — ar
+1
+Pp
+Var? °st(X) vp" (d(cos @)? —1) +4
+A(p, d) =
+According to Equation (9), (10) and (11), we can write the Vartrin(X) ~ up®(d(cos)2 —1)+5“(c? +) -—@
+Vart est (Xx)
+variance shift as: vp r + ov(1—ap”
+Variramn (X)
+(oh, w? +p? DE, Te, wis) Tj@+u(h—p")
+vp® + Mood)?
+(2(2 +0) — 2) w? + 9%? Dy WSL, wis) (14)
+to approach 1. There are two ways to achieve A(p, d) > 1:
+U ar wi? + up® an eer Wy Wj
+(4(2 +0) — 2) OL, w? + op? YE SL, wity; e p— 1: maximizing the Dropout retain ratio p (ideally
+up to 1 which means Dropout is totally eliminated);
+v + vp? (Sy wi)? — DL, w?)/ i, w?
+1 (2 +0) — 2 + up? (hy wi)? — Wy w?)/ Ey ww? e d— oo: growing the width of channel exactly as the
+Wide ResNet did to enlarge d.
+_ v + vp®(d(cos 8)? ~ 1)
+*For the convolutional filters which have larger than 1 filter
+(2 +u) — 2 + vp"(d(cos@)? — 1)’
+size as k x k,k > 1, we vectorise them by expanding its channel
+(12) width d to d x k x k while maintaining all the weights.
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+4. Statistical Experiments Statistics of variance shift. Assume a network G contains
+n BN layers in total. We arrange these BN layers from
+We conduct extensive statistical experiments to check the
+shallow to deep by giving them indices that goes from 1
+correctness of above deduction in this section. Four modern
+to n accordingly. The whole statistical manipulation is
+architectures including DenseNet (Huang et al., 2016), Pre-
+conducted by following three steps:
+ResNet (He et al., 2016b), ResNeXt (Xie et al., 2017) and
+Wide ResNet (WRN) (Zagoruyko & Komodakis, 2016) are (1) Calculate moving_var;,i © [1,n]: when G is trained
+adopted on the CIFAR10 and CIFAR100 datasets. until convergence, each BN layer obtains the moving aver-
+age of neural variance (the unbiased variance estimate) from
+Datasets. The two CIFAR datasets (Krizhevsky & Hinton,
+the feature-map that it receives during the entire learning
+2009) consist of colored natural scence images, with 32 x32
+procedure. We denote that variance to be moving_var. Since
+pixel each. The train and test sets contain 50k images and
+the moving_var for every BN layer is a vector (whose length
+10k images respectively. CIFAR10 (C10) has 10 classes
+is equal to the amount of channels of previous feature-map),
+and CIFAR100 (C100) has 100. For data preprocessing, we
+we leverage its mean value to represent moving_var instead,
+normalize the data by using the channel means and standard
+for a better visualization. Further, we denote moving_var;
+deviations. For data augmentation, we adopt a standard
+as the moving_var of 1-th BN layer.
+scheme that is widely used in (He et al., 2016b; Huang
+et al., 2016; Larsson et al., 2016; Lin et al., 2013; Lee et al., (2) Calculate real_var;,i © {1,n]: after training, we fix all
+2015; Springenberg et al., 2014; Srivastava et al., 2015): the the parameters of G and set its state to be the evaluation
+images are first zero-padded with 4 pixels on each side, then mode (hence the Dropout would apply its inference policy
+a 32x32 crop is randomly sampled from the padded images and BN would freeze its moving averages of means and
+and at least half of the images are horizontally flipped. variances). The training data is again utilized for going
+through G within a certain of epochs, in order to get the real
+Networks with Dropout. The four modern architectures
+expectation of neural variances on the feature-maps before
+are all chosen from the open-source codes* written in py-
+each BN layer. Data augmentation is also kept to ensure
+torch that can reproduce the results reported in previous
+that every possible detail for calculating neural variances
+papers. The details of the networks are listed in Table 2:
+remains exactly the same with training. Importantly, we
+adopt the same moving average algorithm to accumulate
+Table 2. Details of four modern networks in experiments. #P de-
+the unbiased variance estimates. Similarly in (1), we let the
+notes for the amount of model parameters.
+mean value of real variance vector be real_var; before the
+Model #PonClO #PonCl100
+2-th BN layer.
+PreResNet-110 1.70 M 1.77 M
+(3) Obtain max(—onsSa? “realvar, +)?% € [1,n]: since we
+ResNeXt-29, 8 x 64 34.43 M 34.52 M
+WRN-28- 10 36.48 M 36.54 M focus on the shift, the scalings are all kept above 1 by their
+DenseNet-BC (L=100, k=12) 0.77 M 0.80 M
+reciprocals if possible in purpose of a better view. Various
+Dropout drop ratios [0.0, 0.1, 0.3, 0.5, 0.7] are applied for
+Since the BN layers are already developed as the indispensi-
+clearer comparisons in Figure 4. The corresponding error
+ble components of their body structures, we arrange Dropout
+rates are also included in each column.
+that follows the two cases in Figure 2:
+Agreements between analyses and experiments about
+(a) We assign all the Dropout layers only and right be-
+the relation between performance and variance shift. In
+fore all the bottlenecks’ last BN layers in these four net-
+these four columns of Figure 4, we discover that when the
+works, neglecting their possible Dropout implementations
+drop ratio is relatively small (i.e., 0.1), the green shift curves
+(as in DenseNet (Huang et al., 2016) and Wide ResNet
+are all near the blue ones (i.e. models without Dropout),
+(Zagoruyko & Komodakis, 2016)). We denote this design
+thus their performances are as well very close to the base-
+to be models of Dropout-(a).
+lines. It agrees with our previous deduction that whenever
+(b) We follow the assignment of Dropout in Wide ResNet in (a) or (b) case, decreasing drop ratio 1 — p would alleviate
+(Zagoruyko & Komodakis, 2016), which finally improves the variance shift risks. Furthermore, in Dropout-(b) models
+WRNs’ overall performances, to place the Dropout before (i.e., the last two columns) we find that, for WRNs, the
+the last Convolutional layer in every bottleneck block of curves with drop ratio 0.1, 0.3 even 0.5 approaches closer
+PreResNet, ResNeXt and DenseNet. This scheme is denoted to the one with 0.0 than other networks, and they all outper-
+as Dropout-(b) models. form the baselines. It also aligns with our analyses since
+WRN has a significantly larger channel dimension d, and it
+“Our implementations basicly follow the public code in
+ensures that a slightly larger p would not explode the neu-
+https://github.com/bearpaw/pytorch-classification. The training
+ral variance but bring the original benefits, which Dropout
+details can also be found there. Our code for the following experi-
+carries, back to the BN-equipped networks.
+ments would be released soon.
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+w]= ” ” =_ Dropout 0.0 -_ Dropout 0.0 -_ Dropout 0.0 -_ Dropout 0.0
+E 5EaGl h E- 8 25 D DDr r ro o op p op o u u ot t u 0 0 t. . 03 1 .5 WII | | E 5Eal Gl y E- 8 25 D DDrr r oo o pp p oo o uu u tt t 0 0 0.. . 35 1 j | | HH E SEaal h r. 8s 115 D DDrr r oo o pp p oo o uu u tt t 0 00 . .. 1 35 E SEal Il y T. 8 115 D DD r rr o oo p pp o oo u uu t tt 0 00.. . 53 1
+3 ~2 Dropout 0.7 i } l| ih | } HHI § ~@ Dropout 0.7 } Ml ! | | | § ~2 i Dropout 0.7 § ~2 Dropout 0.7}, i WY
+E(l8~ 2.0 {|| va) AWA | ih} Adal 1 ae Wi) E“|l s “a 2.0 TAWA| WT il } ] | E--l|s “%a 1.10 ili | iN a(H8“a 1.10 |] NT| | | | Hii A| l]H HHj]i}
+a “1 k B ash)! |) W K It n| i { H iH] E M ‘ I ak E e 1s uy HI il i } ‘asH l E g 1.05 miY. \ Mil di18 e ‘ T a= I l E g 1.05 i m |A i t ) y ay | H \ A! iMl ityi H We to y vie
+r3s H| i WVeite | 83 H I Alsty ut 83 q Kii 33 | il A
+{ i
+1.0 J)[ Drop2o0ut4-0(a ) c10] BN laye1r00 Ind«e1x2 0o=—n— «F 40s160—«180 1.0,0 2024{0a) C100] BN lay1e0r0 Ind«1e2x—0 =o—«n1—4 —0PSr.se« 1R6e0s~—N=e«t80 1.00“5 [Dropout-(b) c10] BN layer Index onP 1.00 b)) c1001 B8N0 layer Ind12e0x on~« 1P4r0~e=R«1e6s0~N—e=«t80
+3.0 3. 1.20 1
+= Dropout 0.0 = Dropout 0.0 = Drapout 0.0 = Dropout 0.0
+§ c Dropout 0.1 8 c Dropout 0.1 8 c Dropout 0.1 § c Dropout 0.1
+a 8 Dropout 0.3 a 8 Dropout 0.3 a 8 Dropout 0.3 3 8 Dropout 0.3
+Ely 25 Dropout 0.5 Sly 25 Dropout 0.5 gly 115 Dropout 0.5 Sly 115 Dropout 0.5
+3 2 Dropout 0.7 A 2 Dropout 0.7 § 2 Dropout 0.7 3 2 Dropout 0.7
+io g 2.0 co g 2.0 io ls 1.10 io ls 1.10
+BaIE BaIE BaIE BaIE
+IE 15 IE 15 TIE 1.05 LIE 1.05
+§ é é y J) 8 J L |
+[Dropou3 t-(a) C110 0] BN 1l5a yer Ind20e x on R2e5s NeXt 30 [Dropou5t -{a) C1100 0] BN 1l5 ayer In2d0 ex on R25e sNeXt3 0 ° [Dropou5 t-(b) C110 0] BN 1l5a yer Ind20e x on R2e5 sNeXt 30 ° [Dropout-(b) c1001 BN ‘layer Index on ResNext30
+30 30 1.20 1.20
+= Dropout 0.0 = Dropout 0.0 = Dropout 0.0 = Dropout 0.0
+§ c Dropout 0.1 § c Dropout 0.1 § c Dropout 0.1 § c Dropout 0.1
+a 8 Dropout 0.3 a 8 Dropout 0.3 3 8 Dropout 0.3 a 8 Dropout 0.3
+gly 25 Dropout 6.5 gly 25 Dropout 0.5 Sly 115 Dropout 0.5 Sle 115 Dropout 0.5
+3 é Dropout 0.7 3 @ Dropout 0.7 3 é Dropout 0.7 5 é Dropout 0.7
+io g 2.0 co g 2.0 co is 1.10 co ls 1.10
+gle gle gle gle
+S3Nh e 3 S3Wh e 4 SHyAh e 3 SHyHh e3 IX
+IS 15 IS 15 TIE 1.05 \ TLE 1.05 il ®
+: é é {\f é y
+§ LAWN TRIN § A AN V\\AN N ZN yyy § 100 SooTM m YanEi ENG MOAR | OE 100 | SY ES ee\ e aw/;
+° 5 10 15 20 25 ° 3 10 15 20 25 ° 5 10 15 20 25 ° 3 10 15 20 25
+[Dropout-(a) C10] BN layer index on WRN [Dropout-(a} C100] BN layer index on WRN [Dropout-(b) C10] BN layer index on WRN [Dropout-(b) C100] BN layer index on WRN
+= 3.0 I | | Dropout 0.0 -_ 3.0 ] | | j Dropout 0.0 Ti | ii iy -_ 1 Dropout 0.0 >_ 1 Dropout 0.0
+§ g | Dropout 0.1 § g | Dropout 0.1 | H § c Dropout 0.1 § c Dropout 0.1
+mo§Fa r 8 s 25 | HW | DDDr rro oop ppo oou uut tt 000. ..7 35 P§hyW r s s 25 | DDDr rro oop ppo oou uut tt 000. ..7 35 iy P3hyW s 15 DDDrr roo opp poo ouu utt t 000... 753 23hW s bas DDDr rro oop ppo oou uut tt 000. ..7 35
+|S ~v e 2.0 | ih 11i h PPART! AN l wn | ~ 8i o 2.0 j } i! j | j ve) | ~ 8i o 1-10 2/ ~ 8io 1-10
+|e |) mill VY 1 Np We] | A |e tH] | |e |
+BCIeE 15h | ul WN WHT i ue HilWhA TMTy ]i ESTEE sSpTUM)TPTT WW mY AidWl Ti VltRh | 2TIBE 1.05 uit BLEE 1.05
+&F S WlWWsU IAA ERALA ALLLL AAAS L) V\V ait] && MAhARY AA/ AWLFRAi y IV | Evy vuingu]e &E Min + UAN l asi i| i }i WV AH eu)) ée V ai Niw hsli p !a Wne tl
+° [Dropout (a) C10]4 0B N layer 6i0n dex on 80 100 ° [ Pp 20{ a) C100]40 B N layer6 0i ndex on8 D0 anseNet10 0 ° [Dropout--(b) ©10] BBN layer index on DenseNet1 00 ° [Dropout-(b) c100] |BN layer iindex on ‘DenseNet100
+“ 0.0 0.1 0.3 0.5 07 40 0.0 0.1 0.3 0.5 07 S 0.0 0.1 0.3 0.5 07 an
+35 7
+15 330 —6 —25
+s & s &
+g g 25 3. 2”
+@ 10 ®@ 20 e4 15
+-e -e 15 ie 3 ae
+oc oc c = 10
+wis Wag wi 2 wi
+oO PreResNet DropReosNueXtt -(a) WCRN 10 DenseNet oO ee Dropout-(a) C100 oO Dropout-(b) ‘C10 oO “Dropout--(b) C100
+Figure 4. See by columns. Statistical visualizations about “variance shift” on BN layers of four modern networks w.r.t: 1) Dropout type;
+2) Dropout drop ratio; 3) dataset, along with their test error rates (the fifth row). Obviously, WRN is less influenced by Dropout (1.e.,
+small variance shift) when the Dropout-(b) drop ratio < 0.5, thus it even enjoys an improvement with Dropout applied before BN.
+Even the training data performs inconsistently between pictures and their responses, we can find that with all the
+train and test mode. In addition, we also observe that weights of networks fixed, only a mode transfer (from train
+for DenseNet and PreResNet (their channel d is relatively to test) would change the distribution of the final responses
+small), when their state is changed from train to test, even even in the train set, and it leads to a wrong classification
+the training data cannot be kept with a coherent accuracy at consequently. It proves that the predictions of training data
+last. In inference, the variance shift happens and it leads to differs between train stage and test stage when a network is
+an avalanche effect on the numerical explosion and insta- equipped with Dropout layers before BN layers. Therefore,
+bility in networks that finally changes the final prediction. we confirm that the unstable numerical behaviors are the
+Here we take the two models with drop ratio being 0.5 as an fundamental reasons for the performance drop.
+example, hence demonstrate that a large amount of training
+Only an adjustment for moving means and variances
+data would be classified inconsistently between train and
+would bring an improvement, despite all other parame-
+test mode, despite their same model parameters (Figure 5).
+ters fixed. Given that the moving means and variances of
+Neural responses (of last layer before softmax) for train- BN would not match the real ones during test, we attempt
+ing data are unstable from train to test. To get a clearer to adjust these values by passing the training data again
+understanding of the numerical disturbance that the variance under the evaluation mode. In this way, the moving average
+shift brings finally, a bundle of images (from training data) algorithm (Ioffe & Szegedy, 2015) can also be applied. Af-
+are drawn with their neural responses before the softmax ter shifting the moving statistics to the real ones by using
+layer in both train stage and test stage (Figure 6). From those the training data, we can have the model performed on the
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+100 100 100
+80} ~ stein
+) thoh dss
+Hy
+40Hiii
+a]=i
+4 —— Dropout 0.0 Training data on Train Mode — Dropout 0.0 Training data on Train Mode
+--- Dropout 0.0 Training data on Test Mode
+— Dropout 0.5 Training data on Train Mode
+hcope
+t.r.w
+)%(
+ycaruccA
+hcope
+t.r.w
+)%(
+ycaruccA
+Dropout 0.0 Training data on Test Mode ||
+Dropout 0.5 Training data on Train Mode
+--- Dropout 0.5 Training data on Test Mode Dropout 0.5 Training data on Test Mode
+—— ——] PreRe4s0 Net Dropout-(a) C100 D4e0n se8N0et1 2D0r op«1o60u t-«6(200a ) «C2401 00280
+hcope
+t.r.w
+)%(
+ycaruccA
+98
+95
+96
+94 90F!
+92
+86 t — Dropout 0.0 Training data on Train Mode — Dropout 0.0 Training data on Train Mode
+4 ---- Dropout 0.0 Training data on Test Mode --- Dropout 0.0 Training data on Test Mode
+e4t | — Dropout 0.5 Training data on Train Mode —_ Dropout 0.5 Training data on Train Mode
+--- Dropout 0.5 Training data on Test Mode --- Dropout 0.5 Training data on Test Mode
+8:4 0 PreRes7N0 et Dropout--(a) c10 703 0 D7e0 nse1N10e t 1D5r0 opo1u90t -(a2—3) —0 C12070
+hcope
+t.r.w
+)%(
+ycaruccA
+Figure 5. Accuracy by train epochs. Curves in blue means the train of these two networks without Dropout. Curves in red denotes the
+Dropout version of the corresponding models. These accuracies are all calculated from the training data, while the solid curve is under
+train mode and the dashed one is under evaluation mode. We observe the significant accuracy shift when a network with Dropout ratio 0.5
+changes its state from train to test stage, with all network parameters fixed but the test policies of Dropout and BN applied.
+True Label is "deer" True Label is "deer"
+{mM Train Mode 2°) | i Train Mode
+Mim Test Mode 15|| Ml -Test Mode
+= eulav
+larueN
+eulav
+larueN
+il ETnest Mode
+True Label is "dog"
+Mm Train Mode
+FFFS F Sé SSEEFF FSF PP$SS
+a
+eulav
+larueN
+eulav
+larueN
+=
+F
+————
+=
+—
+h
+True Label is "deer" True Label is "deer"
+ee{mM Train Mode w~| {Trainl |
+Gm Test Mode Gl Test Mode
+to True Label is "dog"
+Mmm Train Mode
+Gl Test Mode
+eulav
+larueN
+eulav
+larueN
+True Label is "dog"
+lm Train Mode
+(lm Test Mode
+eulav
+larueN
+eulav
+larueN
+Figure 6. Examples of inconsistent neural responses between train mode and test mode of DenseNet Dropout-(a) 0.5 trained on CIFARIO
+dataset. These samples are from the training data, whilst they are correctly classified by the model during learning yet erroneously judged
+in inference, despite all the fixed model parameters. Variance shift finally leads to the prediction shift that drops the performance.
+Table 3. Adjust BN’s moving mean/variance by running moving Table 4. Error rates after applying Dropout after all BN layers.
+average algorithm on training data under test mode. These numbers These numbers are all averaged from 5 parallel runnings with
+are all averaged from 5 parallel runnings with different random different random initial seeds.
+initial seeds. C10 drop ratio 0.0 0.1 0.2 0.3 0.5
+Dropout-(a) Dropout-(b)
+C10 - : PreResNet 5.02 4.96 5.01 4.94 5.03
+0.5 0.5-Adjust | 0.5 0.5-Adyjust ResNeXt 3.77 3.89 3.69 3.78 3.78
+WRN 3.97 3.90 4.00 3.93 3.84
+PreResNet 8.42 6.42 5.85 5.77
+DenseNet 4,72 4.67 4.73 4.75 4.87
+ResNeXt 4.43 3.96 4.09 3.93
+WRN 4.59 4.20 3.81 3.71 C100 drop ratio 0.0 0.1 0.2 0.3 0.5
+DenseNet 8.70 6.82 5.63 5.29
+PreResNet 23.73 23.43 23.65 23.45 23.76
+C100 Dropout-(a) Dropout-(b) ResNeXt 17.78 17.77) 17.99 17.97 18.26
+0.5 0.5-Adjust | 0.5 0.5-Adyjust WRN 19.17) 19.17) 19.23 19.19 19,25
+DenseNet 22.58 21.86 22.41 22.41 23.49
+PreResNet 32.45 26.57 25.50 25.20
+ResNeXt 19.04 18.24 19,33 19.09
+WRN 21.08 20.70 19.48 19.15 5. Strategies to Combine Them Together
+DenseNet 31.45 26.98 25.00 23.92
+Since we get a clear knowledge about the disharmony be-
+test set. From Table 3, All the Dropout-(a)/(b) 0.5 models tween Dropout and BN, we can easily develop several ap-
+outperform their baselines by having their moving statistics proaches to combine them together, to see whether an extra
+adjusted. Significant improvements (e.g., ~ 2 and ~ 4.5 improvement could be obtained. In this section, we intro-
+gains for DenseNet on CIFAR10 and on CIFAR100 respec- duce two possible solutions in modifying Dropout. One is
+tively) can be observed in Dropout-(a) models. It again to avoid the scaling on feature-map before every BN layer,
+verifies that the drop of performance could be attributed to by only applying Dropout after the last BN block. Another
+the “variance shift”: a more proper popular statistics with is to slightly modify the formula of Dropout and make it less
+smaller variance shift could recall a bundle of erroneously sensitive to variance, which can alleviate the shift problem
+classified samples back to right ones. and stabilize the numerical behaviors.
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+Table 5. Error rates after applying Dropout after all BN layers on Table 6. Apply new form of Dropout (i.e. Uout) in Dropout-(b)
+the representative state-of-the-art models on ImageNet. These models. These numbers are all averaged from 5 parallel runnings
+numbers are averaged from 5 parallel runnings with different ran- with different random initial seeds.
+dom initial seeds. Consistent improvements can be observed. C10 6 0.0 0.1 0.2 0.3 0.5
+; top-1 top-5 PreResNet 5.02 5.02 4.85 4.98 4.97
+ImageNet drop ratio 0.0 02 0.0 0.2
+ResNeXt 3.77 3.84 3.83 3.75 3.79
+WRN 3.97 3.96 3.80 3.90 3.84
+ResNet-200 (He et al.,2016b) 21.70 21.48 5.80 5.55
+DenseNet 4.72 4.70 4.64 4.68 4.61
+ResNeXt-101(Xie et al., 2017) 20.40 20.17 5.30 5,12
+SENet (Hu et al., 2017) 18.89 18.68 4.66 4.47 C100 £8 0.0 0.1 0.2 0.3 0.5
+PreResNet 23.73 23.73 23.62 23.53 23.77
+Apply Dropout after all BN layers. According to above
+ResNeXt 17.78 17.74 17.77 17.83 17.86
+analyses, the variance shift only happens when there exists WRN 19.17 19.07 18.98 18.95 18.87
+a Dropout layer before a BN layer. Therefore, the most DenseNet 22.58 22.39 22.57 22.35 22.30
+direct and concise way to tackle this is to assign Dropout in
+distributed random variable with zero mean and standard
+the position where the subsequent layers donot include BN.
+deviation equal to the activation of the unit, Le., 7; + xr
+Inspired by early works that applied Dropout on the fully
+and r ~ N’(0, 1), we modify r as a uniform distribution that
+connected layers in (Krizhevsky et al., 2012), we add only
+lies in |—8, 8], where 0 < 8 < 1. Therefore, each hidden
+one Dropout layer right before the softmax layer in these
+activation would be X = 2; + x;r; andr; ~ U(—f, 8).
+four architectures. Table 4 indicates that such a simple oper-
+We name this form of Dropout as “Uout” for simplicity.
+ation could bring 0.1 improvements on CIFAR10 and reach
+With the mutually independent distribution between x; and
+up to 0.7 gain on CIFARI00 for DenseNet. Please note
+r; being hold, we apply the form X = 2; 4+ 274, 7%) ~
+that the last-layer Dropout performs worse on CIFAR100
+U(—£, 2) in train stage and X = z; in test mode. Similarly,
+than on CIFAR10 generally since the training data of CI-
+in the simplified case of c = 0, we can deduce the variance
+FAR100 is insufficient and these models may suffer from
+shift again as follows:
+certain underfitting risks. We also find it interesting that
+Var? °*(X) Var(x;) Vv
+WRN may not need to apply Dropout on each bottleneck
+Vartrein(X) Var(a;tairi;) E((a; + vir;i)?)
+block — only a last Dropout layer could bring enough or at
+Uv 3
+least comparable benefits on CIFAR10. Additionally, we
+discover that in some previous work like (Hu et al., 2017), ~ «E(a?) + 2E(a?)E(r;) + E(a?)E(r?) 3+ 6?
+the authors already adopted the same tips in their winning (15)
+Giving § as 0.1, the new variance shift rate would be soo ~
+solution on the ILSVRC 2017 Classification Competition.
+Since it didnot report the gain that last-layer Dropout brings, 0.9966777 which is much closer to 1.0 than the previous
+we made some additional experiments and evaluate several 0.9 in Figure 2 (a). A list of experiments is hence employed
+state-of-the-art models on the ImageNet (Russakovsky et al., based on those four modern networks under Dropout-(b)
+2015) validation set (Table 5) using a 224 x 224 centre crop settings w.r.t 6 (Table 6). We find that “Uout” would be less
+evaluation on each image (where the shorter edge is first affected by the insufficient training data on CIFAR100 than
+resized to 256). We observe consistent improvements when applying the last-layer Dropout, which indicates a superior
+drop ratio 0.2 is employed after all BN layers on the large property of stability. Except for ResNeXt, nearly all the
+scale dataset. architectures achieved up to 0.2 ~ 0.3 increase of accuracy
+on both CIFAR10 and CIFAR100 dataset.
+Change Dropout into a more variance-stable form. The
+drawbacks of vanilla Dropout lie in the weight scale during
+6. Conclusion
+the test phase, which may lead to a large disturbance on
+statistical variance. This clue could push us to think: if we
+In this paper, we investigate the “variance shift” phe-
+find a scheme that functions like Dropout but carries a lighter
+nomenon when Dropout layers are applied before Batch
+variance shift, we may stabilize the numerical behaviors of
+Normalization on modern neural networks. We discover
+neural networks, thus the final performance would probably
+that due to their distinct test policies, neural variance would
+enjoy a possible benefit. Here we take the Figure 2 (a)
+be improper and shifted as the information flows in infer-
+case as an example for investigation where the variance
+ence, and it leads to the unexpected final predictions that
+shift rate is Tete = p (we let c = 0 for simplicity).
+drops the performance. To avoid the variance shift risks,
+That is, if we set the drop ratio (1 — p) as 0.1, the variance we next explore two strategies, and they are proved to work
+would be scaled by 0.9 when the network is transferred well in practice. We highly recommand that researchers
+from train to test. Inspired by the original Dropout paper could take these solutions to boost their models’ perfor-
+(Srivastava et al., 2014) where the authors also proposed mance if further improvement is desired, since their extra
+another form of Dropout that amounts to adding a Gaussian cost is nearly free and they are easy to be implemented.
+Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift
+References Lin, Min, Chen, Qiang, and Yan, Shuicheng. Network in
+network. arXiv preprint arXiv: 13 12.4400, 2013.
+Hannun, Awni, Case, Carl, Casper, Jared, Catanzaro, Bryan,
+Diamos, Greg, Elsen, Erich, Prenger, Ryan, Satheesh, Russakovsky, Olga, Deng, Jia, Su, Hao, Krause, Jonathan,
+Sanjeev, Sengupta, Shubho, Coates, Adam, et al. Deep Satheesh, Sanjeev, Ma, Sean, Huang, Zhiheng, Karpa-
+speech: Scaling up end-to-end speech recognition. arXiv thy, Andrej, Khosla, Aditya, Bernstein, Michael, et al.
+preprint arXiv: 1412.5567, 2014. Imagenet large scale visual recognition challenge. Inter-
+national Journal of Computer Vision, 115(3):211-252,
+He, Kaiming, Zhang, Xiangyu, Ren, Shaoging, and Sun,
+2015.
+Jian. Deep residual learning for image recognition. In
+Proceedings of the IEEE Conference on Computer Vision Springenberg, Jost Tobias, Dosovitskiy, Alexey, Brox,
+and Pattern Recognition, pp. 770-778, 2016a. Thomas, and Riedmiller, Martin. Striving for sim-
+plicity: The all convolutional net. arXiv preprint
+He, Kaiming, Zhang, Xiangyu, Ren, Shaoging, and Sun, arXiv: 1412.6806, 2014.
+Jian. Identity mappings in deep residual networks. In
+European Conference on Computer Vision, pp. 630-645. Srivastava, Nitish, Hinton, Geoffrey E, Krizhevsky, Alex,
+Springer, 2016b. Sutskever, Ilya, and Salakhutdinov, Ruslan. Dropout: a
+simple way to prevent neural networks from overfitting.
+Howard, Andrew G, Zhu, Menglong, Chen, Bo, Journal of Machine Learning Research, 15(1):1929-1958,
+Kalenichenko, Dmitry, Wang, Weijun, Weyand, Tobias, 2014.
+Andreetto, Marco, and Adam, Hartwig. Mobilenets: Ef-
+Srivastava, Rupesh K, Greff, Klaus, and Schmidhuber,
+ficient convolutional neural networks for mobile vision
+Jiirgen. Training very deep networks. In Advances in
+applications. arXiv preprint arXiv: 1704.04861, 2017.
+Neural Information Processing Systems, pp. 2377-2385,
+Hu, Jie, Shen, Li, and Sun, Gang. Squeeze-and-excitation 2015.
+networks. arXiv preprint arXiv: 1709.01507, 2017.
+Szegedy, Christian, Liu, Wei, Jia, Yangqing, Sermanet,
+Pierre, Reed, Scott, Anguelov, Dragomir, Erhan, Dumitru,
+Huang, Gao, Liu, Zhuang, Weinberger, Kilian Q, and
+Vanhoucke, Vincent, and Rabinovich, Andrew. Going
+van der Maaten, Laurens. Densely connected convolu-
+deeper with convolutions. In Proceedings of the IEEE
+tional networks. arXiv preprint arXiv: 1608.06993, 2016.
+Conference on Computer Vision and Pattern Recognition,
+loffe, Sergey and Szegedy, Christian. Batch normalization: pp. 1-9, 2015.
+Accelerating deep network training by reducing internal
+Szegedy, Christian, Vanhoucke, Vincent, Ioffe, Sergey,
+covariate shift. In International Conference on Machine
+Shlens, Jon, and Wojna, Zbigniew. Rethinking the in-
+Learning, pp. 448-456, 2015.
+ception architecture for computer vision. In Proceedings
+of the IEEE Conference on Computer Vision and Pattern
+Kim, Yoon, Jernite, Yacine, Sontag, David, and Rush,
+Recognition, pp. 2818-2826, 2016.
+Alexander M. Character-aware neural language models.
+In the Association for the Advance of Artificial Intelli- Szegedy, Christian, Ioffe, Sergey, Vanhoucke, Vincent, and
+gence, pp. 2741-2749, 2016. Alemi, Alexander A. Inception-v4, inception-resnet and
+the impact of residual connections on learning. In the
+Krizhevsky, Alex and Hinton, Geoffrey. Learning multiple
+Association for the Advance of Artificial Intelligence, pp.
+layers of features from tiny images. 2009.
+42784284, 2017.
+Krizhevsky, Alex, Sutskever, Ilya, and Hinton, Geoffrey E. Xie, Saining, Girshick, Ross, Dollar, Piotr, Tu, Zhuowen,
+Imagenet classification with deep convolutional neural and He, Kaiming. Aggregated residual transformations
+networks. In Advances in Neural Information Processing for deep neural networks. In JEEE Conference on Com-
+Systems, pp. 1097-1105, 2012. puter Vision and Pattern Recognition, pp. 5987-5995.
+IEEE, 2017.
+Larsson, Gustav, Maire, Michael, and Shakhnarovich, Gre-
+gory. Fractalnet: Ultra-deep neural networks without Zagoruyko, Sergey and Komodakis, Nikos. Wide residual
+residuals. arXiv preprint arXiv: 1605.07648, 2016. networks. arXiv preprint arXiv: 1605.07146, 2016.
+Lee, Chen-Yu, Xie, Saining, Gallagher, Patrick, Zhang, Zhang, Xiangyu, Zhou, Xinyu, Lin, Mengxiao, and Sun,
+Zhengyou, and Tu, Zhuowen. Deeply-supervised nets. In Jian. Shufflenet: An extremely efficient convolutional
+Proceedings of the International Conference on Artificial neural network for mobile devices. arXiv preprint
+Intelligence and Statistics, pp. 562-570, 2015. arXiv: 1707.01083, 2017.

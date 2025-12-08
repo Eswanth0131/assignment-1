@@ -1,0 +1,55 @@
+Fashion MNIST Case Study – Engineering AI Agents
+Engineering AI Agents
+BOOK
+Foundations
+Training Deep Networks
+Perception
+Kinematics
+State Estimation
+Large Language Models
+Multimodal Reasoning
+Task Planning
+Global Planning
+Local Planning
+Markov Decision Processes
+Reinforcement Learning
+VLA Agents
+COURSES
+Introduction to AI
+AI for Robotics
+Deep Learning for Computer Vision
+DATA MINING - BEING PORTED
+MEDIA
+AI for Robotics
+ABOUT ME
+Training Deep Netwoks
+Fashion MNIST Case Study
+Training Deep Netwoks
+Deep Neural Networks
+Introduction to Backpropagation
+Backpropagation in Deep Neural Networks
+Backpropagation DNN exercises
+Fashion MNIST Case Study
+Data Preprocessing
+Covariance and Correlation Matrices
+Batch Normalization
+Layer Normalization (LN)
+Regularization in Deep Neural Networks
+Introduction to Transfer Learning
+Transfer Learning for Computer Vision Tutorial
+On this page
+Fashion MNIST Case Study
+Edit this page
+View source
+Report an issue
+Training Deep Netwoks
+Fashion MNIST Case Study
+Fashion MNIST Case Study
+Fashion MNIST Case Study
+This is a case study on MNIST Fashion dataset that due to the almost perfect classification of MNIST is now the new point of reference dataset to learn and try ML algorithms on. You can click on the button “Run in Google Colab” in
+this
+notebook and step through the code.
+Backpropagation DNN exercises
+Edit this page
+View source
+Report an issue

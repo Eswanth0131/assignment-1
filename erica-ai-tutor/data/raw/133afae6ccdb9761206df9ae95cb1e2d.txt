@@ -1,0 +1,837 @@
+Task Planning
+The Unified Planning Library
+
+
+
+
+The Unified Planning Library
+
+
+
+
+
+
+
+
+
+
+In this demo we will scratch the surface of the UP: we will set it up, we manually create the blocksworld domain using the UP API, we create a problem using a bit of python and we solve the problem using different engines and a parallel composition of engines.
+
+
+
+
+Setup of the library
+
+
+For this demo, we only need the following two shell commands. The first installs 
+libgraphviz
+ used for the plotting of graphs, the second installs the UP library, the set of default planning engines (namely: aries, enhsp, fast-downward, fmap, lpg, pyperplan, symk and tamer) and the optional python library dependecies for plotting.
+
+
+
+
+# Please note that these are included in the course container - uncomment if you want to run on colab
+
+
+
+
+#!apt install graphviz graphviz-dev
+
+
+#!pip install unified-planning[engines,plot]
+
+
+
+
+
+
+
+
+Modeling the Blocksworld domain
+
+
+We will give a more in-detail description of the API later, here we just show a basic blocksworld domain encoded in Python using the UP API.
+
+
+
+
+from
+ unified_planning.model.types 
+import
+ BOOL
+
+
+from
+ unified_planning.shortcuts 
+import
+ 
+*
+
+
+
+
+# Create a new type (without parent)
+
+
+Block 
+=
+ UserType(
+"Block"
+)
+
+
+
+
+# The UP calls "fluents" both predicates and functions
+
+
+# Each fluent has a type (BOOL for all fluents in this case) and might have parameters
+
+
+clear 
+=
+ Fluent(
+"clear"
+, BOOL, obj
+=
+Block) 
+# in PDDL this would be (clear ?obj - Block)
+
+
+on_table 
+=
+ Fluent(
+"on-table"
+, BOOL, obj
+=
+Block)
+
+
+arm_empty 
+=
+ Fluent(
+"arm-empty"
+, BOOL)
+
+
+holding 
+=
+ Fluent(
+"holding"
+, BOOL, obj
+=
+Block)
+
+
+on 
+=
+ Fluent(
+"on"
+, BOOL, above
+=
+Block, below
+=
+Block)
+
+
+
+
+# Pickup action with one parameter a precondition formula and some effects
+
+
+pickup 
+=
+ InstantaneousAction(
+"pickup"
+, obj
+=
+Block)
+
+
+pickup.add_precondition(clear(pickup.obj) 
+&
+ on_table(pickup.obj) 
+&
+ arm_empty)
+
+
+pickup.add_effect(holding(pickup.obj), 
+True
+)
+
+
+pickup.add_effect(clear(pickup.obj), 
+False
+)
+
+
+pickup.add_effect(on_table(pickup.obj), 
+False
+)
+
+
+pickup.add_effect(arm_empty, 
+False
+)
+
+
+
+
+# More actions...
+
+
+putdown 
+=
+ InstantaneousAction(
+"putdown"
+, obj
+=
+Block)
+
+
+putdown.add_precondition(holding(putdown.obj))
+
+
+putdown.add_effect(holding(putdown.obj), 
+False
+)
+
+
+putdown.add_effect(clear(putdown.obj), 
+True
+)
+
+
+putdown.add_effect(on_table(putdown.obj), 
+True
+)
+
+
+putdown.add_effect(arm_empty, 
+True
+)
+
+
+
+
+stack 
+=
+ InstantaneousAction(
+"stack"
+, obj
+=
+Block, underobj
+=
+Block)
+
+
+# More than one precondition can be set (implicit conjunction)
+
+
+stack.add_precondition(clear(stack.underobj) 
+&
+ holding(stack.obj))
+
+
+stack.add_precondition(Not(Equals(stack.obj, stack.underobj)))
+
+
+stack.add_effect(arm_empty, 
+True
+)
+
+
+stack.add_effect(clear(stack.obj), 
+True
+)
+
+
+stack.add_effect(on(stack.obj, stack.underobj), 
+True
+)
+
+
+stack.add_effect(clear(stack.underobj), 
+False
+)
+
+
+stack.add_effect(holding(stack.obj), 
+False
+)
+
+
+
+
+unstack 
+=
+ InstantaneousAction(
+"unstack"
+, obj
+=
+Block, underobj
+=
+Block)
+
+
+unstack.add_precondition(on(unstack.obj, unstack.underobj) 
+&
+ clear(unstack.obj) 
+&
+ arm_empty)
+
+
+unstack.add_effect(holding(unstack.obj), 
+True
+)
+
+
+unstack.add_effect(clear(unstack.underobj), 
+True
+)
+
+
+unstack.add_effect(on(unstack.obj, unstack.underobj), 
+False
+)
+
+
+unstack.add_effect(clear(unstack.obj), 
+False
+)
+
+
+unstack.add_effect(arm_empty, 
+False
+)
+
+
+
+
+# So far we just created objects in memory, we have not yet declared a problem
+
+
+# A `Problem` is a planning instance, but as a mutable object it can be partially specified
+
+
+# Here we just add fluents and actions, so we represent the "domain"
+
+
+problem 
+=
+ Problem(
+"blocksworld"
+)
+
+
+for
+ f 
+in
+ [clear, on_table, arm_empty, holding, on]:
+
+
+  
+# We can specify arbitrary default initial values (particularly useful for numeric fluents)
+
+
+  problem.add_fluent(f, default_initial_value
+=
+False
+)
+
+
+problem.add_actions([pickup, putdown, stack, unstack])
+
+
+
+
+# We can meaningfully print most UP objects for debug purposes
+
+
+print
+(problem)
+
+
+
+
+problem name = blocksworld
+
+types = [Block]
+
+fluents = [
+  bool clear[obj=Block]
+  bool on-table[obj=Block]
+  bool arm-empty
+  bool holding[obj=Block]
+  bool on[above=Block, below=Block]
+]
+
+actions = [
+  action pickup(Block obj) {
+    preconditions = [
+      ((clear(obj) and on-table(obj)) and arm-empty)
+    ]
+    effects = [
+      holding(obj) := true
+      clear(obj) := false
+      on-table(obj) := false
+      arm-empty := false
+    ]
+  }
+  action putdown(Block obj) {
+    preconditions = [
+      holding(obj)
+    ]
+    effects = [
+      holding(obj) := false
+      clear(obj) := true
+      on-table(obj) := true
+      arm-empty := true
+    ]
+  }
+  action stack(Block obj, Block underobj) {
+    preconditions = [
+      (clear(underobj) and holding(obj))
+      (not (obj == underobj))
+    ]
+    effects = [
+      arm-empty := true
+      clear(obj) := true
+      on(obj, underobj) := true
+      clear(underobj) := false
+      holding(obj) := false
+    ]
+  }
+  action unstack(Block obj, Block underobj) {
+    preconditions = [
+      ((on(obj, underobj) and clear(obj)) and arm-empty)
+    ]
+    effects = [
+      holding(obj) := true
+      clear(underobj) := true
+      on(obj, underobj) := false
+      clear(obj) := false
+      arm-empty := false
+    ]
+  }
+]
+
+objects = [
+  Block: []
+]
+
+initial fluents default = [
+  bool clear[obj=Block] := false
+  bool on-table[obj=Block] := false
+  bool arm-empty := false
+  bool holding[obj=Block] := false
+  bool on[above=Block, below=Block] := false
+]
+
+initial values = [
+]
+
+goals = [
+]
+
+
+
+
+
+
+
+
+
+
+
+
+Modeling a simple problem
+
+
+We create a simple problem showing how to use python “data”. We create a problem where the goal is to stack 6 blocks labeled “m”, “e”, “d”, “o” to form the word “demo” (where “d” is on top and “o” is on the table).
+
+
+
+
+
+
+
+
+Unified Planning.png
+
+
+
+
+
+
+
+
+str_goal 
+=
+ 
+"demo"
+ 
+# this is the "python data"
+
+
+
+
+# we create the 6 objects programmatically
+
+
+objects 
+=
+ [Object(x, Block) 
+for
+ x 
+in
+ str_goal]
+
+
+problem.add_objects(objects)
+
+
+
+
+# Set the initial state (all fluents are false by default because of the domain specification)
+
+
+problem.set_initial_value(arm_empty, 
+True
+)
+
+
+for
+ o 
+in
+ objects:
+
+
+  problem.set_initial_value(on_table(o), 
+True
+)
+
+
+  problem.set_initial_value(clear(o), 
+True
+)
+
+
+
+
+# Set the goal
+
+
+base 
+=
+ objects[
+0
+]
+
+
+for
+ o 
+in
+ objects[
+1
+:]:
+
+
+  problem.add_goal(on(base, o))
+
+
+  base 
+=
+ o
+
+
+
+
+# Print the full planning instance
+
+
+print
+(problem)
+
+
+
+
+problem name = blocksworld
+
+types = [Block]
+
+fluents = [
+  bool clear[obj=Block]
+  bool on-table[obj=Block]
+  bool arm-empty
+  bool holding[obj=Block]
+  bool on[above=Block, below=Block]
+]
+
+actions = [
+  action pickup(Block obj) {
+    preconditions = [
+      ((clear(obj) and on-table(obj)) and arm-empty)
+    ]
+    effects = [
+      holding(obj) := true
+      clear(obj) := false
+      on-table(obj) := false
+      arm-empty := false
+    ]
+  }
+  action putdown(Block obj) {
+    preconditions = [
+      holding(obj)
+    ]
+    effects = [
+      holding(obj) := false
+      clear(obj) := true
+      on-table(obj) := true
+      arm-empty := true
+    ]
+  }
+  action stack(Block obj, Block underobj) {
+    preconditions = [
+      (clear(underobj) and holding(obj))
+      (not (obj == underobj))
+    ]
+    effects = [
+      arm-empty := true
+      clear(obj) := true
+      on(obj, underobj) := true
+      clear(underobj) := false
+      holding(obj) := false
+    ]
+  }
+  action unstack(Block obj, Block underobj) {
+    preconditions = [
+      ((on(obj, underobj) and clear(obj)) and arm-empty)
+    ]
+    effects = [
+      holding(obj) := true
+      clear(underobj) := true
+      on(obj, underobj) := false
+      clear(obj) := false
+      arm-empty := false
+    ]
+  }
+]
+
+objects = [
+  Block: [d, e, m, o]
+]
+
+initial fluents default = [
+  bool clear[obj=Block] := false
+  bool on-table[obj=Block] := false
+  bool arm-empty := false
+  bool holding[obj=Block] := false
+  bool on[above=Block, below=Block] := false
+]
+
+initial values = [
+  arm-empty := true
+  on-table(d) := true
+  clear(d) := true
+  on-table(e) := true
+  clear(e) := true
+  on-table(m) := true
+  clear(m) := true
+  on-table(o) := true
+  clear(o) := true
+]
+
+goals = [
+  on(d, e)
+  on(e, m)
+  on(m, o)
+]
+
+
+
+
+
+
+
+
+
+
+
+
+OneshotPlanner Operation Mode
+
+
+
+
+Solving the problem with any engine
+
+
+The UP can analyze a problem specification and filter the engines that can solve a certain problem. It does so by a data structure called 
+ProblemKind
+ (more on this later).
+
+
+We can inspect the 
+ProblemKind
+ of a problem by using the 
+kind
+ property.
+
+
+
+
+print
+(problem.kind)
+
+
+
+
+PROBLEM_CLASS: ['ACTION_BASED']
+CONDITIONS_KIND: ['NEGATIVE_CONDITIONS', 'EQUALITIES']
+TYPING: ['FLAT_TYPING']
+
+
+
+
+
+
+We can ask the UP to solve the problem using any suitable engine (a preference list is provided, a user can edit it programmatically or provide a custom configuation file: https://unified-planning.readthedocs.io/en/latest/engines.html#engine-selection-and-preference-list).
+
+
+OneshotPlanner
+ is the basic planning operation mode: given a problem find a plan
+
+
+
+
+from
+ unified_planning.shortcuts 
+import
+ 
+*
+
+
+
+
+with
+ OneshotPlanner(problem_kind
+=
+problem.kind) 
+as
+ planner:
+
+
+  res 
+=
+ planner.solve(problem)
+
+
+  
+print
+(res)
+
+
+
+
+
+
+NOTE: To disable printing of planning engine credits, add this line to your code: `up.shortcuts.get_environment().credits_stream = None`
+
+
+  *** Credits ***
+
+
+  * In operation mode `OneshotPlanner` at line 3 of `/tmp/ipykernel_4328/1120260661.py`, 
+you are using the following planning engine:
+
+
+  * Engine name: Fast Downward
+
+  * Developers:  Uni Basel team and contributors (cf. https://github.com/aibasel/downward/blob/main/README.md)
+
+
+  * Description: 
+Fast Downward is a domain-independent classical planning system.
+
+
+
+
+
+
+status: SOLVED_SATISFICING
+
+engine: Fast Downward
+
+plan: SequentialPlan:
+
+    pickup(d)
+
+    stack(d, e)
+
+    pickup(m)
+
+    stack(m, o)
+
+    unstack(d, e)
+
+    putdown(d)
+
+    pickup(e)
+
+    stack(e, m)
+
+    pickup(d)
+
+    stack(d, e)
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+Planning Domain Definition Language (PDDL)
+
+
+
+
+
+
+
+
+
+
+Logistics Planning in PDDL
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+Edit this page
+View source

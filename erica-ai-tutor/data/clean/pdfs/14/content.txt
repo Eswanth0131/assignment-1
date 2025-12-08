@@ -1,0 +1,694 @@
+Chapter 6
+Linear Regression
+Given a data set D = {(a;, y;)};"_, the objective is to learn the relationship between features
+and the target. We usually start by hypothesizing the functional form of this relationship.
+For example,
+f(x) = wo + wiry + wexre
+where w = (Wo, W1, W2) is a set of parameters that need to be determined (learned) and
+x“ = (41,22). Alternatively, we may hypothesize that f(a) = a82+x 22, where 0 = (a, §) is
+another set of parameters to be learned. In the former case, the target function is modeled
+as a linear combination of features and parameters; i.e.,
+d
+f(a) = So wj2;,
+j=0
+where we extended w to (% = 1,21,2%2,...,%q). Finding the best parameters w is then
+referred to as linear regression problem, whereas all other types of relationship between the
+features and the target fall into a category of non-linear regression. In either situation,
+the regression problem can be presented as a probabilistic modeling approach that reduces
+to parameter estimation; i.e., to an optimization problem with the goal of maximizing
+or minimizing some performance criterion between target values {y;};-, and predictions
+{ f(a;)}e_,. We can think of a particular optimization algorithm as the learning or training
+algorithm.
+6.1 Maximum likelihood formulation
+We now consider a statistical formulation of linear regression. We shall first lay out the
+assumptions behind this process and subsequently formulate the problem through maxi-
+mization of the conditional likelihood function. In following section, we will show how to
+solve the optimization and analyze the solution and its basic statistical properties.
+Let us assume that the observed data set D is a product of a data generating process in
+which n data points were drawn independently and according to the same distribution p(x).
+Assume also that the target variable Y has an underlying linear relationship with features
+X = (X1, X2,...,Xq), modified by some error term ¢ that follows a zero-mean Gaussian
+distribution; i.e., ¢ : N (0,07). That is, for a given input a, the target y is a realization of
+a random variable Y defined as
+d
+Y= S 5 wy, X; +6,
+j=0
+82
+where w = (w9,W1,.--,wWq) is a set of unknown coefficients we seek to recover through
+estimation. Generally, the assumption of normality for the error term is reasonable (recall
+the central limit theorem!), although the independence between ¢ and X may not hold in
+practice. Using a few simple properties of expectations, we can see that Y also follows
+a Gaussian distribution; i.e., its conditional density is p(y|a,w) = N(y,07), where pu is
+expressed in an algebraic notation as w'x.
+In linear regression, we seek to approximate the target as f(x) = w'x, where weights
+w are to be determined. We first write the conditional likelihood function for a single pair
+(x,y) as ;
+7 (y — 9 wa;)
+1
+exp
+207
+where we use the notation exp(a) = e®, to make the exponent easier to read. Observe that
+the only change from the conditional density function of Y is that coefficients w are used
+instead of w. Incorporating the entire data set D = {(a;,y;)}i_1, we can now write the
+conditional likelihood function as p(y|X,w), where X is the data matrix, and find weights
+as
+Ww = arg max {p(y|X,w)}.
+Since the n examples are independent and identically distributed (i.i.d.), we have
+p(y|X, w) = |] p(uilxiw,)
+wl
+1 (ui — Xho wjeiy)
+Tm
+7 I V2ro?
+For the reasons of mathematical convenience, we will look at the logarithm (monotonic
+function) of the likelihood function and express the log-likelihood as
+In(p(y[X, w)) = — S n o log (V2n0?) — 5 l 3 n (wn w d its 2
+i=l i=l j=0
+Given that the first term on the right-hand hand side is independent of w, maximizing the
+likelihood function corresponds exactly to minimizing the sum of squared errors
+n d
+Err(w) = S- (f (xi) — yi)? > f(x) = So wy
+— j=0
+Geometrically, this error is the square of the Euclidean distance between the vector of
+predictions y = (f1),( f(aae),..., f(a@,)) and the vector of observed target values y =
+(41, Y2;---;Yn). A simple example illustrating the linear regression problem is shown in
+Figure 6.1.
+83
+yh
+P— fla)
+(2p, Yo) $
+b ey = ft) -
+(xy, 4)
+ce
+Figure 6.1: An example of a _ linear regression fitting on data set D =
+{(1, 1.2) , (2, 2.3) , (8, 2.3) , (4,3.3)}. The task of the optimization process is to find the best
+linear function f(x) = wo + wix so that the sum of squared errors ef + e% + e% + e% is
+minimized.
+To more explicitly see why the maximum likelihood solution corresponds to minimizing
+Err(w), notice that maximizing the likelihood is equivalent to maximizing the log-likelihood
+(because log is monotonic) which is equivalent to minimizing the negative log-likelihood.
+Therefore, the maximum likelihood wy, corresponds to
+Wu = argmin — In(p(y|X, w))
+weR?¢
+n 1 n d 2
+= argmin )— log (v ano”) + 352 S- Yi — S- Wj Xij
+weER? 521 O" i=l j=0
+n d 2
+= argmin S- Ys — S- Wj Xij
+weR?@ i=l 7=0
+= argmin Err(w)
+weR?@
+In the next sections, we will discuss how to solve this optimization and the properties of
+the solution.
+Note that we could have simply started with some (expert-defined) error function, as
+was originally done for OLS and using Err(w). However, the statistical framework provides
+insights into the assumptions behind OLS regression. In particular, the assumptions include
+that the data D was drawn i.i.d.; there is an underlying linear relationship between features
+and the target; that the noise (error term) is zero-mean Gaussian and independent of the
+features; and that there is an absence of noise in the collection of features.
+84
+6.2 Ordinary Least-Squares (OLS) Regression
+To minimize the sum of squared errors, we shall first re-write Err(w) as
+Tm
+Err(w) = S- (f (xi) — yi)?
+i=1
+n d 2
+a Wiig —~ Yd ;
+i=1 \j=0
+where, again, we expanded each data point x; by z;9 = 1 to simplify the expression.
+We now calculate the gradient VErr(w). Finding weights for which VErr(w) = 0 will
+result in a stationary point. ‘To ensure that this stationary point is a global minimum, we
+need a bit more information. We can look at the second derivative; this requires under-
+standing of Hessian, so we include this later in the notes in Example 8. But, fortunately,
+it is even simpler here, since we know that this objective is convex in w; therefore, any
+stationary point will be a global minimum.
+Now, we set the partial derivatives to 0 and solve the equations for each weight w;
+OErr n{é
+5 =25° 1S wr—yy | ro= 0
+W0 i=1 \j=0
+OErr ae
+5 =25S°(S ) wjyriy—y | ta= 0
+Wi i=1 \j=0
+OErr nf{é
+5 =2S° (So wr—y yi | ti=x 0
+Wd i=1 \j=0
+This results in a system of d+ 1 linear equations with d+ 1 unknowns that can be routinely
+solved (e.g. by using Gaussian elimination).
+While this formulation is useful, it does not allow us to obtain a closed-form solution
+for w or discuss the existence or multiplicity of solutions. To address the first point we will
+exercise some matrix calculus, while the remaining points will be discussed later. We will
+first write the sum of square errors using the matrix notation as
+Err(w) = (Xw — y)! (Xw — y)
+= ||Xw—yll3,
+where ||v||, = Vv'v = yr +v2+...v2 is the length of vector v; it is also called the £2
+norm. We can now formalize the ordinary least-squares (OLS) linear regression problem as
+Wy, = arg min ||Xw — y||5.
+w
+85
+We proceed by finding VErr(w). The gradient function VErr(w) is a derivative of a scalar
+with respect to a vector. However, the intermediate steps of calculating the gradient require
+derivatives of vectors with respect to vectors (some of the rules of such derivatives are shown
+in Table A.1). Application of the rules from Table A.1 results in
+VErr(w) = 2X'Xw— 2X'y
+and, therefore, from VErr(w) = 0 we find that
+Wait = (X'X)*X'y. (6.1)
+We can now express the predicted target values as
+y = Xwo
+= X(X'X)'X'y.
+The matrix X(X'X)7'X" is called the projection matrix; we will see later that it projects
+y to the column space of X.
+Example 14: Consider again data set D = {(1, 1.2) , (2, 2.3) , (3, 2.3) , (4,3.3)} from Figure
+6.1. We want to find the optimal coefficients of the least-squares fit for f(x) = wo + wiz
+and then calculate the sum of squared errors on D after the fit.
+The OLS fitting can now be performed using
+Pio] puw7 [23|
+x=], sfwa | y= 53 |:
+lt 4 | | 3.3 |
+where a column of ones was added to x to allow for a non-zero intercept (y = wo when
+x = 0). Substituting x and y into Eq. (6.1) results in w = (0.7, 0.63) and the sum of square
+errors is Err(w) = 0.223. O
+As seen in the example above, it is a standard practice to add a column of ones to
+the data matrix x in order to ensure that the fitted line, or generally a hyperplane, does
+not have to pass through the origin of the coordinate system. This effect, however, can be
+achieved in other ways. Consider the first component of the gradient vector
+OOEwr r > ,d Wi Lig — | Lig =O
+=2
+0
+where, because x;) = 1 by definition, we obtain that
+0=S T > r ( d WiLij | =Sn> (0 Sdamy |
+i; =l j=0 i=l j=l
+giving
+nm nm d nm
+>_ wo = Yi ~ > > Vij.
+i=1 i=l j=1 i=l
+86
+When all features (columns of X) are normalized to have zero mean, i-e. when )7j_, xj; = 0
+for any column Jj, it follows that
+1 nm
+Wo = — Soy.
+Mo=l
+We see now that if the target variable is normalized to the zero mean as well, it follows that
+wo = 0 and that the column of ones is not needed.
+6.2.1 Weighted error function
+In some applications it is useful to consider minimizing the weighted error function
+2
+n d
+Err(w) = S- Cy S- WiLig — Yi j
+i=l j=0
+where c; > 0 is a cost for data point 7. Expressing this in a matrix form, the goal is to
+minimize (Xw — y)! C (Xw — y), where C = diag (c1,c2,..-.,¢,). Using a similar approach
+as above, it can be shown that the weighted least-squares solution wc can be expressed as
+Wo= (xTMCx) -1 XTMCy.
+In addition, it can be derived that
+Wo = Wut + (xTMCx) -1 x! (I _ C) (Xworr. — y) ?
+where Wy, is provided by Eq. (6.1). We can see that the solutions are identical when
+C =I, but also when Xwyy, = y.
+6.2.2 Predicting multiple outputs simultaneously
+The extension to multiple outputs is straightforward, where now the target is an m-
+dimensional vector, y € R”, rather than a scalar, giving target matrix Y € R”*”’. Corre-
+spondingly, the weights W € R?*TM to give W'x € R”TM, with error
+Err(W) = ||XW — Y||Z, = S- |X;W — Y;.||3 > Frobenius norm
+i=l
+= trace ((KW — Y)"(XW — Y))
+and solution
+Ww = (X'X)UXTY.
+Exercise: Derive this solution, by taking partial derivatives or, preferably, by using gradient
+rules for matrix variables. A good resource for matrix gradients is the matrix cookbook
+[15].
+87
+6.3 An Algebraic Perspective
+Another powerful tool for analyzing and understanding linear regression comes from linear
+and applied linear algebra. In this section we take a detour to address fundamentals of
+linear algebra and then apply these concepts to deepen our understanding of regression. In
+linear algebra, we are frequently interested in solving the following set of equations, given
+below in a matrix form
+Ax =b. (6.2)
+Here, A is an m X n matrix, b is an m x 1 vector, and x is an n x 1 vector that is to be
+found. All elements of A, x, and b are considered to be real numbers. We shall start with
+a simple scenario and assume A is a square, 2 x 2 matrix. This set of equations can be
+expressed as
+41121 + ayQ%2 = by
+a2121 + 422% = be
+For example, we may be interested in solving
+%1 +22=23
+%1 +32=295
+This is a convenient formulation when we want to solve the system, e.g. by Gaussian
+elimination. However, it is not a suitable formulation to understand the question of the
+existence of solutions. In order for us to do this, we briefly review the basic concepts in
+linear algebra.
+6.3.1 The four fundamental subspaces
+The objective of this section it to briefly review the four fundamental subspaces in linear
+algebra (column space, row space, nullspace, left nullspace) and their mutual relationship.
+We shall start with our example from above and write the system of linear equations as
+fet [sd [5]
+We can see now that by solving Ax = b we are looking for the right amounts of vectors
+(1,1) and (2,3) so that their linear combination produces (3,5); these amounts are x; = —1
+and x2 = 2. Let us define a; = (1,1) and ag = (2,3) to be the column vectors of A;
+ic. A = [a; ag]. Thus, Ax = b will be solvable whenever b can be expressed as a linear
+combination of the column vectors a; and ag.
+All linear combinations of the columns of matrix A constitute the column space of A,
+C(A), with vectors a,...a, being a basis of this space. Both b and C(A) lie in the m-
+dimensional space RTM. Therefore, what Ax = b is saying is that b must lie in the column
+space of A for the equation to have solutions. In the example above, if columns of A are
+linearly independent!, the solution is unique, i.e. there exists only one linear combination
+‘As a reminder, two vectors are independent if their linear combination is zero only when both a2, and
+x2 are zero.
+88
+of the column vectors that will give b. Otherwise, because A is a square matrix, the system
+has no solutions. An example of such a situation is
+a] Ee]e[s)
+where aj = (1,1) and ag = (2,2). Here, a; and ag are (linearly) dependent because
+2a, — ag = 0. There is a deep connection between the spaces generated by a set of vectors
+and the properties of the matrix A. For now, using the example above, it suffices to say
+that if a; and ag are independent the matrix A is non-singular (singularity can be discussed
+only for square matrices), that is of full rank.
+In an equivalent manner to the column space, all linear combinations of the rows of
+A constitute the row space, denoted by C(A'), where both x and C(A') are in R”. All
+solutions to Ax = 0 constitute the nullspace of the matrix, N(A), while all solutions of
+Aly = 0 constitute the so-called left nullspace of A, N(A'). Clearly, C(A) and N(A')
+are embedded in RTM, whereas C(A') and N(A) are in R”. However, the pairs of subspaces
+are orthogonal (vectors u and v are orthogonal if u'v = 0); that is, any vector in C(A) is
+orthogonal to all vectors from N(A!') and any vector in C(A') is orthogonal to all vectors
+from N(A). This is easy to see: if x € N(A), then by definition Ax = 0, and thus each row
+of A is orthogonal to x. If each row is orthogonal to x, then so are all linear combinations
+of rows.
+Orthogonality is a key property of the four subspaces, as it provides useful decomposition
+of vectors x and b from Eq. (6.2) with respect to A (we will exploit this in the next Section).
+For example, any x € R” can be decomposed as
+XXp= + Xn,
+where x, € C(A') and x, € N(A), such that ||x||3 = ||x;|5 + ||xn||3. Similarly, every
+b € R” can be decomposed as
+b=b.+by,
+where b, € C(A), b; € N(A‘), and ||b||3 = ||bel|3 + || by1[3.
+We mentioned above that the properties of fundamental spaces are tightly connected
+with the properties of matrix A. To conclude this section, let us briefly discuss the rank
+of a matrix and its relationship with the dimensions of the fundamental subspaces. The
+basis of the space is the smallest set of vectors that span the space (this set of vectors is not
+unique). The size of the basis is also called the dimension of the space. In the example at
+the beginning of this subsection, we had a two dimensional column space with basis vectors
+a, = (1,1) and ag = (2,3). On the other hand, for aj = (1,1) and ag = (2,2) we had
+a one dimensional column space, i.e. a line, fully determined by any of the basis vectors.
+Unsurprisingly, the dimension of the space spanned by column vectors equals the rank of
+matrix A. One of the fundamental results in linear algebra is that the rank of A is identical
+to the dimension of C(A), which in turn is identical to the dimension of C(A‘').
+6.3.2. Minimizing ||Ax — b|/?
+Let us now look again at the solutions to Ax = b. In general, there are three different
+outcomes:
+89
+Figure 6.2: Illustration of the projection of vector b to the column space of matrix A.
+Vectors p (b.) and e (b;) represent the projection point and the error, respectively.
+1. there are no solutions to the system
+2. there is a unique solution to the system, and
+3. there are infinitely many solutions.
+These outcomes depend on the relationship between the rank (r) of A and dimensions m
+and n. We already know that when r = m = n (square, invertible, full rank matrix A)
+there is a unique solution to the system, but let us investigate other situations. Generally,
+when r =n < m (full column rank), the system has either one solution or no solutions, as
+we will see momentarily. When r =m <_ n (full row rank), the system has infinitely many
+solutions. Finally, in cases when r < _m and r < n, there are either no solutions or there
+are infinitely many solutions. Because Ax = b may not be solvable, we generalize solving
+Ax = b to minimizing ||Ax —b]|,. In such a way, all situations can be considered in a
+unified framework.
+Let us consider the following example
+[tbe Le}e[E]
+which illustrates an instance where we are unlikely to have a solution to Ax = b, unless
+there is some constraint on b,, bg, and bs; here, the constraint is b3 = 2b2 — b,. In this
+situation, C(A) is a 2D plane in R® spanned by the column vectors a; = (1,1,1) and
+ag = (2,3,4). If the constraint on the elements of b is not satisfied, our goal is to try to
+find a point in C(A) that is closest to b. This happens to be the point where b is projected
+to C(A), as shown in Figure 6.2. We will refer to the projection of b to C(A) as p. Now,
+using the standard algebraic notation, we have the following equations
+b=p+e
+p= Ax
+Since p and e are orthogonal, we know that p'e = 0. Let us now solve for x
+(Ax)'(b— Ax) =0
+x'Alb—x'A'Ax=0
+x" (ATb—ATAx) =0
+90
+and thus
+x= (ATA) Alb.
+This is exactly the same solution as one that minimized the sum of squared errors and
+maximized the likelihood. The matrix
+At= (ATA) ~ AT
+is called the Moore-Penrose pseudo-inverse or simply a pseudo-inverse. This is an important
+matrix because it always exists and is unique, even in situations when the inverse of A!A
+does not exist. This happens when A has dependent columns (technically, A and A'A will
+have the same nullspace that contains more than just the origin of the coordinate system;
+thus the rank of A' A is less than n). Let us for a moment look at the projection vector p.
+We have
+p = Ax
+—A (ATA) ~ A'b.
+where A (ATA) A! is the matrix that projects b to the column space of A.
+While we arrived at the same result as in previous sections, the tools of linear algebra
+allow us to discuss OLS regression at a deeper level. Let us examine for a moment the
+existence and multiplicity of solutions to
+arg min || Ax — bl, . (6.3)
+Clearly, the solution to this problem always exists. However, we shall now see that the
+solution to this problem is generally not unique and that it depends on the rank of A.
+Consider x to be one solution to Eq. (8.3). Recall that x = x,+x,, and that it is multiplied
+by A; thus, any vector x = x, + ax,, where a € R, is also a solution. Observe that x,
+is common to all such solutions; if you cannot see it, assume there exists another vector
+from the row space and show that it is not possible. If the columns of A are independent,
+the solution is unique because the nullspace contains only the origin. Otherwise, there are
+infinitely many solutions. In such cases, what exactly is the solution found by projecting b
+to C(A)? Let us look at it:
+x* = Alb
+=(ATA) AT(pte)
+— (ATA) ~ A'p
+~ x,
+as p = Ax,. Given that x, is unique, the solution found by the least squares optimization is
+the one that simultaneously minimizes || Ax — b]], and ||x||, (observe that ||x||, is minimized
+because the solution ignores any component from the nullspace). Thus, the OLS regression
+problem is sometimes referred to as the minimum-norm least-squares problem.
+91
+Let us now consider situations where Ax = b has infinitely many solutions; i.e., when
+b € C(A). This usually arises when r < m < n. Here, because b is already in the column
+space of A, the only question is what particular solution x will be found by the minimization
+procedure. As we have seen above, the outcome of the minimization process is the solution
+with the minimum Lz norm ||x]|,.
+To summarize, let us first get back to our original notation where X is the matrix and
+w are the weights to be found. The goal of the OLS regression problem is to solve Xw = y,
+if it is solvable. When d < n this is not a realistic scenario in practice. Thus, we relaxed
+the requirement and tried to find the point in the column space C(X) that is closest to
+y. This turned out to be equivalent to minimizing the sum of square errors (or Euclidean
+distance) between n-dimensional vectors Xw and y. It also turned out to be equivalent to
+the maximum likelihood solution presented in Section 6.1. When n < d, a usual situation
+in practice is that there are infinitely many solutions. In these situations, our optimization
+algorithm will find the one with the minimum Ly norm.
+6.4 Linear regression for non-linear problems
+At first, it might seem that the applicability of linear regression to real-life problems is
+greatly limited. After all, it is not clear whether it is realistic (most of the time) to assume
+that the target variable is a linear combination of features. Fortunately, the applicability
+of linear regression is broader because we can use it to obtain non-linear functions. The
+main idea is to apply a non-linear transformation to the data matrix X prior to the fitting
+step, which then enables a non-linear fit. Obtaining such a useful feature representation is
+a central problem in machine learning; we will discuss this in detail in Chapter 9. Here,
+we will first examine a simpler expanded representation that enables non-linear learning:
+polynomial curve fitting.
+6.4.1 Polynomial curve fitting
+We start with one-dimensional data. In OLS regression, we would look for the fit in the
+following form
+f(x) = wo + wie,
+where x is the data point and w = (wo, w1) is the weight vector. To achieve a polynomial
+fit of degree p, we will modify the previous expression into
+Pp
+f(x) = So wj2!,
+37=0
+where p is the degree of the polynomial. We will rewrite this expression using a set of basis
+functions as
+f(x) = 3° wo; (2)
+j=0
+=w -9,
+92
+x ®
+1 | a bo(#1) |. | bp(x1)
+L2 —>
+n t, 0 (an) 7 Fpl)
+Figure 6.3: Transformation of ann x 1 data matrix x into ann x (p+1) matrix ® using
+a set of basis functions ¢;, 7 =0,1,...,p.
+where ¢;(x) = 2/ and @ = (@0(2), ¢1(2),..-,¢p(x)). Applying this transformation to every
+data point in x results in a new data matrix ®, as shown in Figure 6.3.
+Following the discussion from Section 6.2, the optimal set of weights is calculated as
+Ww, = (oe) b'y.
+Example 15: In Figure 6.1 we presented an example of a data set with four data points.
+What we did not mention was that, given a set {71, 22,73, 24}, the targets were generated
+by using function 1+ 5 and then adding a measurement error e = (—0.3, 0.3, —0.2,0.3). It
+turned out that the optimal coefficients Wy, = (0.7, 0.63) were close to the true coefficients
+w = (1,0.5), even though the error terms were relatively significant. We will now attempt
+to estimate the coefficients of a polynomial fit with degrees p = 2 and p = 3. We will
+also calculate the sum of squared errors on D after the fit as well as on a large discrete set
+of values x € {0,0.1,0.2,...,10} where the target values will be generated using the true
+function 1+ $.
+Using a polynomial fit with degrees p = 2 and p = 3 results in wz = (0.575, 0.755, —0.025)
+and w3 = (—3.1, 6.6, —2.65, 0.35), respectively. The sum of squared errors on D equals
+Err(w2) = 0.221 and Err(ws3) + 0. Thus, the best fit is achieved with the cubic poly-
+nomial. However, the sum of squared errors on the outside data set reveal a poor gen-
+eralization ability of the cubic model because we obtain Err(w) = 26.9, Err(w2) = 3.9,
+and Err(w3) = 22018.5. This effect is called overfitting. Broadly speaking, overfitting is
+indicated by a significant difference in fit between the data set on which the model was
+trained and the outside data set on which the model is expected to be applied (Figure 6.4).
+In this case, the overfitting occurred because the complexity of the model was increased
+considerably, whereas the size of the data set remained small.
+One signature of overfitting is an increase in the magnitude of the coefficients. For
+example, while the absolute values of all coefficients in w and we. were less than one, the
+values of the coefficients in wz became significantly larger with alternating signs (suggesting
+overcompensation). We will discuss regularization in Section 6.5.2 as an approach to prevent
+this effect. C]
+Polynomial curve fitting is only one way of non-linear fitting because the choice of basis
+functions need not be limited to powers of z. Among others, non-linear basis functions that
+93
+Figure 6.4: Example of a linear vs. polynomial fit on a data set shown in Figure 6.1. The
+linear fit, fi(x), is shown as a solid green line, whereas the cubic polynomial fit, fz(x), is
+shown as a solid blue line. The dotted red line indicates the target linear concept.
+are commonly used are the sigmoid function
+or a Gaussian-style exponential function
+_ (@=43)?
+o; (x) —eé °° )
+where p4;, 8;, and a; are constants to be determined. However, this approach works only for
+a one-dimensional input x. For higher dimensions, this approach can be generalized using
+radial basis functions; see Section 9.1 for more details.
+6.5 Stability and the bias-variance trade-off
+The OLS solution can be unstable. In this section, we show why this is the case, and
+discuss how regularization can be used to mitigate this problem. We will then discuss a
+foundational concept in machine learning: the bias-variance trade-off.
+6.5.1 Sensitivity of the OLS solution
+The OLS solution is unstable if X'X is not invertible. This can occur for two main reasons:
+linearly dependent features and small datasets. Data sets often include large numbers of
+features, which are sometimes identical, similar, or nearly linearly dependent. If the dataset
+is small, it is feasible that some features are the same across samples, again resulting in
+low-rank X. When X'X is not invertible—or ill-conditioned—the OLS solution is highly
+sensitive to small perturbations in y and X.
+To see why, we will look at the singular value decomposition of X. As with the previous
+linear algebra constructs, it allows us to easily examine properties of X. Let’s consider the
+common case, where n > d: the number of samples is greater than the input dimension.
+94
+The singular value decomposition of X = UNV" for orthonormal matrices? U € R"*", V €
+R2*4 and non-negative (rectangular) diagonal matrix © € R"*?. The diagonal entries in ©
+are the singular values, which we typically order in descending order 01, 02,...,@q, giving
+fo, = O 7
+0 (on) 0 2 -
+O71 0 0
+==|]0 O 0 Od = Py where %iqg = 0 (on) 0
+O 0 0) 0)
+0 O ... Og
+(n — d) rows _ of zeros :
+1O 60 0 0 |
+Any matrix X € R”*? can be decomposed into its singular value decomposition, because any
+linear transformation can be decomposed into a rotation (multiplication by VW"), followed
+by a scaling (multiplication by %), followed again by a rotation (multiplication by U).
+This decomposition simplifies analysis of the properties of a matrix. For example, the
+number of non-zero singular values constitutes the rank of X. To see why, assume og = 0,
+and og_1 > 0, meaning X has rank d—1. Take any vector w € R?, and consider Xw.
+We can write this product as U{V'w = U»w for Ww = V'w. The product Sw sets the
+last dimension of w to zero, effectively removing that dimension and so projecting W into a
+lower-dimensional (d— 1) space. Then it rotates that projected vector afterwards, using U,
+but cannot undo that projection into a lower-dimensional space. Therefore, Xw can only
+product y = Xw that lie in a d—1-dimensional plane, rotated in R¢-!. This decomposition,
+then, can help us understand the space of possible predictions for linear regression Xw.
+Now we can discuss the least-squares solution, in terms of the singular value decompo-
+sition of X. Notice that
+X'X =VES'U'USV' = VEZV'
+because U is orthonormal and so U'U =I the identity matrix (I is a diagonal matrix with
+ones on the diagonal). The inverse of X'X exists if X is full rank, i.e., Ng has no zeros on
+the diagonal, because (K'XK)~' = VEZ°V". The resulting solution for w looks like?
+d T
+w=(X'X)'X'y=V=E"U'y=S_ v
+UuJ
+j (6.4)
+j=l 74
+where U = [w,...,u,] € R”*” is the orthonormal matrix composed of the left singular
+vectors, Ug = [u,..., ug] € R”*@ is the first d left singular vectors, and V = [v1,...,Va] €
+R?*¢ is the orthonormal matrix composed of the right singular vectors.
+The solution in Equation (6.5) makes it clear why the linear regression solution can be
+sensitive to perturbations. For small singular values, oj" is large and amplifies any changes
+in y. For example, for slightly different noise component e; for the ith sample, the solution
+vector w could be very different. A common strategy to deal with this instability is to drop
+? An orthonormal matrix U is square matrix that satisfies U'U =I and UU' =I
+’The last step in the below equation, writing the matrix product as a sum, is not immediately obvious.
+As an exercise, see if you can derive this last equality.
+95
+or truncate small singular values. This is a form of regularization, which we discuss in the
+next section.
+Remark: In the general case, where X is not full rank, we can still obtain a least-squares
+solution to X'Xw = X'y. Now, there are potentially infinitely many solutions. The
+common choice is to select the minimum variance solution, which corresponds to dropping
+the components (singular vectors) for the zero singular values:
+rank of X ul
+> V
+j}9
+j (6.5)
+w= ——v;. ;
+j=l J
+Example 16: [Nearly linear dependent] Let’s look at a simple example of why X € R"*¢
+might have small singular values. First, assume d = 2 and r2 = 21, i.e., that the second
+features is a copy of the first and simply redundant. Then X = U2¥2V' is the thin SVD
+of X, where U2 only has the first two columns of the full SVD. We can write this thin SVD
+because X = Ug¥2V!' = UEV|, where the zero singular values zero out the remaining
+columns of U.
+The SVD of just the first column x; € R”*! is straightforward: x; = ujo;v1, where
+uy = X1/||/x1|], o1 = ||xi|| and v, = 1. The SVD of X = [x; x9] is therefore, for any n-
+dimensional unit vector ug that is orthogonal to uy, and right singular vectors v1, v2 € R?,
+X=[u, u|4[v1 v2]! = [ui wi 2 0. i0 q n0e.5 0 0 . .5 5
+where we extended v; to two-dimensions (since d = 2), and defined v2 to be orthogonal
+to that vector, and had to rescale o, to maintain unit singular vectors. So because x9 is
+dependent on x ;, the rank does not increase when we add it as a column and the singular
+value og = 0.
+If instead x2 = x; +e for a small noise vector « € R”, then instead we would find that o
+would no longer be zero, but would be very close to zero, because uy, and the first singular
+value o; would largely be able to recreate xo. L]
+6.5.2 Regularization
+So far, we have discussed linear regression in terms of maximum likelihood. But, as before,
+we can also propose a MAP objective. Instead of specifying no prior over w, we can select
+a prior to help regularize overfitting to the observed data. We will discuss two common
+priors (regularizers): the Gaussian prior (f2 norm) and the Laplace prior (¢; norm), shown
+in Figure 6.5.
+Taking the log of the zero-mean Gaussian prior, N’(0, \~'I), we get
+—In p(w) = In(2z|A7*T]) + we + lWwW = In(27) — dln(A) + Swiw,
+because |\~'I| = A~¢, where |A| is the determinant of the matrix A. As before, we can
+drop the first constant which does not affect the selection of w.
+Now we can combine the negative log-likelihood and the negative log prior. Then ig-
+noring constants, we can add up the negative log-likelihood and negative log to the prior
+96
+——Laplace(0,1)
+——Normal(0,1)
+Figure 6.5: A comparison between Gaussian and Laplace priors. Both prefers values to be
+near zero, but the Laplace prior more strongly prefers the values to equal zero.
+to get
+1 .
+Ww
+w o wl j=0
+n d do? T
+= argmin S- Ys S- WiXig | + > w Ww.
+i=l j=0
+Therefore if we assume that the weights have a zero-mean Gaussian prior (0, \~'o7I),
+then we get the following ridge regression problem:
+c(w) = (Xw — y)'(y)X +wAw—'w > ||w||3 = ww
+where A is a user-selected parameter that is called the regularization parameter. ‘The idea
+is to penalize weight coefficients that are too large; the larger the A, the more large weights
+are penalized. Correspondingly, larger \ corresponds to a smaller covariance in the prior,
+pushing the weights to stay near zero. The MAP estimate, therefore, has to balance between
+this prior on the weights, and fitting the observed data.
+If we solve this equation in a similar manner as before, we obtain
+Wap = (X'X+A)'X'y.
+This has the nice effect of shifting the squared singular values in yy by A, removing stability
+issues with dividing by small singular values, as long as J is itself large enough.
+If we choose a Laplace distribution, we get an €; penalized objective
+c(w) = (Xw — y)'(Xw—y) + Allw]s
+which is often called the Lasso. This objective can be obtained similarly to the €2 regularized
+objective, but instead using a Laplace distribution with parameter X for the prior. As with
+the £2 regularizer for ridge regression, this regularizer penalizes large values in w. However,
+it also produces more sparse solutions, where entries in w are zero. This preference can
+be seen in Figure 6.5, where the Laplace distribution is more concentrated around zero. In
+practice, however, this preference is even stronger than implied by the distribution, due to
+how the spherical least-squares loss and the ¢; regularizer interact.
+97
+Forcing entries in w to zero has the effect of feature selection, because zeroing entries
+in w is equivalent to removing the corresponding feature. Consider the dot product each
+time a prediction is made,
+d
+x! w = So xj; = S- Ej W;.
+37=0 j:w;F0
+This is equivalent to simply dropping entries in x and w where w; = 0.
+For the Lasso, we no longer have a closed-form solution. We do not have a closed form
+solution, because we cannot solve for w in closed-form that provides a stationary point.
+Instead, we use gradient descent to compute a solution to w. The ¢; regularizer, however,
+is non-differentiable at 0. Understanding how to optimize this objective requires a bit more
+optimization background, so we provide this algorithm in the next chapter, in Algorithm 4.
+6.5.3 Expectation and variance for the regularized solution
+A natural question to ask is how this regularization parameter can be selected, and the
+impact on the final solution vector. The selection of this regularization parameter leads
+to a bias-variance trade-off. To understand this trade-off, we need to understand what it
+means for the solution to be biased, and how to characterize the variance of the solution,
+across possible datasets.
+Let us begin with understanding the bias and variance of the non-regularized solu-
+tion, presuming that the distributional assumptions behind linear regression are true. This
+means that there exists a true parameter w such that for each of the data points Y; =
+Io w;X;; + €;, where the ¢; are iid. random variables drawn according to N(0,07).
+We can characterize the solution vector (estimator) wy, as a random variable, where the
+randomness is across possible datasets that could have been observed. In this sense, we
+are considering the dataset D to be a random variable, and the solution wy,(P) from that
+dataset as a function of this random variable.
+Let us now look at the expected value (with respect to training data set D) for the
+weight vector Wy, with € = (€1,€2,..-,€n):
+E[wy(D)] =E [(x"x) " X! (Xw + 2)
+=E [(x"x) " (X"X)e| +E [(x"x) X"e|
+=E|w]+E [(x"x) " x"] E [e]
+v]
+where the third equality follows from the fact that the noise terms € are independent of the
+features and the last equality because w is a constant vector (non-random) and Ele] = 0.
+An estimator whose expected value is the true value of the parameter is called an unbiased
+estimator. The covariance matrix for the optimal set of parameters can be expressed as
+Cov[wau.(D)] = E |(wyu.(D) — w) (wae.(D) — w)"|
+=E | Wair.(D) Wan)" | — ww"
+98
+Taking* Xt = (XTMX)' X", we have Wa.(D) = w + X‘e, so
+Cov[wui.(D)| = E (w + X'e) (w + X'e) -| — ww"
+=ww' +E [X'ee"X""| — ww!"
+because E [X'ew'] = E[X'] E[e]w' = 0. Now because the noise terms are independent
+of the inputs, i.e., E [ee'|X] = E [ee'] = 071, we can use the law of total probability (also
+called the tower rule), to get
+E |X'ee"X"| = E|E[X'eeTMX'|X]|
+=E|X'E |ee"|X| x"
+= 0°E |X'x"].,
+Thus, we have
+Cov[Wau1,(D)] = 0° |(XTMX)'].,
+It can be shown that estimator wy,(D) = X'y is the one with the smallest variance among
+all unbiased estimators (Gauss-Markov theorem).
+Unfortunately, however, as discussed above, the matrix X'K = VHV' can be poorly
+conditioned, with some zero or near-zero singular values. Consequently, this covariance ma-
+trix can be poorly conditioned, with high magnitude co-variance values. This implies that,
+across datasets, the solution Wy,(P) can vary widely. This type of behavior is suggestive
+of overfitting, and is not desirable. If our solution could be very different across several
+different random subsets of data, we cannot be confident in any one of these solutions.
+The regularized solution, on the other hand, is much less likely to have high covariance,
+but will no longer be unbiased. Let wyap(D) be the MAP estimate for the ¢2 regularized
+problem with some A > 0. Using a similar analysis to above, the expected value of Wyap(P)
+is
+E[Wyap(D)] = E [(x"x +A) X!" (Kw + e)
+E [(x"x +A) (XTMX)e|
+FW.
+As A — 0, the MAP solution becomes closer and closer to being unbiased. The covariance
+is
+Cov[Wyrap(D)] = 0?E (XTX + MI)"
+This covariance is much less susceptible to ill-conditioned X'X, because as discussed above,
+the shift by A improves the condition. Consequently, we expect Wy,4p to have lower variance
+across different datasets that could have been observed. This correspondingly implies that
+we are less likely to overfit to anyone dataset. Notice that as A > oo, the variance decreases
+to zero, but the bias increases to infinity. As depicted in Figure 6.6, there is an optimal
+choice of A that minimizes this bias-variance trade-off—if we could find it.
+“This matrix is called the pseudo-inverse of X. The idea of a pseudo-inverse generalizes the concept of
+inverses to non-invertible matrices, including rectangular matrices. It is a useful concept, but not one we
+will need to use again and so is not explained in-depth here.
+99
+Total Error
+Variance rorrE
+ytixelpmoC
+ledoM
+mumitpO
+S. —
+Model Complexity
+Figure 6.6: The bias-variance trade-off. Image obtained from: http://scott.fortmann-roe.
+com/docs/Bias Varianchetm.l
+Exercise: Derive the covariance formula for Wyap(D).
+The bias-variance trade-off comes in many forms. One such trade-off is in the selection of
+our function class. If we select a simple function class, the class is likely not large enough—
+not powerful enough—to represent the true function. This introduces some bias, but likely
+also has lower variance, because that simpler function class is less likely to overfit to any
+one dataset. If this class is too simple, we might say that our function is underparametrized
+and is underfitting. On the other hand, if we select a more powerful function class, that
+does contain the true function, we may not have any bias but could have high variance due
+to the ability to find a function in your large class that overfits a given dataset. In this
+setting, we might say the function is over-parametrized, and though we have the ability to
+learn a highly accurate function, it will be difficult to actually find that function amongst
+this larger class. Instead, one is likely to select a model that overfits to the given data, and
+does not generalize to new data (i.e., performs poorly on new data).
+Finding the balance between bias and variance, and between underfitting and overfitting,
+is a core problem in machine learning. We discuss ways to theoretically and empirically
+investigate this trade-off, in Chapter 10.
+Remark: Above we assumed that the true model was linear, and so the only bias
+introduced was from the regularization. This assumed that the hypothesis space of linear
+functions was sufficiently powerful. In reality, when using linear regression with regular-
+ization, we are introducing bias both from selecting a simpler function class and from the
+regularization. If a powerful basis is used to first transform the data, to provide nonlin-
+ear functions even though the solution uses linear regression, then it is feasible that this
+function class is sufficiently powerful, and the bias is mostly due to regularization.
+100

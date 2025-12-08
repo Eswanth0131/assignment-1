@@ -1,0 +1,124 @@
+Multilayer Perceptron (MLP) – Engineering AI Agents
+Engineering AI Agents
+BOOK
+Foundations
+Training Deep Networks
+Perception
+Kinematics
+State Estimation
+Large Language Models
+Multimodal Reasoning
+Task Planning
+Global Planning
+Local Planning
+Markov Decision Processes
+Reinforcement Learning
+VLA Agents
+COURSES
+Introduction to AI
+AI for Robotics
+Deep Learning for Computer Vision
+DATA MINING - BEING PORTED
+MEDIA
+AI for Robotics
+ABOUT ME
+Large Language Models
+Multilayer Perceptron (MLP)
+Large Language Models
+Introduction to NLP Pipelines
+Text Tokenization
+Word2Vec Embeddings
+Word2Vec from scratch
+Word2Vec Tensorflow Tutorial
+Introduction to Recurrent Neural Networks (RNN)
+Simple RNN
+Time Series Prediction using RNNs
+The Long Short-Term Memory (LSTM) Architecture
+Language Models
+RNN Language Models
+Example of an RNN Language Model
+RNN-based Neural Machine Translation
+Character-level recurrent sequence-to-sequence model
+The BLEU Score
+Attention in RNN-based NMT
+Transformers and Self-Attention
+Single-head self-attention
+Multi-head self-attention
+Multilayer Perceptron (MLP)
+Positional Embeddings
+LLM Inference
+On this page
+Resources
+Edit this page
+View source
+Report an issue
+Large Language Models
+Multilayer Perceptron (MLP)
+Multilayer Perceptron (MLP)
+Notice that at its core the output of the multihead self attention is a weighted sum of the input tokens. This is a
+linear combination
+of the value vectors and the attention block does not have the capacity to learn non-linear relationships. One cat argue that the attention weights and softmax add some non-linearity but this is not enough and the model will not be able to learn complex dependencies. To address this we add an MLP to the output of the multihead self attention.
+\[Y  = \mathtt{LayerNorm}(\hat Z)\]
+\[\tilde X = \mathtt{MLP}(Y) + \hat Z\]
+where the MLP uses skip connection and for some implementations a RELU or GELU activation function shown below is used.
+GELU
+Notably,
+each token is processed by the MLP independently of the other tokens in the input
+.
+class
+FeedForward(nn.Module):
+def
+__init__
+(
+self
+, config):
+super
+().
+__init__
+()
+self
+.linear_1
+=
+nn.Linear(config.hidden_size, config.intermediate_size)
+self
+.linear_2
+=
+nn.Linear(config.intermediate_size, config.hidden_size)
+self
+.gelu
+=
+nn.GELU()
+self
+.dropout
+=
+nn.Dropout(config.hidden_dropout_prob)
+def
+forward(
+self
+, x):
+x
+=
+self
+.linear_1(x)
+x
+=
+self
+.gelu(x)
+x
+=
+self
+.linear_2(x)
+x
+=
+self
+.dropout(x)
+return
+x
+Resources
+Dimensioning Transformers - Part 1
+Dimensioning Transformers - Part 2
+Multi-head self-attention
+Positional Embeddings
+Edit this page
+View source
+Report an issue

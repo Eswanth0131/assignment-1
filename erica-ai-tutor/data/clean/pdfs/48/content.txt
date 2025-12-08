@@ -1,0 +1,145 @@
+An Upgrade to SyntaxNet, New Models and a Parsing Competition 12/7/25, 3:51AM
+Google Research Who we are Research areas Our work Programs & events Careers Blog Q
+ava
+det nsubj ROOT det dobj p
+The gostak distims the doshes
+distim dosh
+DT NN VBZ DT NNS
+DET NOUN VERB DET NOUN
+finit def nber=sing mood=ind definit def nber=p!
+number=sing
+person=3
+tense=pres
+QUICK LINKS
+At Google, we continuously improve the language understanding capabilities used in applications Share
+ranging from generation of email responses to translation. Last summer, we open-sourced SyntaxNet,
+a neural-network framework for analyzing and understanding the grammatical structure of sentences.
+Included in our release was Parsey McParseface, a state-of-the-art model that we had trained for
+analyzing English, followed quickly by a collection of pre-trained models for 40 additional languages,
+which we dubbed Parsey's Cousins. While we were excited to share our research and to provide these
+resources to the broader community, building machine learning systems that work well for languages
+other than English remains an ongoing challenge. We are excited to announce a few new research
+resources, available now, that address this problem.
+SyntaxNet Upgrade
+We are releasing a major upgrade to SyntaxNet. This upgrade incorporates nearly a year’s worth of our
+research on multilingual language understanding, and is available to anyone interested in building
+systems for processing and understanding text. At the core of the upgrade is a new technology that
+enables learning of richly layered representations of input sentences. More specifically, the upgrade
+extends TensorFlow to allow joint modeling of multiple levels of linguistic structure, and to allow neural-
+network architectures to be created dynamically during processing of a sentence or document.
+Our upgrade makes it, for example, easy to build character-based models that learn to compose
+individual characters into words (e.g. ‘c-a-t’ spells ‘cat’). By doing so, the models can learn that words
+https://research.google/blog/an-upgrade-to-syntaxnet-new-models-and-a-parsing-competition/ Page 1 of 4
+An Upgrade to SyntaxNet, New Models and a Parsing Competition 12/7/25, 3:51AM
+can be related to each other because they share common parts (e.g. ‘cats’ is the plural of ‘cat’ and
+shares the same stem; ‘wildcat’ is a type of ‘cat’). Parsey and Parsey’s Cousins, on the other hand,
+operated over sequences of words. As a result, they were forced to memorize words seen during
+training and relied mostly on the context to determine the grammatical function of previously unseen
+words.
+As an example, consider the following (meaningless but grammatically correct) sentence:
+Loh NY
+det nsubj ROOT det dobj p
+The gostak' distims the doshes..
+distim dosh
+DT NN VBZ DT NNS
+DET NOUN VERB DET NOUN
+definiteness=def number=sing mood=ind definiteness=def number=plural
+number=sing
+person=3
+tense=pres
+This sentence was originally coined by Andrew Ingraham who explained: “You do not know what this
+means; nor do I. But if we assume that it is English, we know that the doshes are distimmed by the
+gostak. We know too that one distimmer of doshes is a gostak." Systematic patterns in morphology and
+syntax allow us to guess the grammatical function of words even when they are completely novel: we
+understand that ‘doshes’ is the plural of the noun ‘dosh’ (similar to the ‘cats’ example above) or that
+‘distim’ is the third person singular of the verb distim. Based on this analysis we can then derive the
+overall structure of this sentence even though we have never seen the words before.
+ParseySaurus
+To showcase the new capabilities provided by our upgrade to SyntaxNet, we are releasing a set of new
+pretrained models called ParseySaurus. These models use the character-based input representation
+mentioned above and are thus much better at predicting the meaning of new words based both on
+their spelling and how they are used in context. The ParseySaurus models are far more accurate than
+Parsey’s Cousins (reducing errors by as much as 25%), particularly for morphologically-rich languages
+like Russian, or agglutinative languages like Turkish and Hungarian. In those languages there can be
+dozens of forms for each word and many of these forms might never be observed during training -
+even in a very large corpus.
+Consider the following fictitious Russian sentence, where again the stems are meaningless, but the
+suffixes define an unambiguous interpretation of the sentence structure:
+fo a a “ fo Ay U-— TM ~\ \ fo _ TM \
+¥/ \i/v ¥/ \ \¥, \¥ v\ // ¥. ¥\
+armed nsubj advmod root dobj co con] dabj
+Tnoxaa Ky3qpa WTeKO 6yananyna 6oKpa “ KyparnuntT G6oKpéHKa
+Glokaya kuzdra shteko budianula bokra j kurdyacit bokrenka
+Aspect=Perf Aspect=Imp
+CCe ~ agsree=e=NPooms AnCiamsaec=y=Nionma n G _ y G v en e_d e e d r m =F d em AnCiamsaecy==Gienna n Nu M m o b o e dpr =e lIlen a~d 3. AniCmaascey==Diantan
+Gender=Fem Gender=Ferm jegres= Os umDersoung Gender=Mase POS=CONJ ‘erson® ed Gender=Masc
+NumbereSi~ ng Nruimanb ereSi" ng POS=ADV VeTrenbsFeo=rPma=sFt NumberpesSi ng VeTrebnFsoer=mP=rFeisn Numberaon eSing NumberheiPelur
+POS=ADJ POS=NOUN eer ormeia POS=NOUN ads a POS=NOUN POS=NOUN
+Voice Act Voices Act
+POS=VERB POS=VERB
+Even though our Russian ParseySaurus model has never seen these words, it can correctly analyze the
+sentence by inspecting the character sequences which constitute each word. In doing so, the system
+can determine many properties of the words (notice how many more morphological features there are
+here than in the English example). To see the sentence as ParseySaurus does, here is a visualization of
+how the model analyzes this sentence:
+https://research.google/blog/an-upgrade-to-syntaxnet-new-models-and-a-parsing-competition/ Page 2 of 4
+An Upgrade to SyntaxNet, New Models and a Parsing Competition 12/7/25, 3:57 AM
+ParseySaurus analysis:
+WN iN aaa
+Cnokaa ky3gpa wteKo 6yfnaHya GoKpa MW KypAAUMT GOKpéHKa
+amod nsubj advmod root dobj cc conj dobj
+Dynamically constructed network:
+Character-based word representations
+Each square represents one node in the neural network graph, and lines show the connections
+between them. The left-side “tail” of the graph shows the model consuming the input as one long
+string of characters. These are intermittently passed to the right side, where the rich web of
+connections shows the model composing words into phrases and producing a syntactic parse. Check
+out the full-size rendering here.
+A Competition
+You might be wondering whether character-based modeling are all we need or whether there are other
+techniques that might be important. SyntaxNet has lots more to offer, like beam search and different
+training objectives, but there are of course also many other possibilities. To find out what works well in
+practice we are helping co-organize, together with Charles University and other colleagues, a
+multilingual parsing competition at this year’s Conference on Computational Natural Language
+Learning (CoNLL) with the goal of building syntactic parsing systems that work well in real-world
+settings and for 45 different languages.
+The competition is made possible by the Universal Dependencies (UD) initiative, whose goal is to
+develop cross-linguistically consistent treebanks. Because machine learned models can only be as
+good as the data that they have access to, we have been contributing data to UD since 2013. For the
+competition, we partnered with UD and DFKI to build a new multilingual evaluation set consisting of
+1000 sentences that have been translated into 20+ different languages and annotated by linguists with
+parse trees. This evaluation set is the first of its kind (in the past, each language had its own
+independent evaluation set) and will enable more consistent cross-lingual comparisons. Because the
+sentences have the same meaning and have been annotated according to the same guidelines, we will
+be able to get closer to answering the question of which languages might be harder to parse.
+We hope that the upgraded SyntaxNet framework and our the pre-trained ParseySaurus models will
+inspire researchers to participate in the competition. We have additionally created a tutorial showing
+how to load a Docker image and train models on the Google Cloud Platform, to facilitate participation
+by smaller teams with limited resources. So, if you have an idea for making your own models with the
+SyntaxNet framework, sign up to compete! We believe that the configurations that we are releasing are
+a good place to start, but we look forward to seeing how participants will be able to extend and
+improve these models or perhaps create better ones!
+Thanks to everyone involved who made this competition happen, including our collaborators at UD-
+Pipe, who provide another baseline implementation to make it easy to enter the competition. Happy
+parsing from the main developers, Chris Alberti, Daniel Andor, lvan Bogatyy, Mark Omernick, Zora Tung
+and Ji Ma!
+https://research.google/blog/an-upgrade-to-syntaxnet-new-models-and-a-parsing-competition/ Page 3 of 4
+An Upgrade to SyntaxNet, New Models and a Parsing Competition 12/7/25, 3:51 AM
+Labels: Natural Language Processing Open Source Models & Datasets Product
+Other posts GQ * oe:
+of interest
+Pee ee eee Aes eee
+DECEMBER 4, 2025 NOVEMBER 21, 2025 NOVEMBER 18, 2025
+Titans + MIRAS: Reducing EV range Generative UI: A
+Helping Al have anxiety: How a rich, custom, visual
+long-term memory simple Al model interactive user
+predicts port experiefonr caney
+availability prompt
+Generative Al -
+Generative Al - Human-Computer
+Machine Intelligence - Interaction and Visualization
+Natural Language Algorithms & Theory -
+Processing Product Product
+Follow us X BB oo
+Google About Google Google Products Privacy Terms @ Help Submit feedback
+https://research.google/blog/an-upgrade-to-syntaxnet-new-models-and-a-parsing-competition/ Page 4 of 4
