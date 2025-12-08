@@ -16,7 +16,7 @@ This project implements the Erica AI Tutor system.
 It builds a knowledge graph from extracted entities, constructs concept relationships, retrieves subgraphs for user questions, and generates final answers using a local LLM. Everything runs inside a lightweight Docker container.
 
 
-#1 Setup Instructions
+1. Setup Instructions
 
 Install Requirements
 
@@ -43,7 +43,7 @@ root@erica_app:/app#
 
 ⸻
 
-#2. Running the System
+2. Running the System
 
 Inside the container run:
 python src/query.py
